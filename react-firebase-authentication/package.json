@@ -1,15 +1,10 @@
 {
-  "name": "serviceonline",
+  "name": "react-firebase-authentication",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "bootstrap": "^4.1.1",
-    "firebase": "^5.0.4",
-    "mdbreact": "^4.4.0",
     "react": "^16.4.0",
-    "react-bootstrap": "^0.32.1",
     "react-dom": "^16.4.0",
-    "react-router": "^3.0.5",
     "react-scripts": "1.1.4"
   },
   "scripts": {
