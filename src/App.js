@@ -29,6 +29,14 @@ var config = {
 };
 firebase.initializeApp(config);
 
+var database = firebase.database();
+var JobsSnapshot;
+var jobs = firebase.database().ref('Jobs/');
+jobs.on('value', function(snapshot) {
+JobsSnapshot = snapshot.val();
+});
+
+
 class Tables extends React.Component {
 	render(){
 		return <div>
