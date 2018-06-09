@@ -9,6 +9,7 @@ import firebase from 'firebase';
 //import {Button} from 'mdbreact'
 
 /*Components*/
+
 class HomeCard extends React.Component {
   render() {
     return <div className="col-md-4"><h4>{this.props.title}</h4>
@@ -16,6 +17,9 @@ class HomeCard extends React.Component {
             </div>;
   }
 }
+/*we can use default props to set the initial value of the jobs that load when the page opens*/
+
+
 var config = {
   apiKey: "AIzaSyDWHKJFtKRsA_YpQMjfnyL4dbUdttkn9Xo",
   authDomain: "lsk-guide-jobs.firebaseapp.com",
@@ -29,6 +33,14 @@ var database = firebase.database();
 var JobsSnapshot;
 
 class Tables extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        name: [],
+        job : "HouseCleaners"
+      }
+      this.handleClick = this.handleClick.bind(this);
+    };
 
     
     handleClick(value) {
@@ -38,23 +50,35 @@ class Tables extends React.Component {
       var jobs = firebase.database().ref('Jobs/'+ value);
       jobs.on('value', function(snapshot) {
         JobsSnapshot = snapshot.val();
-        JobsSnapshot.forEach(function(item){
-          console.log(item.fullname);
-        })
-        });
+        // this.setState = {
+        //   name : JobsSnapshot[1]
+        // }
+ JobsSnapshot.forEach(function(item){
+        console.log(item.fullname); })
+
+       });
+    
+    
     }
 
 	render(){
 		return <div>
+      <div className="row">
       <ButtonGroup vertical>
-      <Button onClick={() => this.handleClick("HouseCleaners")}>House Cleaner</Button>
+      <Button  onClick={() => this.handleClick(this.state.job)}>House Cleaner</Button>
       <Button onClick={() => this.handleClick("YardCleaners")}>Yard Cleaner</Button>
       <Button onClick={() => this.handleClick("HouseCleaner")}>Carpenter</Button>
       <Button onClick={() => this.handleClick("HouseCleaner")}>Plumber</Button>
       <Button onClick={() => this.handleClick("HouseCleaner")}>Painter</Button>
       </ButtonGroup>
+      <div>
+        <h1>{this.props.title}</h1>
+      </div>
+      </div>
 		</div>
   }
+
+  
   
   GetJobs =(value) => {
     // Initialize Firebase
@@ -62,6 +86,9 @@ class Tables extends React.Component {
   
   }
 }
+
+
+  
 
 /*Pages*/
 const Page = ({ title }) => (
@@ -117,11 +144,11 @@ class Categories extends React.Component {
     return <div>
       <div className="container-fluid">
     <Page title="Categories"/>
-    <div className="row">
-      <div className="col-md-3">
-      <Tables />
+   
+  
+     
       </div>
-      <div className="col-md-9" style={{textAlign:"center"}}>
+      <div  className="center-align" style={{textAlign:"center"}}>
       <div className="col-lg-6 ">
       <div className="input-group">
         <input type="text" className="form-control" placeholder="Search for..."/>
@@ -130,8 +157,8 @@ class Categories extends React.Component {
         </span>
       </div>
       </div>
-      </div>
-    </div>
+      <Tables />
+    
     </div>
     </div>
   }
