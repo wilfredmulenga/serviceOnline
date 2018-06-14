@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^1.2.1",
     "bootstrap": "^4.1.1",
     "firebase": "^5.0.4",
     "mdbreact": "^4.4.0",

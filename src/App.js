@@ -2,10 +2,14 @@ import React, { Component } from 'react';
 import { Router, browserHistory, Route, Link } from 'react-router';
 import logo from './logo.svg';
 import './App.css';
-import { ButtonGroup, Button} from 'react-bootstrap';
+import { ButtonGroup , Well} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import landingPage from './landingPage.jpeg';
 import firebase from 'firebase';
+import { join } from 'path';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardMedia from '@material-ui/core/CardMedia';
 //import {Button} from 'mdbreact'
 
 /*Components*/
@@ -36,54 +40,89 @@ class Tables extends React.Component {
     constructor(props){
       super(props);
       this.state = {
-        name: [],
+        fullname: [],
+        profession: "",
+        location: "",
+        wages : "",
+        rating : "",
         job : "HouseCleaners"
       }
       this.handleClick = this.handleClick.bind(this);
     };
 
+   
+    handleClick = (value) => {
     
-    handleClick(value) {
+     var newJob;
+     var html = "";
+      var fullname = "";
+      var profession = "";
+      var location = "";
+      var wages = "";
+      var rating = "";
+      let names = [];
     
-     
-      
       var jobs = firebase.database().ref('Jobs/'+ value);
-      jobs.on('value', function(snapshot) {
+      jobs.on('value',  (snapshot) => {
         JobsSnapshot = snapshot.val();
-        // this.setState = {
-        //   name : JobsSnapshot[1]
-        // }
- JobsSnapshot.forEach(function(item){
-        console.log(item.fullname); })
+  
+     
+        JobsSnapshot.forEach((elements, key) => {
+
+        names.push(Object.values(elements))  
+        console.log(names)
+        });
+        this.setState({
+          fullname:names
+        })
 
        });
-    
+      
+
+       
+      
     
     }
+    
 
 	render(){
+    const {fullname} = this.state;
+    const { spacing } = this.state;
 		return <div>
       <div className="row">
+      <div>
       <ButtonGroup vertical>
-      <Button  onClick={() => this.handleClick(this.state.job)}>House Cleaner</Button>
+      <Button  onClick={ ()=> this.handleClick(this.state.job)}>House Cleaner</Button>
       <Button onClick={() => this.handleClick("YardCleaners")}>Yard Cleaner</Button>
       <Button onClick={() => this.handleClick("HouseCleaner")}>Carpenter</Button>
       <Button onClick={() => this.handleClick("HouseCleaner")}>Plumber</Button>
       <Button onClick={() => this.handleClick("HouseCleaner")}>Painter</Button>
       </ButtonGroup>
-      <div>
-        <h1>{this.props.title}</h1>
+      <Button color="secondary" >
+        Secondary
+      </Button>
       </div>
+     <div className="row" spacing={16}>
+
+      {
+        fullname.map((element,i) => <Card style={{width:200, margin:20}}  key={i}>
+          <img src= {element[1]}/>
+         Fullname: {element[0]}          
+          Location:  {element[2]} 
+         Profession: {element[3]} 
+        Rating: {element[4]}
+        Wages: {element[5]} 
+        </Card>)
+       
+       }
+       </div>
+        
+    
+      
+       
+     
       </div>
 		</div>
-  }
-
-  
-  
-  GetJobs =(value) => {
-    // Initialize Firebase
-  // TODO: Replace with your project's customized code snippet
-  
   }
 }
 
