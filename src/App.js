@@ -9,6 +9,7 @@ import firebase from 'firebase';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import Modal from 'react-modal';
+import Centered 
 //import firebase from 'firebase/app';
 //import 'firebase/Tables';
 
@@ -41,7 +42,8 @@ class SignIn extends React.Component {
     super();
 
     this.state = {
-      modalIsOpen: false
+      modalIsOpen: true,
+      loginStatus: false
     };
 
     this.openModal = this.openModal.bind(this);
@@ -67,6 +69,8 @@ class SignIn extends React.Component {
   render() {
     return <div>
     <button onClick={this.openModal}>Open Modal</button>
+    {
+      
     <Modal
       isOpen={this.state.modalIsOpen}
       onAfterOpen={this.afterOpenModal}
@@ -74,19 +78,34 @@ class SignIn extends React.Component {
       style={customStyles}
       contentLabel="Example Modal"
     >
-
-      <h2 ref={subtitle => this.subtitle = subtitle}>Hello</h2>
       <button onClick={this.closeModal}>close</button>
-      <div>I am a modal</div>
+      <Button color="secondary" onClick={this.closeModal}>Sign Up</Button>
+      <h2 ref={subtitle => this.subtitle = subtitle}>Sign In</h2>
+      
+     
       <form>
+        username
         <input />
-        <button>tab navigation</button>
-        <button>stays</button>
-        <button>inside</button>
-        <button>the modal</button>
+        password
+        <input />
+        <Button color='primary'>OK</Button>
       </form>
     </Modal>
+    }
   </div>
+  }
+}
+
+class SignUp extends Component {
+  constructor(props){
+    super(props);
+  }
+  render(){
+    return(
+      <div>
+         <Card></Card>
+      </div>
+    )
   }
 }
 
@@ -259,9 +278,10 @@ class Login extends Component {
       <div id="main">
         <Navbar title={"Navbar Page"}/>
         {
-          this.state.signedIn ?  null   :  <SignIn />
+          this.state.signedIn ?  null   :  <SignIn loginStatus={this.state.signedIn}/>
         
         }
+
         </div>
     )
   }
