@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import { Router, browserHistory, Route, Link } from 'react-router';
 import logo from './logo.svg';
 import './App.css';
-import { ButtonGroup , Well} from 'react-bootstrap';
+import { ButtonGroup } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import landingPage from './landingPage.jpeg';
 import firebase from 'firebase';
-import { join } from 'path';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
-//import {Button} from 'mdbreact'
+import Modal from 'react-modal';
+//import firebase from 'firebase/app';
+//import 'firebase/Tables';
+
 
 /*Components*/
 
@@ -21,8 +22,78 @@ class HomeCard extends React.Component {
             </div>;
   }
 }
+/*Modals*/
+Modal.setAppElement('#root')
+
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
+
+class SignIn extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      modalIsOpen: false
+    };
+
+    this.openModal = this.openModal.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+  }
+
+  openModal() {
+    this.setState({modalIsOpen: true});
+  }
+
+  afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    this.subtitle.style.color = '#f00';
+  }
+
+  closeModal() {
+    this.setState({modalIsOpen: false});
+  }
+
+
+
+  render() {
+    return <div>
+    <button onClick={this.openModal}>Open Modal</button>
+    <Modal
+      isOpen={this.state.modalIsOpen}
+      onAfterOpen={this.afterOpenModal}
+      onRequestClose={this.closeModal}
+      style={customStyles}
+      contentLabel="Example Modal"
+    >
+
+      <h2 ref={subtitle => this.subtitle = subtitle}>Hello</h2>
+      <button onClick={this.closeModal}>close</button>
+      <div>I am a modal</div>
+      <form>
+        <input />
+        <button>tab navigation</button>
+        <button>stays</button>
+        <button>inside</button>
+        <button>the modal</button>
+      </form>
+    </Modal>
+  </div>
+  }
+}
+
+
 /*we can use default props to set the initial value of the jobs that load when the page opens*/
 
+/*firebase configuration*/
 
 var config = {
   apiKey: "AIzaSyDWHKJFtKRsA_YpQMjfnyL4dbUdttkn9Xo",
@@ -33,18 +104,14 @@ var config = {
   messagingSenderId: "319224351068"
 };
 firebase.initializeApp(config);
-var database = firebase.database();
+//var database = firebase.database();
 var JobsSnapshot;
 
 class Tables extends React.Component {
     constructor(props){
       super(props);
       this.state = {
-        fullname: [],
-        profession: "",
-        location: "",
-        wages : "",
-        rating : "",
+        listOfPeople: [],
         job : "HouseCleaners"
       }
       this.handleClick = this.handleClick.bind(this);
@@ -52,61 +119,40 @@ class Tables extends React.Component {
 
    
     handleClick = (value) => {
-    
-     var newJob;
-     var html = "";
-      var fullname = "";
-      var profession = "";
-      var location = "";
-      var wages = "";
-      var rating = "";
-      let names = [];
+      let peopleArray = [];
     
       var jobs = firebase.database().ref('Jobs/'+ value);
       jobs.on('value',  (snapshot) => {
         JobsSnapshot = snapshot.val();
-  
-     
         JobsSnapshot.forEach((elements, key) => {
-
-        names.push(Object.values(elements))  
-        console.log(names)
+          peopleArray.push(Object.values(elements))  
         });
         this.setState({
-          fullname:names
+          listOfPeople:peopleArray
         })
-
        });
-      
-
-       
-      
-    
     }
     
 
 	render(){
-    const {fullname} = this.state;
-    const { spacing } = this.state;
+    const {listOfPeople} = this.state;
 		return <div>
       <div className="row">
       <div>
       <ButtonGroup vertical>
-      <Button  onClick={ ()=> this.handleClick(this.state.job)}>House Cleaner</Button>
-      <Button onClick={() => this.handleClick("YardCleaners")}>Yard Cleaner</Button>
-      <Button onClick={() => this.handleClick("HouseCleaner")}>Carpenter</Button>
-      <Button onClick={() => this.handleClick("HouseCleaner")}>Plumber</Button>
-      <Button onClick={() => this.handleClick("HouseCleaner")}>Painter</Button>
+      <Button  color="primary" onClick={ ()=> this.handleClick(this.state.job)}>House Cleaner</Button>
+      <Button color="primary" onClick={() => this.handleClick("YardCleaners")}>Yard Cleaner</Button>
+      <Button color="primary" onClick={() => this.handleClick("HouseCleaner")}>Carpenter</Button>
+      <Button color="primary" onClick={() => this.handleClick("HouseCleaner")}>Plumber</Button>
+      <Button color="primary" onClick={() => this.handleClick("HouseCleaner")}>Painter</Button>
       </ButtonGroup>
-      <Button color="secondary" >
-        Secondary
-      </Button>
+      
       </div>
-     <div className="row" spacing={16}>
+     <div className="row">
 
       {
-        fullname.map((element,i) => <Card style={{width:200, margin:20}}  key={i}>
-          <img src= {element[1]}/>
+        listOfPeople.map((element,i) => <Card style={{width:200, margin:20}}  key={i}>
+          <img src= {element[1]} alt={"profile pic"}/>
          Fullname: {element[0]}          
           Location:  {element[2]} 
          Profession: {element[3]} 
@@ -116,11 +162,6 @@ class Tables extends React.Component {
        
        }
        </div>
-        
-    
-      
-       
-     
       </div>
 		</div>
   }
@@ -130,7 +171,7 @@ class Tables extends React.Component {
   
 
 /*Pages*/
-const Page = ({ title }) => (
+const Navbar = ({ title }) => (
     <div className="App container-fluid">
        {/*Navbar section*/}
    <div className="App-header">
@@ -153,7 +194,7 @@ const Page = ({ title }) => (
 const Home = (props) => (
   
   <div>
-    <Page title="Home"/>
+    <Navbar title="Home"/>
  {/*Landing Page Image section*/}
   <div className="landingPageImage">
    <img src={landingPage} style={{width:"1520px"}} alt="landing page" />
@@ -174,7 +215,7 @@ const Home = (props) => (
 );
 
 const About = (props) => (
-  <Page title="About"/>
+  <Navbar title="About"/>
 );
 
 class Categories extends React.Component {
@@ -182,7 +223,7 @@ class Categories extends React.Component {
   render(){
     return <div>
       <div className="container-fluid">
-    <Page title="Categories"/>
+    <Navbar title="Categories"/>
    
   
      
@@ -206,12 +247,26 @@ class Categories extends React.Component {
   
   
 
-const Login = (props) =>(
-  <div>
-  <Page title="Login"/>
-  
-  </div>
-);
+class Login extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      signedIn : false
+    }
+  }
+  render(){
+    return(
+      <div id="main">
+        <Navbar title={"Navbar Page"}/>
+        {
+          this.state.signedIn ?  null   :  <SignIn />
+        
+        }
+        </div>
+    )
+  }
+ 
+}
 
 class App extends Component {
   render() {
