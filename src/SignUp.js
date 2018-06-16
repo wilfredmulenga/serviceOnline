@@ -11,15 +11,18 @@ class SignUp extends Component {
     this.state = {
       signedIn : true,
       chipData: [
-        { key: 0, label: 'Angular' },
-        { key: 1, label: 'jQuery' },
-        { key: 2, label: 'Polymer' },
-        { key: 3, label: 'React' },
-        { key: 4, label: 'Vue.js' },
-      ]
+        {  label: 'Sowing' },
+        {  label: 'Plumbing' },
+        { label: 'Wood-Work' },
+      
+      ],
+      input: ""
     }
     this.handleDelete = this.handleDelete.bind(this)
+    this.addItem  = this.addItem.bind(this)
+    //this.handleChange = this.handleChange.bind(this)
   }
+  //handle the deletion of a chip
   handleDelete = data => () => {
     if (data.label === 'React') {
       alert('Why would you want to delete React?! :)'); // eslint-disable-line no-alert
@@ -30,6 +33,22 @@ class SignUp extends Component {
     chipData.splice(chipToDelete, 1);
     this.setState({ chipData });  
   }
+
+    //handle the addition of a chip
+    addItem = () => {
+      
+      this.state.chipData.push({"label":this.state.input})
+      console.log(this.state.chipData)
+      const chipData = [...this.state.chipData];
+      this.setState({ chipData });  
+    }
+
+    handleChange = (event)=>{
+      this.setState ({
+        input: event.target.value
+        })
+    }
+
   render(){
     return(
       <div>
@@ -86,18 +105,26 @@ class SignUp extends Component {
                 placeholder="Brief Description of Profession/ Duties"></textarea>
               </div>
               <div class="col mb-3">
-             
-                <input type="text" class="form-control mb-3" placeholder="Type in a skill e.g  'Painting'" />
+                <div class="input-group">
+                <input 
+                value={this.state.input}
+                 onChange={this.handleChange}
+                  type="text" class="form-control mb-3" placeholder="Type in a skill e.g  'Painting'" />
+                
+
+                <div >
+    <button class=" input-group-append btn btn-secondary" onClick={this.addItem} type="button">Add</button>
+  </div>  
+  </div>
+               
                 { this.state.chipData.map(data => 
                   <Chip
-                  key={data.key}
+                  //key={data.key}
                   label={data.label}
                   onDelete={this.handleDelete(data)}/>) 
                
                 }
-                <div class="input-group-append">
-    <button class="btn btn-outline-secondary" type="button">Button</button>
-  </div>
+            
           </div>
 
         </form>
