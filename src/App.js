@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
-import { Router, browserHistory, Route, Link } from 'react-router';
-import logo from './logo.svg';
+import { Router, browserHistory, Route } from 'react-router';
+
 import './App.css';
-import { ButtonGroup } from 'react-bootstrap';
+import { ButtonGroup} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import landingPage from './landingPage.jpeg';
 import firebase from 'firebase';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import Modal from 'react-modal';
-import Centered 
+import SignUp from './SignUp';
+import Navbar from './Navbar'
+
+
+ 
 //import firebase from 'firebase/app';
 //import 'firebase/Tables';
 
@@ -24,90 +28,11 @@ class HomeCard extends React.Component {
   }
 }
 /*Modals*/
-Modal.setAppElement('#root')
-
-const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
-};
-
-class SignIn extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      modalIsOpen: true,
-      loginStatus: false
-    };
-
-    this.openModal = this.openModal.bind(this);
-    this.afterOpenModal = this.afterOpenModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-  }
-
-  openModal() {
-    this.setState({modalIsOpen: true});
-  }
-
-  afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    this.subtitle.style.color = '#f00';
-  }
-
-  closeModal() {
-    this.setState({modalIsOpen: false});
-  }
 
 
 
-  render() {
-    return <div>
-    <button onClick={this.openModal}>Open Modal</button>
-    {
-      
-    <Modal
-      isOpen={this.state.modalIsOpen}
-      onAfterOpen={this.afterOpenModal}
-      onRequestClose={this.closeModal}
-      style={customStyles}
-      contentLabel="Example Modal"
-    >
-      <button onClick={this.closeModal}>close</button>
-      <Button color="secondary" onClick={this.closeModal}>Sign Up</Button>
-      <h2 ref={subtitle => this.subtitle = subtitle}>Sign In</h2>
-      
-     
-      <form>
-        username
-        <input />
-        password
-        <input />
-        <Button color='primary'>OK</Button>
-      </form>
-    </Modal>
-    }
-  </div>
-  }
-}
 
-class SignUp extends Component {
-  constructor(props){
-    super(props);
-  }
-  render(){
-    return(
-      <div>
-         <Card></Card>
-      </div>
-    )
-  }
-}
+
 
 
 /*we can use default props to set the initial value of the jobs that load when the page opens*/
@@ -190,25 +115,7 @@ class Tables extends React.Component {
   
 
 /*Pages*/
-const Navbar = ({ title }) => (
-    <div className="App container-fluid">
-       {/*Navbar section*/}
-   <div className="App-header">
-   <div className="row">
-   <img src={logo} className="App-logo" alt="logo" />
-   <h4><Link to="/">Home</Link></h4>
-   <h4><Link to="/about">About</Link></h4>
-   <h4><Link to="/categories">Categories</Link></h4>
-   <h4><Link to="/login">Log In/Sign Up</Link></h4>
-   <h4 className="App-intro">
-        This is the {title} page.
-      </h4>
-  </div>
-  </div>
-        
-    </div>
-    
-);
+
 
 const Home = (props) => (
   
@@ -266,27 +173,7 @@ class Categories extends React.Component {
   
   
 
-class Login extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      signedIn : false
-    }
-  }
-  render(){
-    return(
-      <div id="main">
-        <Navbar title={"Navbar Page"}/>
-        {
-          this.state.signedIn ?  null   :  <SignIn loginStatus={this.state.signedIn}/>
-        
-        }
 
-        </div>
-    )
-  }
- 
-}
 
 class App extends Component {
   render() {
@@ -295,7 +182,7 @@ class App extends Component {
         <Route path="/" component={Home}/>
         <Route path="/about" component={About}/>
         <Route path="/categories" component={Categories}/>
-        <Route path="/login" component={Login}/>
+        <Route path="/login" component={SignUp}/>
       </Router>
     );
   }
