@@ -23,11 +23,26 @@ class SignUp extends Component {
       file: '',
       imagePreviewUrl: '',
       profilePic : '',
-      profilePicPreviewUrl : ''
+      firstName : '',
+      lastName : '',
+      age : '',
+      nrc : '',
+      phoneNumber : '',
+      email : '',
+      city : '',
+      briefDescription : '',
+      profession : '',
+      //skills : [],
+      //profilePicPreviewUrl is actually base64 of the image
+      profilePicPreviewUrl : '',
+      //base64 of uploaded Images 
+      uploadedImagesBase64 : []
     }
     this.handleDelete = this.handleDelete.bind(this)
     this.addItem  = this.addItem.bind(this)
     this.sendData = this.sendData.bind(this)
+    this.handleChangeImages = this.handleChangeImages.bind(this)
+    this.handleChangeInput = this.handleChangeInput.bind(this)
     //this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChangeImages = this.handleChangeImages.bind(this)
     this.handleChangeProfilePic = this.handleChangeProfilePic.bind(this)
@@ -67,26 +82,26 @@ class SignUp extends Component {
       jobs.ref('Jobs/newJobs').set({
         "userEmail":{
         profilepic : {
-					pic : this.state.profilePic
+					pic : this.state.profilePicPreviewUrl
 				},
 				personalInformation:{
-					firsName:"a",
-					lastName: "a",
-					email:"a",
-					phoneNumber:"a",
-					city:"a",
-					age:"a",
-					nrc:"a"
+					firsName:this.state.firstName,
+					lastName: this.state.lastName,
+					email: this.state.email,
+					phoneNumber: this.state.phoneNumber,
+					city: this.state.city,
+					age: this.state.age,
+					nrc:this.state.nrc
 				},
 				professionalInformation:{
-					profession: "a",
-					skills: ["a"],
-					briefDescription: "a",
-					galleryOfWork: ["a"]
+					profession: this.state.profession,
+					skills: this.state.chipData,
+					briefDescription: this.state.briefDescription,
+					galleryOfWork: this.state.uploadedImagesBase64
         }
       }
       })
-      console.log(this.state.profilePic)
+   
      // event.preventDefault();
       // alert(
       //   `Selected file - ${this.fileInput.files[0].name}`
@@ -120,21 +135,64 @@ class SignUp extends Component {
         this.setState({
           file: file,
           profilePicPreviewUrl: reader.result,
-          profilePic : file
+         
         });
       }
   
       reader.readAsDataURL(file)
       }
+      //handle input change except for those that need images
+      handleChangeInput(event){
+        if(event.target.placeholder === "First Name"){
+          this.setState({
+            firstName : event.target.value
+          })
+        }else if(event.target.placeholder == "Last Name"){
+          this.setState({
+            lastName : event.target.value
+          })
+        }else if(event.target.placeholder == "Phone Number"){
+          this.setState({
+            phoneNumber : event.target.value
+          })
+        }else if(event.target.placeholder == "Email"){
+          this.setState({
+            email : event.target.value
+          })
+        }        
+        else if(event.target.placeholder == "City"){
+          this.setState({
+            city : event.target.value
+          })
+        }else if(event.target.placeholder == "Age"){
+          this.setState({
+            age : event.target.value
+          })
+        }else if(event.target.placeholder == "NRC Number"){
+          this.setState({
+            nrc : event.target.value
+          })
+        }else if(event.target.placeholder == "Profession"){
+          this.setState({
+            profession : event.target.value
+          })
+        }else if(event.target.placeholder == "Brief Description of Profession/ Duties"){
+          this.setState({
+            briefDescription : event.target.value
+          })
+        }
+   
+      }
 
   render(){
     const {uploadedImages} = this.state;
+    const {uploadedImagesBase64} = this.state;
      //Profile Picture Upload
     let {profilePicPreviewUrl} = this.state;
     let $profilePicPreview = null;
     if (profilePicPreviewUrl) {
       $profilePicPreview = (<img src={profilePicPreviewUrl} />);
-     
+      
     } else {
     $profilePicPreview = (<img src={greybackground}    />);
     }
@@ -144,6 +202,7 @@ class SignUp extends Component {
     if (imagePreviewUrl) {
       $imagePreview = (<img src={imagePreviewUrl} />);
       this.state.uploadedImages.push($imagePreview)
+      this.state.uploadedImagesBase64.push(imagePreviewUrl)
     } else {
       $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
     }
@@ -177,40 +236,48 @@ class SignUp extends Component {
         <div class="mb-5">
             <div class="form-row">
               <div class="col mb-3">
-                <input type="text" class="form-control" placeholder="First Name" />
-                <div class="valid-feedback">
-                  Looks good!
-                </div>
+                <input type="text" value={this.state.firstName} onChange={this.handleChangeInput}
+                 class="form-control" placeholder="First Name" />
+               
               </div>
               <div class="col mb-3">
-                <input type="text" class="form-control" placeholder="Last Name" />
+                <input type="text" value={this.state.lastName}  onChange={this.handleChangeInput}
+                class="form-control" placeholder="Last Name" />
               </div>
             </div>
             <div class="form-row">
               <div class="col mb-3">
-                <input type="text" class="form-control" placeholder="Email" />
+                <input type="text" value={this.state.email} onChange={this.handleChangeInput} 
+                class="form-control" placeholder="Email" />
               </div>
               <div class="col mb-3">
-                <input type="text" class="form-control" placeholder="Phone Number" />
+                <input type="text" value={this.state.phoneNumber} onChange={this.handleChangeInput}
+                 class="form-control" placeholder="Phone Number" />
               </div>
             </div>
             <div class="form-row">
               <div class="col-md-6 mb-3">
-                <input type="text" class="form-control" placeholder="City" />
+                <input type="text" value={this.state.city} onChange={this.handleChangeInput} 
+                 class="form-control" placeholder="City" />
               </div>
               <div class="col-md-3 mb-3">
-                <input type="text" class="form-control" placeholder="Age" />
+                <input type="text" value={this.state.age} onChange={this.handleChangeInput} 
+                 class="form-control" placeholder="Age" />
               </div>
               <div class="col-md-3 mb-3">
-                <input type="text" class="form-control" placeholder="NRC Number" />
+                <input type="text" value={this.state.nrc} onChange={this.handleChangeInput}
+                 class="form-control" placeholder="NRC Number" />
               </div>
             </div>
         </div>
         <h3>Professional Information</h3>
         <div class="row">
         <div class="col mb-3">
-                <input type="text" class="form-control mb-3" placeholder="Profession" />
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"
+                <input type="text" value={this.state.profession} onChange={this.handleChangeInput}
+                 class="form-control mb-3" placeholder="Profession" />
+                <textarea class="form-control" 
+                value={this.state.briefDescription} onChange={this.handleChangeInput}
+                id="exampleFormControlTextarea1" rows="5"
                 placeholder="Brief Description of Profession/ Duties" ></textarea>
               </div>
               <div class="col mb-3">
