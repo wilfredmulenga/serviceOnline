@@ -1,22 +1,16 @@
 import React, { Component } from 'react';
 import { Router, browserHistory, Route } from 'react-router';
-
+import jobs from '../src/config/firebase';
 import './App.css';
 import { ButtonGroup} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import landingPage from './landingPage.jpeg';
-import firebase from 'firebase';
+
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import Modal from 'react-modal';
 import SignUp from './SignUp';
 import Navbar from './Navbar'
-
-
- 
-//import firebase from 'firebase/app';
-//import 'firebase/Tables';
-
 
 /*Components*/
 
@@ -37,18 +31,7 @@ class HomeCard extends React.Component {
 
 /*we can use default props to set the initial value of the jobs that load when the page opens*/
 
-/*firebase configuration*/
 
-var config = {
-  apiKey: "",
-  authDomain: "lsk-guide-jobs.firebaseapp.com",
-  databaseURL: "https://lsk-guide-jobs.firebaseio.com",
-  projectId: "lsk-guide-jobs",
-  storageBucket: "",
-  messagingSenderId: "319224351068"
-};
-firebase.initializeApp(config);
-//var database = firebase.database();
 var JobsSnapshot;
 
 class Tables extends React.Component {
@@ -65,8 +48,8 @@ class Tables extends React.Component {
     handleClick = (value) => {
       let peopleArray = [];
     
-      var jobs = firebase.database().ref('Jobs/'+ value);
-      jobs.on('value',  (snapshot) => {
+      //var jobs = firebase.database().ref('Jobs/'+ value);
+      jobs.ref('Jobs/'+ value).on('value',  (snapshot) => {
         JobsSnapshot = snapshot.val();
         JobsSnapshot.forEach((elements, key) => {
           peopleArray.push(Object.values(elements))  
