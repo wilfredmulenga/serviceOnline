@@ -40,7 +40,7 @@ class HomeCard extends React.Component {
 /*firebase configuration*/
 
 var config = {
-  apiKey: "AIzaSyDWHKJFtKRsA_YpQMjfnyL4dbUdttkn9Xo",
+  apiKey: "",
   authDomain: "lsk-guide-jobs.firebaseapp.com",
   databaseURL: "https://lsk-guide-jobs.firebaseio.com",
   projectId: "lsk-guide-jobs",
