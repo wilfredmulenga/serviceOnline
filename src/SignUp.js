@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import profilepic from './profilepic.jpeg'
 import Navbar from './Navbar'
 import SignIn from './SignIn'
 import Chip from '@material-ui/core/Chip';
-import Button from '@material-ui/core/Button';
 import greybackground from './greybackground.jpeg'
+import jobs from '../src/config/firebase'
 
-
+//Components
 class SignUp extends Component {
   constructor(props){
     super(props);
@@ -23,11 +22,13 @@ class SignUp extends Component {
       uploadedImages : [],
       file: '',
       imagePreviewUrl: '',
+      profilePic : '',
       profilePicPreviewUrl : ''
     }
     this.handleDelete = this.handleDelete.bind(this)
     this.addItem  = this.addItem.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.sendData = this.sendData.bind(this)
+    //this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChangeImages = this.handleChangeImages.bind(this)
     this.handleChangeProfilePic = this.handleChangeProfilePic.bind(this)
     //this.fileChangedHandler = this.fileChangedHandler(this)
@@ -62,7 +63,30 @@ class SignUp extends Component {
         })
     }
     //handle uploading an image for "Gallery Of Your Work"
-    handleSubmit() {
+    sendData() {
+      jobs.ref('Jobs/newJobs').set({
+        "userEmail":{
+        profilepic : {
+					pic : this.state.profilePic
+				},
+				personalInformation:{
+					firsName:"a",
+					lastName: "a",
+					email:"a",
+					phoneNumber:"a",
+					city:"a",
+					age:"a",
+					nrc:"a"
+				},
+				professionalInformation:{
+					profession: "a",
+					skills: ["a"],
+					briefDescription: "a",
+					galleryOfWork: ["a"]
+        }
+      }
+      })
+      console.log(this.state.profilePic)
      // event.preventDefault();
       // alert(
       //   `Selected file - ${this.fileInput.files[0].name}`
@@ -95,7 +119,8 @@ class SignUp extends Component {
       reader.onloadend = () => {
         this.setState({
           file: file,
-          profilePicPreviewUrl: reader.result
+          profilePicPreviewUrl: reader.result,
+          profilePic : file
         });
       }
   
@@ -104,12 +129,12 @@ class SignUp extends Component {
 
   render(){
     const {uploadedImages} = this.state;
-    //Profile Picture Upload
+     //Profile Picture Upload
     let {profilePicPreviewUrl} = this.state;
     let $profilePicPreview = null;
     if (profilePicPreviewUrl) {
       $profilePicPreview = (<img src={profilePicPreviewUrl} />);
-      //this.state.uploadedImages.push($imagePreview)
+     
     } else {
     $profilePicPreview = (<img src={greybackground}    />);
     }
@@ -131,9 +156,11 @@ class SignUp extends Component {
         
         }
         <div  className="container justify-content-center">
-<form class="needs-validation" onSubmit={this.handleSubmit}>
+
        <div className="card" >
         <div className="card-body">
+        <form class="needs-validation" //onSubmit={this.handleSubmit}
+>
           <div className="card-title">
             <h3>Sign Up</h3>
           </div>
@@ -143,55 +170,55 @@ class SignUp extends Component {
          </div>
          <div class="col-md-6">
           <h5 class="mb-2">Upload Profile picture</h5>
-          <input type="file" class="form-control" onChange={this.handleChangeProfilePic} required/>
+          <input type="file" class="form-control" onChange={this.handleChangeProfilePic}  />
           </div>
           </div>
           <h3>Personal Information</h3>
         <div class="mb-5">
             <div class="form-row">
               <div class="col mb-3">
-                <input type="text" class="form-control" placeholder="First Name" required/>
+                <input type="text" class="form-control" placeholder="First Name" />
                 <div class="valid-feedback">
                   Looks good!
                 </div>
               </div>
               <div class="col mb-3">
-                <input type="text" class="form-control" placeholder="Last Name" required/>
+                <input type="text" class="form-control" placeholder="Last Name" />
               </div>
             </div>
             <div class="form-row">
               <div class="col mb-3">
-                <input type="text" class="form-control" placeholder="Email" required/>
+                <input type="text" class="form-control" placeholder="Email" />
               </div>
               <div class="col mb-3">
-                <input type="text" class="form-control" placeholder="Phone Number" required/>
+                <input type="text" class="form-control" placeholder="Phone Number" />
               </div>
             </div>
             <div class="form-row">
               <div class="col-md-6 mb-3">
-                <input type="text" class="form-control" placeholder="City" required/>
+                <input type="text" class="form-control" placeholder="City" />
               </div>
               <div class="col-md-3 mb-3">
-                <input type="text" class="form-control" placeholder="Age" required/>
+                <input type="text" class="form-control" placeholder="Age" />
               </div>
               <div class="col-md-3 mb-3">
-                <input type="text" class="form-control" placeholder="NRC Number" required/>
+                <input type="text" class="form-control" placeholder="NRC Number" />
               </div>
             </div>
         </div>
         <h3>Professional Information</h3>
         <div class="row">
         <div class="col mb-3">
-                <input type="text" class="form-control mb-3" placeholder="Profession" required/>
+                <input type="text" class="form-control mb-3" placeholder="Profession" />
                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"
-                placeholder="Brief Description of Profession/ Duties" required></textarea>
+                placeholder="Brief Description of Profession/ Duties" ></textarea>
               </div>
               <div class="col mb-3">
                 <div class="input-group">
                 <input 
                 value={this.state.input}
                  onChange={this.handleChangeChips}
-                  type="text" class="form-control mb-3" placeholder="Type in a skill e.g  'Painting'" required/>
+                  type="text" class="form-control mb-3" placeholder="Type in a skill e.g  'Painting'" />
                 
 
                 <div >
@@ -220,7 +247,7 @@ class SignUp extends Component {
     ref={input => {
       this.fileInput = input;
     }} 
-    class="custom-file-input" id="inputGroupFile04" required/>
+    class="custom-file-input" id="inputGroupFile04" />
     <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
   </div>
   <div class="input-group-append">
@@ -247,14 +274,17 @@ class SignUp extends Component {
 }
 
 </div>
-  <div class="col-md-12 text-center">
-  <button class="btn btn-success" type="submit">SIGN UP</button>
-  </div>
+ 
         
-         
+</form>     
+ <div class="col-md-12 text-center">
+  <button class="btn btn-success" onClick={this.sendData}//type="submit"
+  >SIGN UP</button>
+  </div>
         </div>
        </div>
-  </form>
+
+ 
        </div>
         </div>
     )
