@@ -3,7 +3,7 @@ import Navbar from './Navbar'
 import SignIn from './SignIn'
 import Chip from '@material-ui/core/Chip';
 import greybackground from './greybackground.jpeg'
-import jobs from '../src/config/firebase'
+import Firebase from '../src/config/firebase'
 
 //Components
 class SignUp extends Component {
@@ -79,7 +79,7 @@ class SignUp extends Component {
     }
     //handle uploading an image for "Gallery Of Your Work"
     sendData() {
-      jobs.ref('Jobs/newJobs').set({
+      Firebase.database().ref('Jobs/newJobs').set({
         "userEmail":{
         profilepic : {
 					pic : this.state.profilePicPreviewUrl
@@ -147,36 +147,36 @@ class SignUp extends Component {
           this.setState({
             firstName : event.target.value
           })
-        }else if(event.target.placeholder == "Last Name"){
+        }else if(event.target.placeholder === "Last Name"){
           this.setState({
             lastName : event.target.value
           })
-        }else if(event.target.placeholder == "Phone Number"){
+        }else if(event.target.placeholder === "Phone Number"){
           this.setState({
             phoneNumber : event.target.value
           })
-        }else if(event.target.placeholder == "Email"){
+        }else if(event.target.placeholder === "Email"){
           this.setState({
             email : event.target.value
           })
         }        
-        else if(event.target.placeholder == "City"){
+        else if(event.target.placeholder === "City"){
           this.setState({
             city : event.target.value
           })
-        }else if(event.target.placeholder == "Age"){
+        }else if(event.target.placeholder === "Age"){
           this.setState({
             age : event.target.value
           })
-        }else if(event.target.placeholder == "NRC Number"){
+        }else if(event.target.placeholder === "NRC Number"){
           this.setState({
             nrc : event.target.value
           })
-        }else if(event.target.placeholder == "Profession"){
+        }else if(event.target.placeholder === "Profession"){
           this.setState({
             profession : event.target.value
           })
-        }else if(event.target.placeholder == "Brief Description of Profession/ Duties"){
+        }else if(event.target.placeholder === "Brief Description of Profession/ Duties"){
           this.setState({
             briefDescription : event.target.value
           })
@@ -251,7 +251,7 @@ class SignUp extends Component {
                 class="form-control" placeholder="Email" />
               </div>
               <div class="col mb-3">
-                <input type="text" value={this.state.phoneNumber} onChange={this.handleChangeInput}
+                <input type="number" value={this.state.phoneNumber} onChange={this.handleChangeInput}
                  class="form-control" placeholder="Phone Number" />
               </div>
             </div>
@@ -261,11 +261,11 @@ class SignUp extends Component {
                  class="form-control" placeholder="City" />
               </div>
               <div class="col-md-3 mb-3">
-                <input type="text" value={this.state.age} onChange={this.handleChangeInput} 
+                <input type="number" value={this.state.age} onChange={this.handleChangeInput} 
                  class="form-control" placeholder="Age" />
               </div>
               <div class="col-md-3 mb-3">
-                <input type="text" value={this.state.nrc} onChange={this.handleChangeInput}
+                <input type="number" value={this.state.nrc} onChange={this.handleChangeInput}
                  class="form-control" placeholder="NRC Number" />
               </div>
             </div>
@@ -345,6 +345,7 @@ class SignUp extends Component {
         
 </form>     
  <div class="col-md-12 text-center">
+ {/*To have the page reload after the submit button is pressed put the button inside the form div*/}
   <button class="btn btn-success" onClick={this.sendData}//type="submit"
   >SIGN UP</button>
   </div>

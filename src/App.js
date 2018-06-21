@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 import { Router, browserHistory, Route } from 'react-router';
-import jobs from '../src/config/firebase';
+import Firebase from '../src/config/firebase';
 import './App.css';
-import { ButtonGroup} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import landingPage from './landingPage.jpeg';
-
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import Modal from 'react-modal';
-import SignUp from './SignUp';
-import Navbar from './Navbar'
-
-/*Components*/
+import Navbar from './Navbar';
+import Categories from './Categories'
 
 class HomeCard extends React.Component {
   render() {
@@ -21,9 +17,21 @@ class HomeCard extends React.Component {
             </div>;
   }
 }
+
 /*Modals*/
+// var loginStatus;
+Modal.setAppElement("#root")
 
-
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
 
 
 
@@ -32,67 +40,9 @@ class HomeCard extends React.Component {
 /*we can use default props to set the initial value of the jobs that load when the page opens*/
 
 
-var JobsSnapshot;
 
-class Tables extends React.Component {
-    constructor(props){
-      super(props);
-      this.state = {
-        listOfPeople: [],
-        job : "HouseCleaners"
-      }
-      this.handleClick = this.handleClick.bind(this);
-    };
 
-   
-    handleClick = (value) => {
-      let peopleArray = [];
-    
-      //var jobs = firebase.database().ref('Jobs/'+ value);
-      jobs.ref('Jobs/'+ value).on('value',  (snapshot) => {
-        JobsSnapshot = snapshot.val();
-        JobsSnapshot.forEach((elements, key) => {
-          peopleArray.push(Object.values(elements))  
-        });
-        this.setState({
-          listOfPeople:peopleArray
-        })
-       });
-    }
-    
 
-	render(){
-    const {listOfPeople} = this.state;
-		return <div>
-      <div className="row">
-      <div>
-      <ButtonGroup vertical>
-      <Button  color="primary" onClick={ ()=> this.handleClick(this.state.job)}>House Cleaner</Button>
-      <Button color="primary" onClick={() => this.handleClick("YardCleaners")}>Yard Cleaner</Button>
-      <Button color="primary" onClick={() => this.handleClick("HouseCleaner")}>Carpenter</Button>
-      <Button color="primary" onClick={() => this.handleClick("HouseCleaner")}>Plumber</Button>
-      <Button color="primary" onClick={() => this.handleClick("HouseCleaner")}>Painter</Button>
-      </ButtonGroup>
-      
-      </div>
-     <div className="row">
-
-      {
-        listOfPeople.map((element,i) => <Card style={{width:200, margin:20}}  key={i}>
-          <img src= {element[1]} alt={"profile pic"}/>
-         Fullname: {element[0]}          
-          Location:  {element[2]} 
-         Profession: {element[3]} 
-        Rating: {element[4]}
-        Wages: {element[5]} 
-        </Card>)
-       
-       }
-       </div>
-      </div>
-		</div>
-  }
-}
 
 
   
@@ -100,11 +50,136 @@ class Tables extends React.Component {
 /*Pages*/
 
 
-const Home = (props) => (
+class Home extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      modalIsOpen: false,
+      //loginStatus: false,
+      email : '',
+      password : '',
+      reenterPassword : '',
+      passwordMisMatch : false,
+      error : null
+    };this.openModal = this.openModal.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.handleSignUp = this.handleSignUp.bind(this);
+    this.handleInput = this.handleInput.bind(this);
+  }
   
-  <div>
-    <Navbar title="Home"/>
- {/*Landing Page Image section*/}
+
+  openModal() {
+    this.setState({modalIsOpen: true});
+  }
+
+  afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    this.subtitle.style.color = '#f00';
+  }
+
+  closeModal() {
+    this.setState({modalIsOpen: false});
+  }
+  signUpFunction(){
+    
+  }
+  handleSignUp(){
+    //var email ="asa@yahoo.com";
+    //var password = "12345678";
+    
+    ((this.state.password === this.state.reenterPassword) && this.state.email !=="") ? 
+    Firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+       var errorMessage = error.message;
+      
+      console.log(errorCode,errorMessage)
+      // ...
+    })
+    
+    : this.setState({
+      passwordMisMatch : true
+    })
+    
+  }
+  handleInput(event){
+    
+      if(event.target.placeholder === 'email'){
+        this.setState({
+          email : event.target.value
+        })
+      }else if(event.target.placeholder === 'password'){
+        this.setState({
+          password : event.target.value,
+          passwordMisMatch : false
+        })
+      }else if(event.target.placeholder === 're-enter password'){
+        this.setState({
+          reenterPassword : event.target.value,
+          passwordMisMatch : false
+        })
+      }
+
+    }
+    componentWillUpdate(){
+      console.log(this.props.title)
+   } 
+    
+
+
+  render(){
+   
+    return <div>
+        <div id="home">
+    <Navbar title="Home" action={this.openModal}/>
+    {/* <SignIn /> */}
+         <Modal
+           isOpen={this.state.modalIsOpen}
+           onAfterOpen={this.afterOpenModal}
+           onRequestClose={this.closeModal}
+           style={customStyles}
+           contentLabel="Example Modal"
+         >
+           <button onClick={this.closeModal}>close</button>
+           <Button color="secondary" onClick={this.closeModal}>Sign In</Button>
+           <h2 ref={subtitle => this.subtitle = subtitle}>Sign Up</h2>
+           
+          
+           <form>
+           <div class= "col mb-3">
+                   <input type="email" value={this.state.email} onChange={this.handleInput}
+                    class="form-control" required placeholder="email" />               
+                 </div>
+                 <div class="col mb-3">
+                   <input type="text" value={this.state.password} onChange={this.handleInput}
+                    class="form-control" placeholder="password" />               
+                 </div>
+                 <div class="col  mb-3">
+                   <input type="text" value={this.state.reenterPassword} onChange={this.handleInput}
+                    class="form-control" placeholder="re-enter password" />  
+                    
+                   {
+                     (this.state.passwordMisMatch) ?  <p style={{color:"red"}}
+                     >passwords did not match</p> : null
+                    
+                   }
+                    {
+                       (this.state.error) ? <p style={{color:"red"}}>{this.state.error}</p>: null
+                    }
+                           
+                 </div>
+                 
+           </form>
+           <div class="align-right">
+           <button  type="submit" onClick={this.handleSignUp} >hello</button>
+           </div>
+   
+           
+         </Modal>  
+         
+
   <div className="landingPageImage">
    <img src={landingPage} style={{width:"1520px"}} alt="landing page" />
   </div>
@@ -116,42 +191,20 @@ const Home = (props) => (
    <HomeCard title="I want to hire someone" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
    <HomeCard title="I want to be a partner" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
     </div>
-   
+    
   </div>
   
   </div>
-  
-);
+
+    </div>
+  }
+}
 
 const About = (props) => (
   <Navbar title="About"/>
 );
 
-class Categories extends React.Component {
 
-  render(){
-    return <div>
-      <div className="container-fluid">
-    <Navbar title="Categories"/>
-   
-  
-     
-      </div>
-      <div  className="center-align" style={{textAlign:"center"}}>
-      <div className="col-lg-6 ">
-      <div className="input-group">
-        <input type="text" className="form-control" placeholder="Search for..."/>
-        <span className="input-group-btn">
-          <button className="btn btn-default" type="button" >Go!</button>
-        </span>
-      </div>
-      </div>
-      <Tables />
-    
-    </div>
-    </div>
-  }
-}
   
   
   
@@ -165,7 +218,7 @@ class App extends Component {
         <Route path="/" component={Home}/>
         <Route path="/about" component={About}/>
         <Route path="/categories" component={Categories}/>
-        <Route path="/login" component={SignUp}/>
+        <Route path="/login" component={Home}/>
       </Router>
     );
   }
