@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import Modal from 'react-modal';
 
 
-Modal.setAppElement('#root')
+Modal.setAppElement("#root")
 
 const customStyles = {
   content : {

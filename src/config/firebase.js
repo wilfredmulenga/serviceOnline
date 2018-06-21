@@ -10,6 +10,6 @@ var config = {
     messagingSenderId: "319224351068"
   };
   firebase.initializeApp(config);
-  var jobs = firebase.database()
+  var Firebase = firebase;
 
-  export default jobs;
+  export default Firebase;
