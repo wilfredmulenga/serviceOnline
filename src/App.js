@@ -5,10 +5,10 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import landingPage from './landingPage.jpeg';
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
 import Modal from 'react-modal';
 import Navbar from './Navbar';
 import Categories from './Categories'
+import SignUp from './SignUp';
 
 class HomeCard extends React.Component {
   render() {
@@ -26,36 +26,25 @@ const customStyles = {
   content : {
     top                   : '50%',
     left                  : '50%',
-    right                 : 'auto',
+    right                 : '50%',
     bottom                : 'auto',
     marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
+    transform             : 'translate(-50%, -50%)',
+    width : 500
   }
 };
 
-
-
-
-
 /*we can use default props to set the initial value of the jobs that load when the page opens*/
-
-
-
-
-
-
-
-  
-
 /*Pages*/
 
-
+var errorMessage;
 class Home extends React.Component {
   constructor() {
     super();
 
     this.state = {
       modalIsOpen: false,
+      signInModalIsOpen : false,
       //loginStatus: false,
       email : '',
       password : '',
@@ -67,6 +56,9 @@ class Home extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleInput = this.handleInput.bind(this);
+    this.handleSignIn = this.handleSignIn.bind(this);
+    this.closeSignInModal = this.closeSignInModal.bind(this)
+
   }
   
 
@@ -81,29 +73,66 @@ class Home extends React.Component {
 
   closeModal() {
     this.setState({modalIsOpen: false});
+    this.setState({signInModalIsOpen : true});
   }
-  signUpFunction(){
-    
+ 
+  closeSignInModal(){
+    this.setState({
+      signInModalIsOpen : false
+    })
   }
+
+ 
   handleSignUp(){
     //var email ="asa@yahoo.com";
     //var password = "12345678";
     
-    ((this.state.password === this.state.reenterPassword) && this.state.email !=="") ? 
-    Firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-       var errorMessage = error.message;
+    (this.state.email === "") ? this.setState({ error : "email field cannot be empty"}) : 
+    ((this.state.password === this.state.reenterPassword)) ? 
+    Firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(function(user){
+      console.log(user);
+      browserHistory.push('/signup')
       
-      console.log(errorCode,errorMessage)
+    })
+    .catch(function(error) {
+      // Handle Errors here.
+       var errorCode = error.code;
+        errorMessage = error.message;
+
+      console.log(errorCode, errorMessage)
       // ...
     })
+    &&
+    //cant setState within the catch function so I did it outside
+    this.setState({
+      error : errorMessage
+    })
     
+
     : this.setState({
       passwordMisMatch : true
     })
     
+    
   }
+
+  handleSignIn(){ 
+    Firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(function(user){
+      browserHistory.push("/categories")
+
+    }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      //var errorMessage = error.message;
+      errorMessage = error.message;
+      console.log(errorCode,errorMessage)
+      // ...
+    });
+    this.setState({
+      error : errorMessage
+    })
+  }
+
   handleInput(event){
     
       if(event.target.placeholder === 'email'){
@@ -123,10 +152,7 @@ class Home extends React.Component {
       }
 
     }
-    componentWillUpdate(){
-      console.log(this.props.title)
-   } 
-    
+  
 
 
   render(){
@@ -143,7 +169,7 @@ class Home extends React.Component {
            contentLabel="Example Modal"
          >
            <button onClick={this.closeModal}>close</button>
-           <Button color="secondary" onClick={this.closeModal}>Sign In</Button>
+        
            <h2 ref={subtitle => this.subtitle = subtitle}>Sign Up</h2>
            
           
@@ -173,11 +199,33 @@ class Home extends React.Component {
                  
            </form>
            <div class="align-right">
-           <button  type="submit" onClick={this.handleSignUp} >hello</button>
+           <button   class="md-3" type="submit" onClick={this.handleSignUp} >Sign Up</button>
            </div>
-   
+           <div>If you already have an account, you can  <Button color="secondary" onClick={this.closeModal}>Sign In</Button></div>
            
-         </Modal>  
+         </Modal> 
+         <Modal 
+         isOpen = {this.state.signInModalIsOpen}
+         style  = {customStyles}>
+         <div>
+                    <h2>Sign In</h2>
+                    <form>
+                    <div class= "col mb-3">
+                   <input type="email" value={this.state.email} onChange={this.handleInput}
+                    class="form-control" required placeholder="email" />               
+                 </div>
+                 <div class="col mb-4">
+                   <input type="text" value={this.state.password} onChange={this.handleInput}
+                    class="form-control" placeholder="password" />               
+                 </div>
+                 {
+                       (this.state.error) ? <p style={{color:"red"}}>{this.state.error}</p>: null
+                    }
+                    </form>
+                    <div class= "md-3 align-right">
+           <button type="submit" onClick={this.handleSignIn} >Sign In</button>
+           </div>
+           </div></Modal> 
          
 
   <div className="landingPageImage">
@@ -205,12 +253,6 @@ const About = (props) => (
 );
 
 
-  
-  
-  
-
-
-
 class App extends Component {
   render() {
     return (
@@ -219,6 +261,7 @@ class App extends Component {
         <Route path="/about" component={About}/>
         <Route path="/categories" component={Categories}/>
         <Route path="/login" component={Home}/>
+        <Route path="/signup" component={SignUp}/>
       </Router>
     );
   }

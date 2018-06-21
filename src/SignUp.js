@@ -221,7 +221,7 @@ class SignUp extends Component {
         <form class="needs-validation" //onSubmit={this.handleSubmit}
 >
           <div className="card-title">
-            <h3>Sign Up</h3>
+            <h3>Update Profile</h3>
           </div>
           <div className="row" style={{marginBottom:50}}>
          <div class="col-md-6">
@@ -347,7 +347,7 @@ class SignUp extends Component {
  <div class="col-md-12 text-center">
  {/*To have the page reload after the submit button is pressed put the button inside the form div*/}
   <button class="btn btn-success" onClick={this.sendData}//type="submit"
-  >SIGN UP</button>
+  >Update Profile</button>
   </div>
         </div>
        </div>
