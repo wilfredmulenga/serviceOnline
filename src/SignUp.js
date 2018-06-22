@@ -4,6 +4,16 @@ import SignIn from './SignIn'
 import Chip from '@material-ui/core/Chip';
 import greybackground from './greybackground.jpeg'
 import Firebase from '../src/config/firebase'
+//Firebase
+var userUID;
+Firebase.auth().onAuthStateChanged(function(user){
+  if(user){
+    userUID = user.uid
+    console.log(userUID)
+  }else{
+    console.log("signed out")
+  }
+})
 
 //Components
 class SignUp extends Component {
@@ -31,7 +41,7 @@ class SignUp extends Component {
       email : '',
       city : '',
       briefDescription : '',
-      profession : '',
+      profession : 'Other',
       //skills : [],
       //profilePicPreviewUrl is actually base64 of the image
       profilePicPreviewUrl : '',
@@ -46,11 +56,20 @@ class SignUp extends Component {
     //this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChangeImages = this.handleChangeImages.bind(this)
     this.handleChangeProfilePic = this.handleChangeProfilePic.bind(this)
+    this.handleProfessionChange = this.handleProfessionChange.bind(this)
     //this.fileChangedHandler = this.fileChangedHandler(this)
     //this.uploadHandler = this.uploadHandler(this)
     //this.handleChange = this.handleChange.bind(this)
   }
   //handle the deletion of a chip
+  handleProfessionChange(event){
+    this.setState({profession : event.target.value})
+    
+  }
+  //  componentDidUpdate(){
+  //   this.handleProfessionChange()
+  //  }
+
   handleDelete = data => () => {
     if (data.label === 'React') {
       alert('Why would you want to delete React?! :)'); // eslint-disable-line no-alert
@@ -79,8 +98,9 @@ class SignUp extends Component {
     }
     //handle uploading an image for "Gallery Of Your Work"
     sendData() {
-      Firebase.database().ref('Jobs/newJobs').set({
-        "userEmail":{
+     //console.log(this.state.profession)
+      Firebase.database().ref('Jobs/'+this.state.profession+"/"+ userUID).set({
+        userUID:{
         profilepic : {
 					pic : this.state.profilePicPreviewUrl
 				},
@@ -224,12 +244,12 @@ class SignUp extends Component {
             <h3>Update Profile</h3>
           </div>
           <div className="row" style={{marginBottom:50}}>
-         <div class="col-md-6">
+         <div className="col-md-6">
          {$profilePicPreview}
          </div>
          <div class="col-md-6">
           <h5 class="mb-2">Upload Profile picture</h5>
-          <input type="file" class="form-control" onChange={this.handleChangeProfilePic}  />
+          <input type="file" class="form-control" onChange={this.handleChangeProfilePic}  required/>
           </div>
           </div>
           <h3>Personal Information</h3>
@@ -237,55 +257,63 @@ class SignUp extends Component {
             <div class="form-row">
               <div class="col mb-3">
                 <input type="text" value={this.state.firstName} onChange={this.handleChangeInput}
-                 class="form-control" placeholder="First Name" />
+                 class="form-control" placeholder="First Name" required/>
                
               </div>
               <div class="col mb-3">
                 <input type="text" value={this.state.lastName}  onChange={this.handleChangeInput}
-                class="form-control" placeholder="Last Name" />
+                class="form-control" placeholder="Last Name" required/>
               </div>
             </div>
             <div class="form-row">
               <div class="col mb-3">
                 <input type="text" value={this.state.email} onChange={this.handleChangeInput} 
-                class="form-control" placeholder="Email" />
+                class="form-control" placeholder="Email" required/>
               </div>
               <div class="col mb-3">
                 <input type="number" value={this.state.phoneNumber} onChange={this.handleChangeInput}
-                 class="form-control" placeholder="Phone Number" />
+                 class="form-control" placeholder="Phone Number" required/>
               </div>
             </div>
             <div class="form-row">
               <div class="col-md-6 mb-3">
                 <input type="text" value={this.state.city} onChange={this.handleChangeInput} 
-                 class="form-control" placeholder="City" />
+                 class="form-control" placeholder="City" required/>
               </div>
               <div class="col-md-3 mb-3">
                 <input type="number" value={this.state.age} onChange={this.handleChangeInput} 
-                 class="form-control" placeholder="Age" />
+                 class="form-control" placeholder="Age" required/>
               </div>
               <div class="col-md-3 mb-3">
                 <input type="number" value={this.state.nrc} onChange={this.handleChangeInput}
-                 class="form-control" placeholder="NRC Number" />
+                 class="form-control" placeholder="NRC Number" required/>
               </div>
             </div>
         </div>
         <h3>Professional Information</h3>
         <div class="row">
         <div class="col mb-3">
-                <input type="text" value={this.state.profession} onChange={this.handleChangeInput}
-                 class="form-control mb-3" placeholder="Profession" />
+        <select class="form-control mb-3" id="professionSelect" onChange={this.handleProfessionChange}>
+      <option value={"House Cleaner"}>House Cleaner</option>
+      <option value={"Yard Cleaner"}>Yard Cleaner</option>
+      <option value={"Carpenter"}>Carpenter</option>
+      <option value={"Plumber"}>Plumber</option>
+      <option value={"Painter"}>Painter</option>
+      <option value={"Other"}>Other</option>
+    </select>
+                {/* <input type="text" value={this.state.profession} onChange={this.handleChangeInput}
+                 class="form-control mb-3" placeholder="Profession" /> */}
                 <textarea class="form-control" 
                 value={this.state.briefDescription} onChange={this.handleChangeInput}
                 id="exampleFormControlTextarea1" rows="5"
-                placeholder="Brief Description of Profession/ Duties" ></textarea>
+                placeholder="Brief Description of Profession/ Duties" required></textarea>
               </div>
               <div class="col mb-3">
                 <div class="input-group">
                 <input 
                 value={this.state.input}
                  onChange={this.handleChangeChips}
-                  type="text" class="form-control mb-3" placeholder="Type in a skill e.g  'Painting'" />
+                  type="text" class="form-control mb-3" placeholder="Type in a skill e.g  'Painting'" required/>
                 
 
                 <div >
@@ -314,7 +342,7 @@ class SignUp extends Component {
     ref={input => {
       this.fileInput = input;
     }} 
-    class="custom-file-input" id="inputGroupFile04" />
+    class="custom-file-input" id="inputGroupFile04" required/>
     <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
   </div>
   <div class="input-group-append">
@@ -341,14 +369,14 @@ class SignUp extends Component {
 }
 
 </div>
- 
-        
-</form>     
- <div class="col-md-12 text-center">
+<div class="col-md-12 text-center">
  {/*To have the page reload after the submit button is pressed put the button inside the form div*/}
   <button class="btn btn-success" onClick={this.sendData}//type="submit"
   >Update Profile</button>
   </div>
+        
+</form>     
+
         </div>
        </div>
 

@@ -31,6 +31,7 @@ class Navbar extends React.Component {
    <h4><Link to="/about">About</Link></h4>
    <h4><Link to="/categories">Categories</Link></h4>
    <h4><Link to="/login" onClick={this.props.action} >Log In/Sign Up</Link></h4>
+   <h4><Link to="/signup">Profile</Link></h4>
    <h4 className="App-intro">
         This is the {title} page.
       </h4>
