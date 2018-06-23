@@ -38,7 +38,7 @@ class Categories extends React.Component {
       super(props);
       this.state = {
         listOfPeople: [],
-        job : "HouseCleaners"
+        job : "Painter"
       }
       this.handleClick = this.handleClick.bind(this);
     };
@@ -48,11 +48,27 @@ class Categories extends React.Component {
       let peopleArray = [];
     
       //var jobs = firebase.database().ref('Jobs/'+ value);
-      Firebase.database().ref('Jobs/'+ value).on('value',  (snapshot) => {
+      Firebase.database().ref('Jobs/'+ 'Carpenter').on('value',  (snapshot) => {
         JobsSnapshot = snapshot.val();
-        JobsSnapshot.forEach((elements, key) => {
+        var elements;
+        var innerElements;
+        for(let index in JobsSnapshot){
+          elements = JobsSnapshot[index]
           peopleArray.push(Object.values(elements))  
-        });
+          // for(let index2 in elements){
+          //   innerElements = elements[index2]
+          //   peopleArray.push(Object.values(innerElements))  
+          // }
+          
+          // console.log(innerElements)
+        }
+      
+        //console.log(peopleArray)
+        // JobsSnapshot.forEach((elements, key) => {
+        //   peopleArray.push(Object.values(elements))  
+        //   //console.log(elements)
+        // });
+      
         this.setState({
           listOfPeople:peopleArray
         })
@@ -66,7 +82,7 @@ class Categories extends React.Component {
       <div className="row">
       <div>
       <ButtonGroup vertical>
-      <Button  color="primary" onClick={ ()=> this.handleClick(this.state.job)}>House Cleaner</Button>
+      <Button  color="primary" onClick={ ()=> this.handleClick(this.state.job) }>House Cleaner</Button>
       <Button color="primary" onClick={() => this.handleClick("YardCleaners")}>Yard Cleaner</Button>
       <Button color="primary" onClick={() => this.handleClick("HouseCleaner")}>Carpenter</Button>
       <Button color="primary" onClick={() => this.handleClick("HouseCleaner")}>Plumber</Button>
@@ -75,18 +91,29 @@ class Categories extends React.Component {
       
       </div>
      <div className="row">
-
-      {
-        listOfPeople.map((element,i) => <Card style={{width:200, margin:20}}  key={i}>
-          <img src= {element[1]} alt={"profile pic"}/>
-         Fullname: {element[0]}          
-          Location:  {element[2]} 
-         Profession: {element[3]} 
-        Rating: {element[4]}
-        Wages: {element[5]} 
-        </Card>)
-       
-       }
+          {/* {
+            listOfPeople.forEach((elements,key) =>
+              //console.log(elements)
+               <div> {elements } </div>
+            
+          )
+        } */}
+         
+        {
+          listOfPeople.forEach((element,i) => {<Card style={{width:200, margin:20}}  key={i}>
+          heloo
+            {/* <img src= {element["2"]["pic"]} alt={"profile pic"}/> */}
+          {/* Fullname: {element["0"]["firsName"]}           */}
+            {/* Location:  {element[2]} 
+          Profession: {element[3]} 
+          Rating: {element[4]} */}
+          {console.log(element["0"]["firsName"])}
+          {/* Wages: {element}  */}
+          </Card>
+         
+          })
+         
+        }
        </div>
       </div>
 		</div>
