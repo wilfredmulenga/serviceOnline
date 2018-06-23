@@ -99,13 +99,13 @@ class SignUp extends Component {
     //handle uploading an image for "Gallery Of Your Work"
     sendData() {
      //console.log(this.state.profession)
-      Firebase.database().ref('Jobs/'+this.state.profession+"/"+ userUID).set({
-        userUID:{
+      Firebase.database().ref('Jobs/'+this.state.profession+"/"+ "xxxx").set({
+       
         profilepic : {
 					pic : this.state.profilePicPreviewUrl
 				},
 				personalInformation:{
-					firsName:this.state.firstName,
+					firstName:this.state.firstName,
 					lastName: this.state.lastName,
 					email: this.state.email,
 					phoneNumber: this.state.phoneNumber,
@@ -119,8 +119,14 @@ class SignUp extends Component {
 					briefDescription: this.state.briefDescription,
 					galleryOfWork: this.state.uploadedImagesBase64
         }
-      }
-      })
+      
+      }, function(error) {
+        if (error) {
+          console.log("write failed")
+        } else {
+          console.log("write successful")
+        }
+      }) 
    
      // event.preventDefault();
       // alert(
@@ -369,14 +375,14 @@ class SignUp extends Component {
 }
 
 </div>
+
+        
+</form>     
 <div class="col-md-12 text-center">
  {/*To have the page reload after the submit button is pressed put the button inside the form div*/}
   <button class="btn btn-success" onClick={this.sendData}//type="submit"
   >Update Profile</button>
   </div>
-        
-</form>     
-
         </div>
        </div>
 
