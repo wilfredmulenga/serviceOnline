@@ -47,7 +47,7 @@ class Categories extends React.Component {
       let peopleArray = [];
 
       //var jobs = firebase.database().ref('Jobs/'+ value);
-      Firebase.database().ref('Jobs/'+ 'Carpenter').on('value',  (snapshot) => {
+      Firebase.database().ref('Jobs/'+ value).on('value',  (snapshot) => {
         JobsSnapshot = snapshot.val();
         var elements;
         var innerElements;
@@ -72,6 +72,7 @@ class Categories extends React.Component {
           listOfPeople:peopleArray
         })
        });
+       console.log(value)
     }
     
 
@@ -81,11 +82,10 @@ class Categories extends React.Component {
       <div className="row">
       <div>
       <ButtonGroup vertical>
-      <Button  color="primary" onClick={ ()=> this.handleClick(this.state.job) }>House Cleaner</Button>
-      <Button color="primary" onClick={() => this.handleClick("YardCleaners")}>Yard Cleaner</Button>
-      <Button color="primary" onClick={() => this.handleClick("HouseCleaner")}>Carpenter</Button>
-      <Button color="primary" onClick={() => this.handleClick("HouseCleaner")}>Plumber</Button>
-      <Button color="primary" onClick={() => this.handleClick("HouseCleaner")}>Painter</Button>
+      <Button  color="primary"  onClick={ ()=> this.handleClick("House Cleaner") }>House Cleaner</Button>
+      <Button color="primary" onClick={() => this.handleClick("Yard Cleaner")}>Yard Cleaner</Button>
+      <Button color="primary" onClick={() => this.handleClick("Carpenter")}>Carpenter</Button>
+     
       </ButtonGroup>
       
       </div>
