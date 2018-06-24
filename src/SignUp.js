@@ -41,7 +41,7 @@ class SignUp extends Component {
       email : '',
       city : '',
       briefDescription : '',
-      profession : 'Other',
+      profession : 'House Cleaner',
       //skills : [],
       //profilePicPreviewUrl is actually base64 of the image
       profilePicPreviewUrl : '',
@@ -99,7 +99,7 @@ class SignUp extends Component {
     //handle uploading an image for "Gallery Of Your Work"
     sendData() {
      //console.log(this.state.profession)
-      Firebase.database().ref('Jobs/'+this.state.profession+"/"+ "xxxx").set({
+      Firebase.database().ref('Jobs/'+this.state.profession+"/"+ userUID).set({
        
         profilepic : {
 					pic : this.state.profilePicPreviewUrl
