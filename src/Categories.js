@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
 import Navbar from './Navbar';
 import { ButtonGroup} from 'react-bootstrap';
 import Firebase from '../src/config/firebase';
@@ -32,7 +31,7 @@ class Categories extends React.Component {
   }
 
   var JobsSnapshot;
-
+  var newArray = []
   class Tables extends React.Component {
     constructor(props){
       super(props);
@@ -46,7 +45,7 @@ class Categories extends React.Component {
    
     handleClick = (value) => {
       let peopleArray = [];
-    
+
       //var jobs = firebase.database().ref('Jobs/'+ value);
       Firebase.database().ref('Jobs/'+ 'Carpenter').on('value',  (snapshot) => {
         JobsSnapshot = snapshot.val();
@@ -91,29 +90,31 @@ class Categories extends React.Component {
       
       </div>
      <div className="row">
-          {/* {
-            listOfPeople.forEach((elements,key) =>
-              //console.log(elements)
-               <div> {elements } </div>
-            
-          )
-        } */}
+         
          
         {
-          listOfPeople.forEach((element,i) => {<Card style={{width:200, margin:20}}  key={i}>
-          heloo
-            {/* <img src= {element["2"]["pic"]} alt={"profile pic"}/> */}
-          {/* Fullname: {element["0"]["firsName"]}           */}
-            {/* Location:  {element[2]} 
-          Profession: {element[3]} 
-          Rating: {element[4]} */}
-          {console.log(element["0"]["firsName"])}
-          {/* Wages: {element}  */}
-          </Card>
-         
+          listOfPeople.forEach((element,i)=>{
+            newArray.push(Object.values(element))
           })
-         
-        }
+          
+          }
+        
+{
+         newArray.map((element,i) => <div className="card" style={{width:200, margin:20}}  key={i}>
+
+             <img className="card-img-top" src= {element[2]["pic"]} alt={"profile pic"}/>
+         <h5 className="card-title">  {element[0]["firsName"]}</h5> 
+          <p className="card-text"> Profession: {element[1]["profession"]}   <br/>   
+            City:  {element[0]["city"]}     </p>
+           {/* {console.log(element)} */}
+          </div>
+          )
+          
+       }
+       { /*empty the array to avoid repetion of elements*/
+         newArray = []}
+
+      
        </div>
       </div>
 		</div>
