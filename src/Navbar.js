@@ -1,43 +1,39 @@
 import React from 'react';
 import {  Link } from 'react-router';
-import logo from './logo.svg';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import Modal from 'react-modal';
-import Firebase from '../src/config/firebase';
 
+const styles = {
+    color : "purple"
+  
+}
 class Navbar extends React.Component {
     constructor(props){
         super(props);
         this.state = ({
             loginStatus : false
         })
-        //this.handleClick = this.handleClick.bind(this)
+   
     }
 
-    // handleClick(){
-    //    this.setState({
-    //        loginStatus : true
-    //    })
-    // }
+
     render(title){
         return(
-    <div className="App container-fluid">
+    <div className="App">
        {/*Navbar section*/}
-   <div className="App-header">
-   <div className="row">
-   <img src={logo} className="App-logo" alt="logo" />
-   <h4><Link to="/">Home</Link></h4>
-   <h4><Link to="/about">About</Link></h4>
-   <h4><Link to="/categories">Categories</Link></h4>
-   <h4><Link to="/login" onClick={this.props.action} >Log In/Sign Up</Link></h4>
-   <h4><Link to="/signup">Profile</Link></h4>
-   <h4 className="App-intro">
-        This is the {title} page.
-      </h4>
+   <nav className="navbar navbar-expand-lg navbar-light bg-light">
+   <a class="navbar-brand" href="#">Project Name</a>
+   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-auto">
+   <li className="nav-item active mr-3" style={styles}><Link to="/">Home</Link></li>
+   <li className="nav-item active mr-3"><Link to="/categories">Categories</Link></li>
+   <li className="nav-item active mr-3"><Link to="/login" onClick={this.props.action} >Log In/Sign Up</Link></li>
+   <li className="nav-item active mr-3"><Link to="/signup">Profile</Link></li>
+ 
+  </ul>
   </div>
-  </div>
-        
+  </nav>      
     </div>
         )
     }
