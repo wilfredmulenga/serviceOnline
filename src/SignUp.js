@@ -378,14 +378,14 @@ class SignUp extends Component {
 }
 
 </div>
-
-        
-</form>     
 <div class="col-md-12 text-center">
  {/*To have the page reload after the submit button is pressed put the button inside the form div*/}
   <button class="btn btn-success" onClick={this.sendData}//type="submit"
   >Update Profile</button>
   </div>
+        
+</form>     
+
         </div>
        </div>
 

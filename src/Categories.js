@@ -4,6 +4,7 @@ import Navbar from './Navbar';
 import { ButtonGroup} from 'react-bootstrap';
 import Firebase from '../src/config/firebase';
 
+
 class Categories extends React.Component {
 
     render(){
@@ -30,11 +31,11 @@ class Categories extends React.Component {
       
     };
    
-  
+ 
    
     handleClick = (value) => {
       let peopleArray = [];
-        
+        console.log(value)
        
       //var jobs = firebase.database().ref('Jobs/'+ value);
       Firebase.database().ref('Jobs/'+ value).on('value',  (snapshot) => {
@@ -69,34 +70,120 @@ class Categories extends React.Component {
 	render(){
     const {listOfPeople} = this.state;
 		return <div className="row container-fluid justify-content-start mt-4">
-    <div className="card col-md-2 ml-3">
-      <div className="mt-3 justify-content-center text-center">
+    <div className="card col-md-2 ml-3 d-flex">
+      <div className="mt-3 justify-content-start text-center">
         <h5>BROWSE JOBS</h5>
         <hr/>
-      <div className="btn-group-vertical container-fluid">
-      {/* <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Dropdown
-    </button> */}
-      <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-        <a className="dropdown-item">House Help</a>
-      </div>
-      <button  type="button" class="btn btn-secondary" onClick={ ()=> this.handleClick("House Cleaner") }>House Cleaner</button>
-      <button  type="button" class="btn btn-secondary" onClick={() => this.handleClick("Yard Cleaner")}>Yard Cleaner</button>
-      <button  type="button" class="btn btn-secondary" onClick={() => this.handleClick("Carpenter")}>Carpenter</button>
-      {/* <button  type="button" class="btn btn-secondary" onClick={ ()=> this.handleClick("House Cleaner") }>Painter</button>
-      <button  type="button" class="btn btn-secondary" onClick={() => this.handleClick("Yard Cleaner")}>Mechanic</button>
-      <button  type="button" class="btn btn-secondary" onClick={() => this.handleClick("Carpenter")}>Hair-Dresser</button>
-      <button  type="button" class="btn btn-secondary" onClick={ ()=> this.handleClick("House Cleaner") }>House Cleaner</button>
-      <button  type="button" class="btn btn-secondary" onClick={() => this.handleClick("Yard Cleaner")}>Yard Cleaner</button>
-      <button  type="button" class="btn btn-secondary" onClick={() => this.handleClick("Carpenter")}>Carpenter</button>
-      <button  type="button" class="btn btn-secondary" onClick={ ()=> this.handleClick("House Cleaner") }>House Cleaner</button>
-      <button  type="button" class="btn btn-secondary" onClick={() => this.handleClick("Yard Cleaner")}>Yard Cleaner</button>
-      <button  type="button" class="btn btn-secondary" onClick={() => this.handleClick("Carpenter")}>Carpenter</button>
-      */}
-      </div>
-      </div>
+        </div>
+        {/* Personal Service */}
+     <div class="dropdown container-fluid mb-1 justify-content-start " >
+  <button class="btn btn-primary dropdown-toggle-split" type="button" id="dropdownMenuButton" 
+    style={{width:160}}
+     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Personal Service
+  </button>
+  <div className="dropdown-menu flex-grow-1"  aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item"   onClick={ () => this.handleClick("House Cleaner")} >Waiters & Waitresses</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Bartenders</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick} > Shop Assistants</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Security Guards</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Maid</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick} > Shop Assistants</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Gardeners</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick} > Babysitters</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Caretakers</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Travel Agent</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Retail-Estate Agent</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick} > Wedding Planner</a>
+  </div>
+</div>
+{/* Transportation */}
+<div class="dropdown container justify-content-start mb-1">
+  <button class="btn btn-primary dropdown-toggle-split" type="button" id="dropdownMenuButton" style={{width:160}}
+   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+    Transportation
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item"   onClick={ () => this.handleClick("House Cleaner")} >Drivers</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Deliverers</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Taxi-Drivers</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Bus-Drivers</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Maid</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Bus-Conductors</a>
+  </div>
+</div>
+  {/* Fashion */}
+
+ <div class="dropdown container justify-content-start mb-1">
+  <button class="btn btn-primary dropdown-toggle-split" type="button" id="dropdownMenuButton" style={{width:160}}
+   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+    Fashion
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item"   onClick={ () => this.handleClick("House Cleaner")} >Hairdressers</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Barber Men</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Makeup Artists</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick} > Models</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Maid</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Fashion Designers</a>
+  </div>
+</div>
+{/* IT */}
+<div class="dropdown container justify-content-start mb-1">
+  <button class="btn btn-primary dropdown-toggle-split" type="button" id="dropdownMenuButton" style={{width:160}}
+   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+    IT
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item"   onClick={ () => this.handleClick("House Cleaner")}>IT Technicians</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Front-End Developers</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Back-End Developers</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Web Designers</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Graphics Designers</a>
+    
+  </div>
+</div>
+{/* Entertainment */}
+<div class="dropdown container justify-content-start mb-1">
+  <button class="btn btn-primary dropdown-toggle-split" type="button" id="dropdownMenuButton" style={{width:160}}
+   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+    Entertainment
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item"   onClick={ () => this.handleClick("House Cleaner")} >Actors & Actresses</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > News Presenters</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > News Writers</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Reporters</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Bloggers</a>
+    <a class="dropdown-item"   onClick={ () => this.handleClick("House Cleaner")} >Script-Writers</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Producers</a>   
+  </div>
+</div>
+{/* Music */}
+<div class="dropdown container justify-content-start mb-1">
+  <button class="btn btn-primary dropdown-toggle-split" type="button" id="dropdownMenuButton" style={{width:160}}
+   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+    Music
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item"   onClick={ () => this.handleClick("House Cleaner")} >Singers</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Dancers</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Performers</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Rappers</a>  
+  </div>
+</div>
+{/* Art */}
+<div class="dropdown container justify-content-start mb-1">
+  <button class="btn btn-primary  dropdown-toggle-split" type="button" id="dropdownMenuButton"  style={{width:160}}
+   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Art
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item"   onClick={ () => this.handleClick("House Cleaner")} >Artists</a>
+  </div>
+</div>
     </div>
-    <div  className="card col center-align mr-3 ml-3" style={{textAlign:"center"}}>
+    <div  className="card col center-align mr-3 ml-3 " style={{textAlign:"center"}}>
         <div className="input-group mt-3 justify-content-center">
           <input type="text" className="form-control col-6"
            placeholder="I am looking to hire a..."/>
@@ -105,7 +192,7 @@ class Categories extends React.Component {
           type="button" >Go!</button>
           </span>
         </div>
-        <div className="row">
+        <div className="row pl-2 mt-4">
          
          
          {
@@ -116,16 +203,21 @@ class Categories extends React.Component {
            }
          
         {
-          newArray.map((element,i) => <div className="card" style={{width:200, margin:20}}  key={i}>
- 
-              <img className="card-img-top" src= {element[2]["pic"]} alt={"profile pic"}/>
-          <h5 className="card-title">  {element[0]["firsName"]}</h5> 
-           <p className="card-text"> Profession: {element[1]["profession"]}   <br/>   
-             Rating : {element[1]["rating"]} <br/>  
-             Status : {element[1]["status"]} <br/>
-             City:  {element[0]["city"]}     </p> 
-             <button>Reviews</button>
+          newArray.map((element,i) => <div className="card col-md-6 pt-3 pb-3">
+          <div className="row justify-content-start"   key={i}>
+            <div className="col-md-4  justify-content-start"><img className="card-img-top rounded-circle" src= {element[2]["pic"]}
+            style={{width:160,height:160}} alt={"profile pic"}/></div>
+            <div className="col-md-4  text-align-left">Name:<br/>
+                                   Rating:<br/>
+                                   Skills: <br/>
+                                   City: <br/>
+                                   Status: <br/>
+                                   <button>Reviews</button></div>
+            <div className="col-md-4 align-items-start"> 
+            <p>{element[0]["firstName"]}<br/>{element[1]["rating"]}<br/>Crafting<br/>{element[0]["city"]}<br/>Available<br/></p>
+                                    </div>         
             {console.log(element)}
+           </div>
            </div>
            )
            
@@ -135,6 +227,7 @@ class Categories extends React.Component {
  
        
         </div> 
+       
       </div>
      
 		</div>

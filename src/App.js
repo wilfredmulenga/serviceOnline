@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Router, browserHistory, Route } from 'react-router';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.js';
 import Categories from './Categories'
 import SignUp from './SignUp';
 import Home from './Home';
