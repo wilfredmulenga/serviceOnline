@@ -6,6 +6,7 @@ import 'bootstrap/dist/js/bootstrap.js';
 import Categories from './Categories'
 import SignUp from './SignUp';
 import Home from './Home';
+import IntegrationAutosuggest from './IntegrationAutosuggest'
 
 
 class App extends Component {
@@ -16,6 +17,7 @@ class App extends Component {
         <Route path="/categories" component={Categories}/>
         <Route path="/login" component={Home}/>
         <Route path="/signup" component={SignUp}/>
+        <Route path='/autocomplete' component = {IntegrationAutosuggest} />
       </Router>
     );
   }

@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import Navbar from './Navbar';
 import { ButtonGroup} from 'react-bootstrap';
 import Firebase from '../src/config/firebase';
-
+import IntegrationAutosuggest from './IntegrationAutosuggest'
 
 class Categories extends React.Component {
 
@@ -184,13 +184,18 @@ class Categories extends React.Component {
 </div>
     </div>
     <div  className="card col center-align mr-3 ml-3 " style={{textAlign:"center"}}>
-        <div className="input-group mt-3 justify-content-center">
-          <input type="text" className="form-control col-6"
-           placeholder="I am looking to hire a..."/>
+        <div className="input-group mt-3 row justify-content-center ">
+          {/* <input type="text" className="form-control col-6"
+           placeholder="I am looking to hire a..."/> */}
+          <div className="col-5">
+          <IntegrationAutosuggest/>
+          </div>
+          <div>
           <span className="input-group-btn">
             <button className="btn btn-default"
           type="button" >Go!</button>
           </span>
+          </div>
         </div>
         <div className="row pl-2 mt-4">
          
