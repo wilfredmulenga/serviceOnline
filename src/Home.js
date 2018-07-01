@@ -6,7 +6,14 @@ import Modal from 'react-modal';
 import Navbar from './Navbar';
 
 /*Modals*/
-// var loginStatus;
+var loginStatus;
+Firebase.auth().onAuthStateChanged(function(user){
+  if(user){
+    loginStatus = true;
+  }else{
+    loginStatus = false;
+  }
+})
 Modal.setAppElement("#root")
 
 const customStyles = {
@@ -25,6 +32,7 @@ const customStyles = {
 /*Pages*/
 
 var errorMessage;
+
 class Home extends React.Component {
   constructor() {
     super();
@@ -32,13 +40,14 @@ class Home extends React.Component {
     this.state = {
       modalIsOpen: false,
       signInModalIsOpen : false,
+      signOutModalIsOpen : false,
       //loginStatus: false,
       email : '',
       password : '',
       reenterPassword : '',
       passwordMisMatch : false,
       error : null,
-      loginStatus : null
+      
     };
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -47,13 +56,17 @@ class Home extends React.Component {
     this.handleInput = this.handleInput.bind(this);
     this.handleSignIn = this.handleSignIn.bind(this);
     this.closeSignInModal = this.closeSignInModal.bind(this)
-    this.handleLoginInStatus = this.handleLoginInStatus.bind(this)
-
+    this.handleSignOut = this.handleSignOut.bind(this)
+     
+    
   }
   
 
   openModal() {
-    this.setState({modalIsOpen: true});
+      if(loginStatus){this.setState({signOutModalIsOpen:true})}
+      else{
+        this.setState({modalIsOpen: true});
+      }
   }
 
   afterOpenModal() {
@@ -108,11 +121,11 @@ class Home extends React.Component {
     
   }
     
-
+ 
   handleSignIn(){ 
     Firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(function(user){
-     // browserHistory.push("/categories")
-      handleLoginInStatus()
+     loginStatus = true
+     browserHistory.push("/categories")
     })
     .catch(function(error) {
       // Handle Errors here.
@@ -125,13 +138,13 @@ class Home extends React.Component {
     this.setState({
       error : errorMessage
     })
-    console.log(this.state.loginStatus)
+   
   }
-  handleLoginInStatus (){
-      this.setState({
-        loginStatus:true
-      })
-    }
+
+  handleSignOut(){
+    Firebase.auth().signOut()
+    browserHistory.push("/")
+  }
 
   handleInput(event){
     
@@ -159,8 +172,9 @@ class Home extends React.Component {
    
     return <div>
         <div id="home">
-    <Navbar title="Home" action={this.openModal}/>
+    <Navbar title="Home" action={this.openModal} />
     {/* <SignUp Modal /> */}
+  
          <Modal
            isOpen={this.state.modalIsOpen}
            onAfterOpen={this.afterOpenModal}
@@ -228,7 +242,11 @@ class Home extends React.Component {
            </div>
            <div>Don't have an account? You can  <button color="secondary" onClick={this.closeSignInModal}>Sign Up</button></div>
            </div></Modal> 
-         
+           {/* Sign Out Modal */}
+         <Modal
+          isOpen = {this.state.signOutModalIsOpen}
+          style  = {customStyles}>
+         Sign Out ? <button onClick={this.handleSignOut}>Yes</button></Modal>
 
   <div>
    <img src={landingPage} //style={{width:"1520px"}}

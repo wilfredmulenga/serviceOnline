@@ -240,7 +240,7 @@ class SignUp extends Component {
     return(
      
       <div>
-        <Navbar title={"Navbar Page"}/>
+        <Navbar title={"Navbar Page"} loginStatus={userUID }/>
         {
          // this.state.signedIn ?  null   :  <SignIn loginStatus={this.state.signedIn}/>
         
@@ -354,7 +354,7 @@ class SignUp extends Component {
       this.fileInput = input;
     }} 
     class="custom-file-input" id="inputGroupFile04" required/>
-    <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+    <label class="custom-file-label" htmlFor="inputGroupFile04">Choose file</label>
   </div>
   <div class="input-group-append">
     <button //onClick={this.uploadHandler} 
