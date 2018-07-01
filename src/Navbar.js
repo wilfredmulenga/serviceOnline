@@ -30,8 +30,6 @@ class Navbar extends React.Component {
    <li className="nav-item active mr-3"><Link to="/categories">Categories</Link></li>
    <li className="nav-item active mr-3"><Link to="/login" onClick={this.props.action} >Log In/Sign Up</Link></li>
    <li className="nav-item active mr-3"><Link to="/signup">Profile</Link></li>
-   <li className="nav-item active mr-3"><Link to="/autocomplete">autocomplete</Link></li>
- 
   </ul>
   </div>
   </nav>      

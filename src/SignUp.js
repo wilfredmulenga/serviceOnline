@@ -1,6 +1,8 @@
+// This is the profile component
+
 import React, { Component } from 'react';
 import Navbar from './Navbar'
-import SignIn from './SignIn'
+//import SignIn from './SignIn'
 import Chip from '@material-ui/core/Chip';
 import greybackground from './greybackground.jpeg'
 import Firebase from '../src/config/firebase'
@@ -240,7 +242,7 @@ class SignUp extends Component {
       <div>
         <Navbar title={"Navbar Page"}/>
         {
-          this.state.signedIn ?  null   :  <SignIn loginStatus={this.state.signedIn}/>
+         // this.state.signedIn ?  null   :  <SignIn loginStatus={this.state.signedIn}/>
         
         }
         <div  className="container justify-content-center">
@@ -378,13 +380,14 @@ class SignUp extends Component {
 }
 
 </div>
+
+        
+</form>    
 <div class="col-md-12 text-center">
  {/*To have the page reload after the submit button is pressed put the button inside the form div*/}
   <button class="btn btn-success" onClick={this.sendData}//type="submit"
   >Update Profile</button>
-  </div>
-        
-</form>     
+  </div> 
 
         </div>
        </div>

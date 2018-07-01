@@ -5,8 +5,28 @@ import { ButtonGroup} from 'react-bootstrap';
 import Firebase from '../src/config/firebase';
 import IntegrationAutosuggest from './IntegrationAutosuggest'
 
-class Categories extends React.Component {
+import Modal from 'react-modal';
 
+Modal.setAppElement("#root")
+const customStyles = {
+  content : {
+    top                   : '70%',
+    left                  : '50%',
+    right                 : '50%',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)',
+    width : "90%"
+  }
+};
+
+class Categories extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        modalIsOpen: false,
+      }
+    }
     render(){
       return <div>
     
@@ -28,20 +48,28 @@ class Categories extends React.Component {
         job : ""
       }
       this.handleClick = this.handleClick.bind(this);
+      this.handleCardClick = this.handleCardClick.bind(this)
       
     };
+
+    handleCardClick = () => {
+      this.openModal()
+     
+    }
    
+    openModal() {
+      //open and close modal upon clicking
+      this.setState({modalIsOpen: !this.state.modalIsOpen});
+      console.log("hello world")
+    }
  
    
-    handleClick = (value) => {
+    handleClick = (values) => {
       let peopleArray = [];
-        console.log(value)
-       
-      //var jobs = firebase.database().ref('Jobs/'+ value);
-      Firebase.database().ref('Jobs/'+ value).on('value',  (snapshot) => {
+        //var jobs = firebase.database().ref('Jobs/'+ value);
+      Firebase.database().ref('Jobs/'+ values).on('value',  (snapshot) => {
         JobsSnapshot = snapshot.val();
         var elements;
-        var innerElements;
         for(let index in JobsSnapshot){
           elements = JobsSnapshot[index]
           peopleArray.push(Object.values(elements))  
@@ -63,7 +91,7 @@ class Categories extends React.Component {
           listOfPeople:peopleArray
         })
        });
-      //   console.log(value)
+         console.log(Firebase.database().ref().key)
     }
     
 
@@ -104,7 +132,7 @@ class Categories extends React.Component {
     Transportation
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item"   onClick={ () => this.handleClick("House Cleaner")} >Drivers</a>
+    <a class="dropdown-item"   onClick={ () => this.handleClick("Carpenter")} >Drivers</a>
     <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Deliverers</a>
     <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Taxi-Drivers</a>
     <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Bus-Drivers</a>
@@ -183,17 +211,18 @@ class Categories extends React.Component {
   </div>
 </div>
     </div>
-    <div  className="card col center-align mr-3 ml-3 " style={{textAlign:"center"}}>
+    <div  className="card col center-align mr-3 ml-3 " style={{textAlign:"center"}} >
         <div className="input-group mt-3 row justify-content-center ">
           {/* <input type="text" className="form-control col-6"
            placeholder="I am looking to hire a..."/> */}
           <div className="col-5">
-          <IntegrationAutosuggest/>
+          <IntegrationAutosuggest lol = {this.state.value} />
+          
           </div>
           <div>
           <span className="input-group-btn">
             <button className="btn btn-default"
-          type="button" >Go!</button>
+          type="button" onClick={() => this.handleClick("House Cleaner")} >Go!</button>
           </span>
           </div>
         </div>
@@ -208,20 +237,50 @@ class Categories extends React.Component {
            }
          
         {
-          newArray.map((element,i) => <div className="card col-md-6 pt-3 pb-3">
+          newArray.map((element,i) => <div className="card col-md-6 pt-3 pb-3"  onClick={this.handleCardClick}>
           <div className="row justify-content-start"   key={i}>
-            <div className="col-md-4  justify-content-start"><img className="card-img-top rounded-circle" src= {element[2]["pic"]}
+            <div className="col-md-4  justify-content-start">
+            <img className="card-img-top rounded-circle" src= {element[2]["pic"]}
             style={{width:160,height:160}} alt={"profile pic"}/></div>
             <div className="col-md-4  text-align-left">Name:<br/>
                                    Rating:<br/>
                                    Skills: <br/>
                                    City: <br/>
-                                   Status: <br/>
+                                   Status: {i} <br/>
                                    <button>Reviews</button></div>
             <div className="col-md-4 align-items-start"> 
             <p>{element[0]["firstName"]}<br/>{element[1]["rating"]}<br/>Crafting<br/>{element[0]["city"]}<br/>Available<br/></p>
                                     </div>         
             {console.log(element)}
+            
+            <Modal
+           isOpen={this.state.modalIsOpen}
+          //  onAfterOpen={this.afterOpenModal}
+          //  onRequestClose={this.closeModal}
+           style={customStyles}
+           contentLabel="Example Modal">
+           <div className="row">
+                <div className="col-md-6">
+                  <div className='row'>
+                        <img className="rounded-circle" src={element[2]['pic']}  style={{width:160,height:160}} alt={"profile pic"}/>
+                        <div className="col-md-6 ml-3">Name:{element[0]["firstName"]}<br/> Rating:<br/>Skills: <br/>City: <br/>Status: {i} <br/>
+                      </div>
+                      </div>
+                      <div>
+                      {/* Gallery of Work */}
+                      <h5 className='mt-4'>Gallery of Work</h5>
+                        {element[1]["galleryOfWork"].map((image,key) => <img className='img-thumbnail mr-2' src={image}/>)}
+                      </div>
+                      </div>
+                <div className="col-md-6">
+                      <h5 className='mt-4'>Reviews</h5>
+                        {/* Reviews */}
+              </div>
+            </div>
+            
+              
+              {/* somewhere I need to add a connect button to commence chatting */}
+         </Modal>
            </div>
            </div>
            )
@@ -234,6 +293,7 @@ class Categories extends React.Component {
         </div> 
        
       </div>
+      
      
 		</div>
   }

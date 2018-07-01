@@ -123,7 +123,7 @@ const styles = theme => ({
   container: {
     flexGrow: 1,
     position: 'relative',
-    height: 250,
+    height: 50,
   },
   suggestionsContainerOpen: {
     position: 'absolute',
@@ -142,11 +142,17 @@ const styles = theme => ({
   },
 });
 
+
+
 class IntegrationAutosuggest extends React.Component {
-  state = {
-    value: '',
-    suggestions: [],
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      value: '',
+      suggestions: [],
+    };
+  }
+  
 
   handleSuggestionsFetchRequested = ({ value }) => {
     this.setState({
@@ -164,7 +170,9 @@ class IntegrationAutosuggest extends React.Component {
     this.setState({
       value: newValue,
     });
+    
   };
+  
 
   render() {
     const { classes } = this.props;
@@ -190,9 +198,13 @@ class IntegrationAutosuggest extends React.Component {
           value: this.state.value,
           onChange: this.handleChange,
         }}
+        onClick ={this.props.lol}
       />
     );
   }
+}
+IntegrationAutosuggest.defaultProps = {
+  check : "nothing yet"
 }
 
 IntegrationAutosuggest.propTypes = {

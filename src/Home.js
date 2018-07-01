@@ -37,14 +37,17 @@ class Home extends React.Component {
       password : '',
       reenterPassword : '',
       passwordMisMatch : false,
-      error : null
-    };this.openModal = this.openModal.bind(this);
+      error : null,
+      loginStatus : null
+    };
+    this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleInput = this.handleInput.bind(this);
     this.handleSignIn = this.handleSignIn.bind(this);
     this.closeSignInModal = this.closeSignInModal.bind(this)
+    this.handleLoginInStatus = this.handleLoginInStatus.bind(this)
 
   }
   
@@ -65,7 +68,8 @@ class Home extends React.Component {
  
   closeSignInModal(){
     this.setState({
-      signInModalIsOpen : false
+      signInModalIsOpen : false,
+      modalIsOpen : true
     })
   }
 
@@ -79,6 +83,7 @@ class Home extends React.Component {
     Firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(function(user){
       console.log(user);
       browserHistory.push('/signup')
+      
       
     })
     .catch(function(error) {
@@ -102,12 +107,14 @@ class Home extends React.Component {
     
     
   }
+    
 
   handleSignIn(){ 
     Firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(function(user){
-      browserHistory.push("/categories")
-
-    }).catch(function(error) {
+     // browserHistory.push("/categories")
+      handleLoginInStatus()
+    })
+    .catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       //var errorMessage = error.message;
@@ -118,7 +125,13 @@ class Home extends React.Component {
     this.setState({
       error : errorMessage
     })
+    console.log(this.state.loginStatus)
   }
+  handleLoginInStatus (){
+      this.setState({
+        loginStatus:true
+      })
+    }
 
   handleInput(event){
     
@@ -147,7 +160,7 @@ class Home extends React.Component {
     return <div>
         <div id="home">
     <Navbar title="Home" action={this.openModal}/>
-    {/* <SignIn /> */}
+    {/* <SignUp Modal /> */}
          <Modal
            isOpen={this.state.modalIsOpen}
            onAfterOpen={this.afterOpenModal}
@@ -191,6 +204,7 @@ class Home extends React.Component {
            <div>If you already have an account, you can  <button color="secondary" onClick={this.closeModal}>Sign In</button></div>
            
          </Modal> 
+         {/* Sign In Modal */}
          <Modal 
          isOpen = {this.state.signInModalIsOpen}
          style  = {customStyles}>
@@ -212,6 +226,7 @@ class Home extends React.Component {
                     <div class= "md-3 align-right">
            <button type="submit" onClick={this.handleSignIn} >Sign In</button>
            </div>
+           <div>Don't have an account? You can  <button color="secondary" onClick={this.closeSignInModal}>Sign Up</button></div>
            </div></Modal> 
          
 
