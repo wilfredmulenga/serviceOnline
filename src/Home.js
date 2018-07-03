@@ -1,3 +1,8 @@
+//this page initially is supposed to hold just content that describes the project
+//however, having trouble using signing in and out modals so I added them to the 
+// "log in/sign up" link using props. so if the user clicks that link while on the home page
+//the "Sign Up" or "Sign In" modals will display. they can also sign out from this page if they are initially logged in
+
 import React from 'react';
 import {  browserHistory } from 'react-router';
 import Firebase from '../src/config/firebase';
@@ -7,6 +12,7 @@ import Navbar from './Navbar';
 
 /*Modals*/
 var loginStatus;
+var errorMessage;
 Firebase.auth().onAuthStateChanged(function(user){
   if(user){
     loginStatus = true;
@@ -31,7 +37,7 @@ const customStyles = {
 /*we can use default props to set the initial value of the jobs that load when the page opens*/
 /*Pages*/
 
-var errorMessage;
+
 
 class Home extends React.Component {
   constructor() {

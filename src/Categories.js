@@ -1,22 +1,31 @@
+//this has two components, categories which just houses the navbar and tables components
+//and the tables component which houses the body of the page such as the 'browse jobs'
+//tab on the left, the autocomplete search bar and where all the content is displayed when the user picks a 
+//certain profession/job
+
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Navbar from './Navbar';
 import { ButtonGroup} from 'react-bootstrap';
 import Firebase from '../src/config/firebase';
 import IntegrationAutosuggest from './IntegrationAutosuggest'
+import Messages from './Messages'
 
 import Modal from 'react-modal';
 
 Modal.setAppElement("#root")
 const customStyles = {
   content : {
-    top                   : '70%',
+    top                   : '50%',
     left                  : '50%',
     right                 : '50%',
     bottom                : 'auto',
     marginRight           : '-50%',
     transform             : 'translate(-50%, -50%)',
-    width : "90%"
+    width : "90%",
+    //to make the modal scrollable if it is bigger than than the page
+    height : "500px",
+    overflow: "scroll"
   }
 };
 
@@ -31,8 +40,8 @@ class Categories extends React.Component {
       return <div>
     
       <Navbar title="Categories"/>
-      
         <Tables/>
+       
       </div>
     }
   }
@@ -252,7 +261,7 @@ class Categories extends React.Component {
             <p>{element[0]["firstName"]}<br/>{element[1]["rating"]}<br/>Crafting<br/>{element[0]["city"]}<br/>Available<br/></p>
                                     </div>         
             {console.log(element)}
-            
+            {/* Modal when user clicks on a specific person */}
             <Modal
            isOpen={this.state.modalIsOpen}
           //  onAfterOpen={this.afterOpenModal}
@@ -263,7 +272,8 @@ class Categories extends React.Component {
                 <div className="col-md-6">
                   <div className='row'>
                         <img className="rounded-circle" src={element[2]['pic']}  style={{width:160,height:160}} alt={"profile pic"}/>
-                        <div className="col-md-6 ml-3">Name:{element[0]["firstName"]}<br/> Rating:<br/>Skills: <br/>City: <br/>Status: {i} <br/>
+                        <div className="col-md-6 ml-3">Name:{element[0]["firstName"]}<br/> 
+                        Rating:<br/>Skills: <br/>City: <br/>Status: <br/> <button>Connect</button>
                       </div>
                       </div>
                       <div>

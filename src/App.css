@@ -37,3 +37,8 @@ h4{
 .titles {
   margin-bottom: 40px
 }
+
+#leftBorder {
+  border-left: 3px solid black;
+  height : 100%
+}
