@@ -8,8 +8,9 @@ import Button from '@material-ui/core/Button';
 import Navbar from './Navbar';
 import { ButtonGroup} from 'react-bootstrap';
 import Firebase from '../src/config/firebase';
-import IntegrationAutosuggest from './IntegrationAutosuggest'
-import Messages from './Messages'
+import IntegrationAutosuggest from './IntegrationAutosuggest';
+import Messages from './Messages';
+
 
 import Modal from 'react-modal';
 
