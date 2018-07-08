@@ -91,6 +91,7 @@ class Messages extends React.Component {
        // var div = document.getElementById("messages");
        
        // console.log(text)
+       messageList.scrollTop = messageList.scrollHeight;
       }
 
       saveMessage = (messageText) => {
@@ -108,8 +109,10 @@ class Messages extends React.Component {
         this.messageInput = document.getElementById('messageInput');
           if(this.messageInput.value){
               this.saveMessage(this.messageInput.value)
+            this.messageInput.value = ''
           }
       }
+   
 
       getUserName = () => {
           //remember to give provision for user to set displayName when signing up
@@ -123,16 +126,16 @@ class Messages extends React.Component {
     render(){
         return<div>
              <Navbar title="Categories"/>
-             <div   className="container justify-content-center">
+             <div   className="container justify-content-center col-md-6">
                 <div className="card">
-                <div className="card-body">
-                <div  className="col-md-3"></div>
-                <div className="col-md-9">
+                <div className="card-body justify-content-center">
+                
+                <div className="">
                     <div id="messages"  class="message-form">
                        
                     </div>
-                    <div>
-                        <input type="text" id="messageInput"/><button onClick={this.messageSubmit}>SEND</button>
+                    <div class="messageInputContainer">
+                        <input class="messageInput" type="text" id="messageInput"/><button onClick={this.messageSubmit}>SEND</button>
                     </div>
                 </div>
                 </div>

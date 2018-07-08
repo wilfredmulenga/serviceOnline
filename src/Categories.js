@@ -9,6 +9,7 @@ import Navbar from './Navbar';
 import { ButtonGroup} from 'react-bootstrap';
 import Firebase from '../src/config/firebase';
 import IntegrationAutosuggest from './IntegrationAutosuggest';
+import SearchButton from './IntegrationAutosuggest';
 import Messages from './Messages';
 
 
@@ -101,7 +102,8 @@ class Categories extends React.Component {
           listOfPeople:peopleArray
         })
        });
-         console.log(Firebase.database().ref().key)
+     
+         console.log()
     }
     
 
@@ -226,13 +228,13 @@ class Categories extends React.Component {
           {/* <input type="text" className="form-control col-6"
            placeholder="I am looking to hire a..."/> */}
           <div className="col-5">
-          <IntegrationAutosuggest lol = {this.state.value} />
+          <IntegrationAutosuggest lol = {this.state.value} onClick={()=>this.handleClick(this.state.value)} />
           
           </div>
           <div>
           <span className="input-group-btn">
             <button className="btn btn-default"
-          type="button" onClick={() => this.handleClick("House Cleaner")} >Go!</button>
+          type="button" onClick={() => this.handleClick(this.state.value)} >Go!</button>
           </span>
           </div>
         </div>
@@ -257,7 +259,9 @@ class Categories extends React.Component {
                                    Skills: <br/>
                                    City: <br/>
                                    Status: {i} <br/>
-                                   <button>Reviews</button></div>
+                                   <button>View More</button>
+                                  
+                                   </div>
             <div className="col-md-4 align-items-start"> 
             <p>{element[0]["firstName"]}<br/>{element[1]["rating"]}<br/>Crafting<br/>{element[0]["city"]}<br/>Available<br/></p>
                                     </div>         
@@ -277,15 +281,18 @@ class Categories extends React.Component {
                         Rating:<br/>Skills: <br/>City: <br/>Status: <br/> <button>Connect</button>
                       </div>
                       </div>
-                      <div>
-                      {/* Gallery of Work */}
-                      <h5 className='mt-4'>Gallery of Work</h5>
-                        {element[1]["galleryOfWork"].map((image,key) => <img className='img-thumbnail mr-2' src={image}/>)}
-                      </div>
-                      </div>
-                <div className="col-md-6">
                       <h5 className='mt-4'>Reviews</h5>
                         {/* Reviews */}
+                      </div>
+                <div className="col-md-6">
+                      
+
+                        <div>
+                      {/* Gallery of Work */}
+                      <h5 className='mt-4'>Gallery of Work</h5>
+                        {element[1]["galleryOfWork"].map((image,key) =><div className="row mb-3"><div class="col-md-6">
+                         <img className='img-thumbnail mr-2' src={image}/></div><div>"captions of work"</div></div>)}
+                      </div>
               </div>
             </div>
             

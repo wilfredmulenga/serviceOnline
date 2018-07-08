@@ -178,6 +178,7 @@ class IntegrationAutosuggest extends React.Component {
     const { classes } = this.props;
 
     return (
+        <div className="row">
       <Autosuggest
         theme={{
           container: classes.container,
@@ -200,9 +201,20 @@ class IntegrationAutosuggest extends React.Component {
         }}
         onClick ={this.props.lol}
       />
+     
+      </div>
     );
   }
 }
+
+class  SearchButton extends React.Component {
+  render(){
+    return (
+      <button>Go Again</button>
+    )
+  }
+}
+
 IntegrationAutosuggest.defaultProps = {
   check : "nothing yet"
 }

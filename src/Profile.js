@@ -10,15 +10,22 @@ import Firebase from '../src/config/firebase'
 var userUID;
 Firebase.auth().onAuthStateChanged(function(user){
   if(user){
-    userUID = user.uid
+    userUID = user.uid;
     console.log(userUID)
+     Firebase.database().ref('Jobs/Carpenter').child(userUID).on('value',  (snapshot) => {
+     
+      console.log(snapshot.val())
+    })
+      
   }else{
     console.log("signed out")
   }
 })
 
+
+
 //Components
-class SignUp extends Component {
+class Profile extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -62,10 +69,20 @@ class SignUp extends Component {
     this.handleChangeImages = this.handleChangeImages.bind(this)
     this.handleChangeProfilePic = this.handleChangeProfilePic.bind(this)
     this.handleProfessionChange = this.handleProfessionChange.bind(this)
+    this.populateInputs = this.populateInputs.bind(this)
     //this.fileChangedHandler = this.fileChangedHandler(this)
     //this.uploadHandler = this.uploadHandler(this)
     //this.handleChange = this.handleChange.bind(this)
   }
+  //If user is already signed in. Populate inputs
+  populateInputs(){
+    if(userUID){
+        console.log(userUID)
+       
+    }
+  }
+
+
   //handle the deletion of a chip
   handleProfessionChange(event){
     this.setState({profession : event.target.value})
@@ -76,8 +93,8 @@ class SignUp extends Component {
   //  }
 
   handleDelete = data => () => {
-    if (data.label === 'React') {
-      alert('Why would you want to delete React?! :)'); // eslint-disable-line no-alert
+    if (data.label === 'nameOfChip') {
+      alert('Why would you want to delete specifc Chip?! :)'); // eslint-disable-line no-alert
       return;
     }
     const chipData = [...this.state.chipData];
@@ -400,4 +417,4 @@ class SignUp extends Component {
  
 }
 
-export default SignUp;
+export default Profile;
