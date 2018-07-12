@@ -4,6 +4,7 @@
 //certain profession/job
 
 import React from 'react';
+import { Router, browserHistory, Link } from 'react-router';
 import Button from '@material-ui/core/Button';
 import Navbar from './Navbar';
 import { ButtonGroup} from 'react-bootstrap';
@@ -288,7 +289,9 @@ class Categories extends React.Component {
                   <div className='row'>
                         <img className="rounded-circle" src={selectedPerson['pic']}  style={{width:160,height:160}} alt={"profile pic"}/>
                         <div className="col-md-6 ml-3">Name:{selectedPerson["firstName"]}<br/> 
-                        Rating:<br/>Skills: <br/>City: <br/>Status: <br/> <button>Connect</button>
+                        Rating:<br/>Skills: <br/>City: <br/>Status: <br/> 
+                        <Link to={{pathname: "/messages", state : { selecedPersonUserID : selectedPerson['userID']}}}  > <button>Connect</button></Link>
+                       
                       </div>
                       </div>
                       <h5 className='mt-4'>Reviews</h5>

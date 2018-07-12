@@ -5,6 +5,7 @@ import Firebase from '../src/config/firebase';
 
 
 const newFile = require('./config/deploy')
+
 const customStyles = {
     content : {
         width : "200px",
@@ -36,10 +37,13 @@ class Messages extends React.Component {
         this.messageSubmit = this.messageSubmit.bind(this);
     }
     componentWillMount(){
-        this.LoadMessages()
-        // console.log(newFile.ENV)
+        //this.LoadMessages()
+         console.log('componentWIllMount')
     }
-
+    componentDidMount(){
+        const { selecedPersonUserID } = this.props.location.state;
+        console.log(selecedPersonUserID, 'componentDidMount')
+    }
     LoadMessages = () => {
         var setMessage = function(snap) {
             var data = snap.val();
