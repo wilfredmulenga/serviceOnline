@@ -14,7 +14,7 @@ const suggestions = [
   { label: 'Waiters & Waitresses' },
   { label: 'Bartenders' },
   { label: 'Shop Assistants' },
-  { label: 'Maids' },
+  { label: 'House Cleaner' },
   { label: 'Gardeners' },
   { label: 'Babysitter' },
   { label: 'Caretakers' },

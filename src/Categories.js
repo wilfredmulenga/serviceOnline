@@ -77,26 +77,22 @@ class Categories extends React.Component {
    
     handleClick = (values) => {
       let peopleArray = [];
+      console.log(values.length)
+
         //var jobs = firebase.database().ref('Jobs/'+ value);
-      Firebase.database().ref('Jobs/'+ values).on('value',  (snapshot) => {
+      Firebase.database().ref('Users/').orderByChild('profession').equalTo(values).on('value',  (snapshot) => {
         JobsSnapshot = snapshot.val();
+        console.log(JobsSnapshot)
         var elements;
+        //React doesnt accept objects in states so it has to be converted into an array
         for(let index in JobsSnapshot){
           elements = JobsSnapshot[index]
-          peopleArray.push(Object.values(elements))  
-          // for(let index2 in elements){
-          //   innerElements = elements[index2]
-          //   peopleArray.push(Object.values(innerElements))  
-          // }
-          
-          // console.log(innerElements)
+          peopleArray.push(elements)  
+        
         }
       
-        //console.log(peopleArray)
-        // JobsSnapshot.forEach((elements, key) => {
-        //   peopleArray.push(Object.values(elements))  
-        //   //console.log(elements)
-        // });
+        console.log(peopleArray)
+      
       
         this.setState({
           listOfPeople:peopleArray
@@ -127,7 +123,7 @@ class Categories extends React.Component {
     <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Bartenders</a>
     <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick} > Shop Assistants</a>
     <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Security Guards</a>
-    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Maid</a>
+    <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick("House Cleaner")}  > House Cleaners</a>
     <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick} > Shop Assistants</a>
     <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick}  > Gardeners</a>
     <a class="dropdown-item" value={"action"} onClick={ () => this.handleClick} > Babysitters</a>
@@ -222,37 +218,43 @@ class Categories extends React.Component {
     <a class="dropdown-item"   onClick={ () => this.handleClick("House Cleaner")} >Artists</a>
   </div>
 </div>
-    </div>
+    </div>  
     <div  className="card col center-align mr-3 ml-3 " style={{textAlign:"center"}} >
         <div className="input-group mt-3 row justify-content-center ">
           {/* <input type="text" className="form-control col-6"
            placeholder="I am looking to hire a..."/> */}
           <div className="col-5">
-          <IntegrationAutosuggest lol = {this.state.value} onClick={()=>this.handleClick(this.state.value)} />
+          <IntegrationAutosuggest lol = {this.state.value} onClick={()=>alert(this.state.value)} />
           
           </div>
           <div>
           <span className="input-group-btn">
             <button className="btn btn-default"
-          type="button" onClick={() => this.handleClick(this.state.value)} >Go!</button>
+          type="button" onClick={() =>
+           {
+            var value = document.getElementsByClassName('MuiInput-input-17')['0']['value'];
+            console.log(value);
+            this.handleClick(value)
+           }
+          } >Go!</button>
           </span>
           </div>
         </div>
         <div className="row pl-2 mt-4">
          
          
-         {
+         {/* {
            listOfPeople.forEach((element,i)=>{
              newArray.push(Object.values(element))
            })
            
-           }
+           } */}
          
         {
-          newArray.map((element,i) => <div className="card col-md-6 pt-3 pb-3"  onClick={this.handleCardClick}>
+          listOfPeople.map((element,i) => <div className="card col-md-6 pt-3 pb-3 "  onClick={this.handleCardClick}>
           <div className="row justify-content-start"   key={i}>
             <div className="col-md-4  justify-content-start">
-            <img className="card-img-top rounded-circle" src= {element[2]["pic"]}
+            <img className="card-img-top rounded-circle" src= {element["pic"]}
             style={{width:160,height:160}} alt={"profile pic"}/></div>
             <div className="col-md-4  text-align-left">Name:<br/>
                                    Rating:<br/>
@@ -260,11 +262,11 @@ class Categories extends React.Component {
                                    City: <br/>
                                    Status: {i} <br/>
                                    <button>View More</button>
-                                  
+                                  {console.log(i)}
                                    </div>
             <div className="col-md-4 align-items-start"> 
-            <p>{element[0]["firstName"]}<br/>{element[1]["rating"]}<br/>Crafting<br/>{element[0]["city"]}<br/>Available<br/></p>
-                                    </div>         
+            <p>{element["firstName"]}<br/>{element["rating"]}<br/>Crafting<br/>{element["city"]}<br/>Available<br/></p>
+                                    </div   >         
             {console.log(element)}
             {/* Modal when user clicks on a specific person */}
             <Modal
@@ -276,8 +278,8 @@ class Categories extends React.Component {
            <div className="row">
                 <div className="col-md-6">
                   <div className='row'>
-                        <img className="rounded-circle" src={element[2]['pic']}  style={{width:160,height:160}} alt={"profile pic"}/>
-                        <div className="col-md-6 ml-3">Name:{element[0]["firstName"]}<br/> 
+                        <img className="rounded-circle" src={element['pic']}  style={{width:160,height:160}} alt={"profile pic"}/>
+                        <div className="col-md-6 ml-3">Name:{element["firstName"]}<br/> 
                         Rating:<br/>Skills: <br/>City: <br/>Status: <br/> <button>Connect</button>
                       </div>
                       </div>
@@ -290,7 +292,7 @@ class Categories extends React.Component {
                         <div>
                       {/* Gallery of Work */}
                       <h5 className='mt-4'>Gallery of Work</h5>
-                        {element[1]["galleryOfWork"].map((image,key) =><div className="row mb-3"><div class="col-md-6">
+                        {element["galleryOfWork"].map((image,key) =><div className="row mb-3"><div class="col-md-6">
                          <img className='img-thumbnail mr-2' src={image}/></div><div>"captions of work"</div></div>)}
                       </div>
               </div>
@@ -304,8 +306,7 @@ class Categories extends React.Component {
            )
            
         }
-        { /*empty the array to avoid repetion of elements*/
-          newArray = []}
+     
  
        
         </div> 

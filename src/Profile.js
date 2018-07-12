@@ -14,7 +14,7 @@ Firebase.auth().onAuthStateChanged(function(user){
     console.log(userUID)
      Firebase.database().ref('Jobs/Carpenter').child(userUID).on('value',  (snapshot) => {
      
-      console.log(snapshot.val())
+      // console.log(snapshot.val())
     })
       
   }else{
@@ -121,26 +121,19 @@ class Profile extends Component {
     //handle uploading an image for "Gallery Of Your Work"
     sendData() {
      //console.log(this.state.profession)
-      Firebase.database().ref('Jobs/'+this.state.profession+"/"+ userUID).set({
-       
-        profilepic : {
-					pic : this.state.profilePicPreviewUrl
-				},
-				personalInformation:{
-					firstName:this.state.firstName,
+      Firebase.database().ref('Users/'+ userUID).set({
+					pic : this.state.profilePicPreviewUrl,
+	  			firstName:this.state.firstName,
 					lastName: this.state.lastName,
 					email: this.state.email,
 					phoneNumber: this.state.phoneNumber,
 					city: this.state.city,
 					age: this.state.age,
-					nrc:this.state.nrc
-				},
-				professionalInformation:{
+					nrc:this.state.nrc,
 					profession: this.state.profession,
 					skills: this.state.chipData,
 					briefDescription: this.state.briefDescription,
-					galleryOfWork: this.state.uploadedImagesBase64
-        }
+					galleryOfWork: this.state.uploadedImagesBase64,
       
       }, function(error) {
         if (error) {
