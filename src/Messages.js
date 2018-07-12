@@ -3,6 +3,10 @@ import React from 'react';
 import Navbar from './Navbar';
 import Firebase from '../src/config/firebase';
 
+
+
+var selecedPersonUserID = '';
+var userUID;
 const customStyles = {
     content : {
         width : "200px",
@@ -16,6 +20,7 @@ const customStyles = {
 
 Firebase.auth().onAuthStateChanged(function(user){
     if(user){
+        userUID = user.uid;
       console.log("signed in")
       
     }else{
@@ -33,22 +38,22 @@ class Messages extends React.Component {
 
         this.messageSubmit = this.messageSubmit.bind(this);
     }
+    
     componentWillMount(){
-        //this.LoadMessages()
-         console.log('componentWIllMount')
+        //this.LoadMessages() 
+        (this.props.location.state) ? selecedPersonUserID = this.props.location.state['selecedPersonUserID'] : null;        console.log('componentWIllMount')
     }
     componentDidMount(){
-        const { selecedPersonUserID } = this.props.location.state;
-        console.log(selecedPersonUserID, 'componentDidMount')
+        this.LoadMessages()
+        console.log('component did mount')
     }
     LoadMessages = () => {
         var setMessage = function(snap) {
             var data = snap.val();
             this.displayMessage(snap.key, data.name, data.text, data.profilePicUrl, data.imageUrl);
           }.bind(this);
-          Firebase.database().ref('messages/').limitToLast(12).on('child_added', setMessage);
-          Firebase.database().ref('messages/').limitToLast(12).on('child_added', setMessage);
-         
+          Firebase.database().ref('messages/'+userUID).limitToLast(12).on('child_added', setMessage);
+          Firebase.database().ref('messages/'+userUID).limitToLast(12).on('child_added', setMessage);
       }
       
     
@@ -97,7 +102,7 @@ class Messages extends React.Component {
 
       saveMessage = (messageText) => {
         // Add a new message entry to the Firebase Database.
-         Firebase.database().ref('/messages/').push({
+         Firebase.database().ref('/messages/'+userUID+selecedPersonUserID).push({
           name: this.getUserName(),
           text: messageText,
           profilePicUrl: this.getProfilePicUrl()
