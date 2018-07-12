@@ -1,0 +1,57 @@
+# enable ES6
+
+parser: babel-eslint
+
+# register plugins
+plugins:
+  - react
+  - prettier
+  
+
+# use the rules of eslint-config-airbnb
+extends:
+  - airbnb/base
+  - plugin:react/recommended
+
+
+rules:
+  # overwrite some rules  
+  semi: 'error'
+  no-unexpected-multiline: 2
+  no-throw-literal: 0
+  no-underscore-dangle: 0
+  import/no-named-as-default: 0
+  no-nested-ternary: 0
+  new-cap: 0
+  
+  import/no-extraneous-dependencies: off
+  react/require-extension: off
+  import/extensions:
+    - off
+    - never
+  import/prefer-default-export: ['off']
+  react/jsx-uses-vars: 1
+  consistent-return: off #turn off the function return type error
+  one-var: [error, never]
+  class-methods-use-this: ['error', {
+      exceptMethods: [
+        render,
+        getInitialState,
+        getDefaultProps,
+        getChildContext,
+        componentWillMount,
+        componentDidMount,
+        componentWillReceiveProps,
+        shouldComponentUpdate,
+        componentWillUpdate,
+        componentDidUpdate,
+        componentWillUnmount,
+      ],
+    }]
+  no-unused-expressions: ["error", { allowShortCircuit: true, allowTernary: true }]
+
+globals:
+  # collections
+  it: false
+  expect: false
+  jest: false

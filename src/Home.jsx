@@ -10,6 +10,9 @@ import landingPage from './landingPage.jpeg';
 import Modal from 'react-modal';
 import Navbar from './Navbar';
 
+
+
+
 /*Modals*/
 var loginStatus;
 var errorMessage;
@@ -208,8 +211,7 @@ class Home extends React.Component {
                     
                    {
                      (this.state.passwordMisMatch) ?  <p style={{color:"red"}}
-                     >passwords did not match</p> : null
-                    
+                     >passwords did not match</p> : null 
                    }
                     {
                        (this.state.error) ? <p style={{color:"red"}}>{this.state.error}</p>: null
