@@ -3,13 +3,11 @@
 
 import React, { Component } from 'react';
 import { Router, browserHistory, Route } from 'react-router';
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.js';
-import Categories from './Categories';
-import Profile from './Profile';
-import Home from './Home';
-import Messages from './Messages';
+import './styles/App.css';
+import Categories from './components/Categories';
+import Profile from './Accounts/Profile';
+import Home from './components/Home';
+import Messages from './Messages/Messages';
 
 class App extends Component {
   render() {

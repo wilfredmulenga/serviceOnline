@@ -1,7 +1,7 @@
 // Overlay component to where people chat
 import React from 'react';
-import Navbar from './Navbar';
-import Firebase from '../src/config/firebase';
+import Navbar from '../components/Navbar';
+import Firebase from '../config/firebase';
 
 let selecedPersonUserID = '';
 let userUID;

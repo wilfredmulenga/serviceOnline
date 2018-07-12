@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import Firebase from './config/firebase';
+import Firebase from '../config/firebase';
 
 const styles = {
   color: 'purple',
@@ -39,8 +39,7 @@ class Navbar extends React.Component {
             data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent"
             aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
+            aria-label="Toggle navigation">
             <span className="navbar-toggler-icon" />
           </button>
           <div className="collapse navbar-collapse">

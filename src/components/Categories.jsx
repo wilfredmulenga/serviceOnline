@@ -4,14 +4,10 @@
 // certain profession/job
 
 import React from 'react';
-import { Router, browserHistory, Link } from 'react-router';
-import Button from '@material-ui/core/Button';
+import { Link } from 'react-router';
 import Navbar from './Navbar';
-import { ButtonGroup } from 'react-bootstrap';
-import Firebase from '../src/config/firebase';
-import IntegrationAutosuggest from './IntegrationAutosuggest';
-import SearchButton from './IntegrationAutosuggest';
-import Messages from './Messages';
+import Firebase from '../config/firebase';
+import IntegrationAutosuggest from '../IntegrationAutosuggest';
 
 import Modal from 'react-modal';
 
@@ -122,8 +118,7 @@ class Tables extends React.Component {
               style={{ width: 160 }}
               data-toggle="dropdown"
               aria-haspopup="true"
-              aria-expanded="false"
-            >
+              aria-expanded="false">
               Personal Service
             </button>
             <div className="dropdown-menu flex-grow-1" aria-labelledby="dropdownMenuButton">
@@ -145,8 +140,7 @@ class Tables extends React.Component {
               <a
                 className="dropdown-item"
                 value={'action'}
-                onClick={() => this.handleClick('House Cleaner')}
-              >
+                onClick={() => this.handleClick('House Cleaner')}>
                 {' '}
                 House Cleaners
               </a>
@@ -189,8 +183,7 @@ class Tables extends React.Component {
               style={{ width: 160 }}
               data-toggle="dropdown"
               aria-haspopup="true"
-              aria-expanded="false"
-            >
+              aria-expanded="false">
               Transportation
             </button>
             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -229,8 +222,7 @@ class Tables extends React.Component {
               style={{ width: 160 }}
               data-toggle="dropdown"
               aria-haspopup="true"
-              aria-expanded="false"
-            >
+              aria-expanded="false">
               Fashion
             </button>
             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -268,8 +260,7 @@ class Tables extends React.Component {
               style={{ width: 160 }}
               data-toggle="dropdown"
               aria-haspopup="true"
-              aria-expanded="false"
-            >
+              aria-expanded="false">
               IT
             </button>
             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -303,8 +294,7 @@ class Tables extends React.Component {
               style={{ width: 160 }}
               data-toggle="dropdown"
               aria-haspopup="true"
-              aria-expanded="false"
-            >
+              aria-expanded="false">
               Entertainment
             </button>
             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -345,8 +335,7 @@ class Tables extends React.Component {
               style={{ width: 160 }}
               data-toggle="dropdown"
               aria-haspopup="true"
-              aria-expanded="false"
-            >
+              aria-expanded="false">
               Music
             </button>
             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -376,8 +365,7 @@ class Tables extends React.Component {
               style={{ width: 160 }}
               data-toggle="dropdown"
               aria-haspopup="true"
-              aria-expanded="false"
-            >
+              aria-expanded="false">
               Art
             </button>
             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -406,8 +394,7 @@ class Tables extends React.Component {
                     const value = document.getElementsByClassName('MuiInput-input-17')['0'].value;
 
                     this.handleClick(value);
-                  }}
-                >
+                  }}>
                   Go!
                 </button>
               </span>
@@ -457,8 +444,7 @@ class Tables extends React.Component {
                   <Modal
                     isOpen={this.state.modalIsOpen}
                     style={customStyles}
-                    contentLabel="Example Modal"
-                  >
+                    contentLabel="Example Modal">
                     <div className="row">
                       <div className="col-md-6">
                         <div className="row">
@@ -476,8 +462,7 @@ class Tables extends React.Component {
                               to={{
                                 pathname: '/messages',
                                 state: { selecedPersonUserID: selectedPerson.userID },
-                              }}
-                            >
+                              }}>
                               {' '}
                               <button>Connect</button>
                             </Link>

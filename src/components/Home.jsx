@@ -5,9 +5,9 @@
 
 import React from 'react';
 import { browserHistory } from 'react-router';
-import Firebase from '../src/config/firebase';
-import landingPage from './landingPage.jpeg';
 import Modal from 'react-modal';
+import Firebase from '../config/firebase';
+import landingPage from '../images/landingPage.jpeg';
 import Navbar from './Navbar';
 
 /* Modals */

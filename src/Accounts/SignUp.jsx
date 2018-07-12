@@ -1,30 +1,24 @@
-// This is the profile component
-
 import React, { Component } from 'react';
-import Navbar from './Navbar';
-// import SignIn from './SignIn'
+import Navbar from '../Navbar';
+import SignIn from './SignIn';
+
 import Chip from '@material-ui/core/Chip';
-import greybackground from './greybackground.jpeg';
+import greybackground from '../greybackground.jpeg';
 import Firebase from '../src/config/firebase';
 // Firebase
 let userUID;
+
 Firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     userUID = user.uid;
     console.log(userUID);
-    Firebase.database()
-      .ref('Jobs/Carpenter')
-      .child(userUID)
-      .on('value', (snapshot) => {
-        // console.log(snapshot.val())
-      });
   } else {
     console.log('signed out');
   }
 });
 
 // Components
-class Profile extends Component {
+class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -63,18 +57,10 @@ class Profile extends Component {
     this.handleChangeImages = this.handleChangeImages.bind(this);
     this.handleChangeProfilePic = this.handleChangeProfilePic.bind(this);
     this.handleProfessionChange = this.handleProfessionChange.bind(this);
-    this.populateInputs = this.populateInputs.bind(this);
     // this.fileChangedHandler = this.fileChangedHandler(this)
     // this.uploadHandler = this.uploadHandler(this)
     // this.handleChange = this.handleChange.bind(this)
   }
-  // If user is already signed in. Populate inputs
-  populateInputs() {
-    if (userUID) {
-      console.log(userUID);
-    }
-  }
-
   // handle the deletion of a chip
   handleProfessionChange(event) {
     this.setState({ profession: event.target.value });
@@ -84,8 +70,8 @@ class Profile extends Component {
   //  }
 
   handleDelete = data => () => {
-    if (data.label === 'nameOfChip') {
-      alert('Why would you want to delete specifc Chip?! :)'); // eslint-disable-line no-alert
+    if (data.label === 'React') {
+      alert('Why would you want to delete React?! :)'); // eslint-disable-line no-alert
       return;
     }
     const chipData = [...this.state.chipData];
@@ -112,21 +98,27 @@ class Profile extends Component {
   sendData() {
     // console.log(this.state.profession)
     Firebase.database()
-      .ref(`Users/${userUID}`)
+      .ref(`Jobs/${this.state.profession}/${userUID}`)
       .set(
         {
-          pic: this.state.profilePicPreviewUrl,
-          firstName: this.state.firstName,
-          lastName: this.state.lastName,
-          email: this.state.email,
-          phoneNumber: this.state.phoneNumber,
-          city: this.state.city,
-          age: this.state.age,
-          nrc: this.state.nrc,
-          profession: this.state.profession,
-          skills: this.state.chipData,
-          briefDescription: this.state.briefDescription,
-          galleryOfWork: this.state.uploadedImagesBase64,
+          profilepic: {
+            pic: this.state.profilePicPreviewUrl,
+          },
+          personalInformation: {
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            email: this.state.email,
+            phoneNumber: this.state.phoneNumber,
+            city: this.state.city,
+            age: this.state.age,
+            nrc: this.state.nrc,
+          },
+          professionalInformation: {
+            profession: this.state.profession,
+            skills: this.state.chipData,
+            briefDescription: this.state.briefDescription,
+            galleryOfWork: this.state.uploadedImagesBase64,
+          },
         },
         (error) => {
           if (error) {
@@ -238,10 +230,8 @@ class Profile extends Component {
     }
     return (
       <div>
-        <Navbar title={'Navbar Page'} loginStatus={userUID} />
-        {
-          // this.state.signedIn ?  null   :  <SignIn loginStatus={this.state.signedIn}/>
-        }
+        <Navbar title={'Navbar Page'} />
+        {this.state.signedIn ? null : <SignIn loginStatus={this.state.signedIn} />}
         <div className="container justify-content-center">
           <div className="card">
             <div className="card-body">
@@ -454,4 +444,4 @@ class Profile extends Component {
   }
 }
 
-export default Profile;
+export default SignUp;
