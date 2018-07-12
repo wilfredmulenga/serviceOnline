@@ -13,3 +13,5 @@ var config = {
   var Firebase = firebase;
 
   export default Firebase;
+
+  

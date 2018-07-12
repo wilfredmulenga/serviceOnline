@@ -1,21 +1,36 @@
 import React from 'react';
 import {  Link } from 'react-router';
+import Firebase from './config/firebase';
 
 const styles = {
     color : "purple"
   
 }
+var loginStatus = "Log In/Sign Up"
+
+
 class Navbar extends React.Component {
     constructor(props){
         super(props);
         this.state = ({
             loginStatus : false
         })
-   
+        
     }
+    componentWillMount(){
+        Firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+              
+              loginStatus = "Signed In";
+            } else {
+                loginStatus = "Log In/Sign Up";
+            }
+        })
+    }
+ 
 
-
-    render(title){
+    render(){
+       
         return(
     <div className="App">
        {/*Navbar section*/}
@@ -28,12 +43,14 @@ class Navbar extends React.Component {
     <ul class="navbar-nav mr-auto">
    <li className="nav-item active mr-3" style={styles}><Link to="/">Home</Link></li>
    <li className="nav-item active mr-3"><Link to="/categories">Categories</Link></li>
-   <li className="nav-item active mr-3"><Link to="/login" onClick={this.props.action} >Log In/Sign Up</Link></li>
-   <li className="nav-item active mr-3"><Link to="/signup">Profile</Link></li>
- 
+   <li className="nav-item active mr-3"><Link to="/login" onClick={this.props.action} >{loginStatus} </Link></li>
+   <li className="nav-item active mr-3"><Link to="/profile">Profile</Link></li>
+   <li className="nav-item active mr-3"><Link to="/messages">Messages</Link></li>
+   
   </ul>
   </div>
-  </nav>      
+  </nav>    
+
     </div>
         )
     }

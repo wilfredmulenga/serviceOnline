@@ -1,3 +1,8 @@
+//this page initially is supposed to hold just content that describes the project
+//however, having trouble using signing in and out modals so I added them to the 
+// "log in/sign up" link using props. so if the user clicks that link while on the home page
+//the "Sign Up" or "Sign In" modals will display. they can also sign out from this page if they are initially logged in
+
 import React from 'react';
 import {  browserHistory } from 'react-router';
 import Firebase from '../src/config/firebase';
@@ -6,7 +11,15 @@ import Modal from 'react-modal';
 import Navbar from './Navbar';
 
 /*Modals*/
-// var loginStatus;
+var loginStatus;
+var errorMessage;
+Firebase.auth().onAuthStateChanged(function(user){
+  if(user){
+    loginStatus = true;
+  }else{
+    loginStatus = false;
+  }
+})
 Modal.setAppElement("#root")
 
 const customStyles = {
@@ -24,7 +37,8 @@ const customStyles = {
 /*we can use default props to set the initial value of the jobs that load when the page opens*/
 /*Pages*/
 
-var errorMessage;
+
+
 class Home extends React.Component {
   constructor() {
     super();
@@ -32,25 +46,33 @@ class Home extends React.Component {
     this.state = {
       modalIsOpen: false,
       signInModalIsOpen : false,
+      signOutModalIsOpen : false,
       //loginStatus: false,
       email : '',
       password : '',
       reenterPassword : '',
       passwordMisMatch : false,
-      error : null
-    };this.openModal = this.openModal.bind(this);
+      error : null,
+      
+    };
+    this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleInput = this.handleInput.bind(this);
     this.handleSignIn = this.handleSignIn.bind(this);
     this.closeSignInModal = this.closeSignInModal.bind(this)
-
+    this.handleSignOut = this.handleSignOut.bind(this)
+     
+    
   }
   
 
   openModal() {
-    this.setState({modalIsOpen: true});
+      if(loginStatus){this.setState({signOutModalIsOpen:true})}
+      else{
+        this.setState({modalIsOpen: true});
+      }
   }
 
   afterOpenModal() {
@@ -65,7 +87,8 @@ class Home extends React.Component {
  
   closeSignInModal(){
     this.setState({
-      signInModalIsOpen : false
+      signInModalIsOpen : false,
+      modalIsOpen : true
     })
   }
 
@@ -79,6 +102,7 @@ class Home extends React.Component {
     Firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(function(user){
       console.log(user);
       browserHistory.push('/signup')
+      
       
     })
     .catch(function(error) {
@@ -102,12 +126,14 @@ class Home extends React.Component {
     
     
   }
-
+    
+ 
   handleSignIn(){ 
     Firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(function(user){
-      browserHistory.push("/categories")
-
-    }).catch(function(error) {
+     loginStatus = true
+     browserHistory.push("/categories")
+    })
+    .catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       //var errorMessage = error.message;
@@ -118,6 +144,12 @@ class Home extends React.Component {
     this.setState({
       error : errorMessage
     })
+   
+  }
+
+  handleSignOut(){
+    Firebase.auth().signOut()
+    browserHistory.push("/")
   }
 
   handleInput(event){
@@ -146,8 +178,9 @@ class Home extends React.Component {
    
     return <div>
         <div id="home">
-    <Navbar title="Home" action={this.openModal}/>
-    {/* <SignIn /> */}
+    <Navbar title="Home" action={this.openModal} />
+    {/* <SignUp Modal /> */}
+  
          <Modal
            isOpen={this.state.modalIsOpen}
            onAfterOpen={this.afterOpenModal}
@@ -191,6 +224,7 @@ class Home extends React.Component {
            <div>If you already have an account, you can  <button color="secondary" onClick={this.closeModal}>Sign In</button></div>
            
          </Modal> 
+         {/* Sign In Modal */}
          <Modal 
          isOpen = {this.state.signInModalIsOpen}
          style  = {customStyles}>
@@ -212,8 +246,13 @@ class Home extends React.Component {
                     <div class= "md-3 align-right">
            <button type="submit" onClick={this.handleSignIn} >Sign In</button>
            </div>
+           <div>Don't have an account? You can  <button color="secondary" onClick={this.closeSignInModal}>Sign Up</button></div>
            </div></Modal> 
-         
+           {/* Sign Out Modal */}
+         <Modal
+          isOpen = {this.state.signOutModalIsOpen}
+          style  = {customStyles}>
+         Sign Out ? <button onClick={this.handleSignOut}>Yes</button></Modal>
 
   <div>
    <img src={landingPage} //style={{width:"1520px"}}
