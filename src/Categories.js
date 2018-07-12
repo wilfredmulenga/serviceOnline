@@ -56,14 +56,21 @@ class Categories extends React.Component {
       super(props);
       this.state = {
         listOfPeople: [],
-        job : ""
+        job : "",
+        selectedPerson : []
       }
       this.handleClick = this.handleClick.bind(this);
       this.handleCardClick = this.handleCardClick.bind(this)
       
     };
 
-    handleCardClick = () => {
+    handleCardClick = (selecedPersonUserID) => {
+      for(let item in this.state.listOfPeople){
+        (selecedPersonUserID == this.state.listOfPeople[item]['userID']) ? this.setState({
+          selectedPerson : this.state.listOfPeople[item]
+        }) : null
+        console.log(this.state.listOfPeople[0]['userID'])
+      }
       this.openModal()
      
     }
@@ -71,13 +78,13 @@ class Categories extends React.Component {
     openModal() {
       //open and close modal upon clicking
       this.setState({modalIsOpen: !this.state.modalIsOpen});
-      console.log("hello world")
+  
     }
  
    
     handleClick = (values) => {
       let peopleArray = [];
-      console.log(values.length)
+    
 
         //var jobs = firebase.database().ref('Jobs/'+ value);
       Firebase.database().ref('Users/').orderByChild('profession').equalTo(values).on('value',  (snapshot) => {
@@ -91,20 +98,19 @@ class Categories extends React.Component {
         
         }
       
-        console.log(peopleArray)
+       
       
       
         this.setState({
           listOfPeople:peopleArray
         })
        });
-     
-         console.log()
     }
     
 
 	render(){
     const {listOfPeople} = this.state;
+    const {selectedPerson} = this.state;
 		return <div className="row container-fluid justify-content-start mt-4">
     <div className="card col-md-2 ml-3 d-flex">
       <div className="mt-3 justify-content-start text-center">
@@ -233,7 +239,7 @@ class Categories extends React.Component {
           type="button" onClick={() =>
            {
             var value = document.getElementsByClassName('MuiInput-input-17')['0']['value'];
-            console.log(value);
+          
             this.handleClick(value)
            }
           } >Go!</button>
@@ -251,8 +257,8 @@ class Categories extends React.Component {
            } */}
          
         {
-          listOfPeople.map((element,i) => <div className="card col-md-6 pt-3 pb-3 "  onClick={this.handleCardClick}>
-          <div className="row justify-content-start"   key={i}>
+          listOfPeople.map((element,i) => <div className="card col-md-6 pt-3 pb-3 "key={i}e>
+          <div className="row justify-content-start"   >
             <div className="col-md-4  justify-content-start">
             <img className="card-img-top rounded-circle" src= {element["pic"]}
             style={{width:160,height:160}} alt={"profile pic"}/></div>
@@ -261,45 +267,47 @@ class Categories extends React.Component {
                                    Skills: <br/>
                                    City: <br/>
                                    Status: {i} <br/>
-                                   <button>View More</button>
-                                  {console.log(i)}
+                                   <button onClick={()=>this.handleCardClick(element['userID'])}>View More</button>
+                            
                                    </div>
             <div className="col-md-4 align-items-start"> 
             <p>{element["firstName"]}<br/>{element["rating"]}<br/>Crafting<br/>{element["city"]}<br/>Available<br/></p>
                                     </div   >         
-            {console.log(element)}
+         
+            {  
+              console.log(selectedPerson)}
             {/* Modal when user clicks on a specific person */}
+
             <Modal
            isOpen={this.state.modalIsOpen}
-          //  onAfterOpen={this.afterOpenModal}
-          //  onRequestClose={this.closeModal}
+      
            style={customStyles}
            contentLabel="Example Modal">
            <div className="row">
                 <div className="col-md-6">
                   <div className='row'>
-                        <img className="rounded-circle" src={element['pic']}  style={{width:160,height:160}} alt={"profile pic"}/>
-                        <div className="col-md-6 ml-3">Name:{element["firstName"]}<br/> 
+                        <img className="rounded-circle" src={selectedPerson['pic']}  style={{width:160,height:160}} alt={"profile pic"}/>
+                        <div className="col-md-6 ml-3">Name:{selectedPerson["firstName"]}<br/> 
                         Rating:<br/>Skills: <br/>City: <br/>Status: <br/> <button>Connect</button>
                       </div>
                       </div>
                       <h5 className='mt-4'>Reviews</h5>
-                        {/* Reviews */}
+                      
                       </div>
                 <div className="col-md-6">
                       
 
                         <div>
-                      {/* Gallery of Work */}
+                   
                       <h5 className='mt-4'>Gallery of Work</h5>
-                        {element["galleryOfWork"].map((image,key) =><div className="row mb-3"><div class="col-md-6">
+                        {element["galleryOfWork"].map((image,key) =><div className="row mb-3" key={i}><div class="col-md-6">
                          <img className='img-thumbnail mr-2' src={image}/></div><div>"captions of work"</div></div>)}
                       </div>
               </div>
             </div>
             
               
-              {/* somewhere I need to add a connect button to commence chatting */}
+             
          </Modal>
            </div>
            </div>
