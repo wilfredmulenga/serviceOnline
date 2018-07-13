@@ -8,7 +8,12 @@ const styles = {
 }
 var loginStatus = "Log In/Sign Up"
 
-
+var userUID;
+Firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+        userUID = user
+    } 
+})
 class Navbar extends React.Component {
     constructor(props){
         super(props);
@@ -18,16 +23,15 @@ class Navbar extends React.Component {
         
     }
     componentWillMount(){
-        Firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-              
-              loginStatus = "Signed In";
-            } else {
-                loginStatus = "Log In/Sign Up";
-            }
-        })
+       
     }
- 
+    componentDidMount(){
+        if (userUID) { 
+            loginStatus = "Signed In";
+          } else {
+              loginStatus = "Log In/Sign Up";
+          }
+    }
 
     render(){
        
@@ -43,7 +47,7 @@ class Navbar extends React.Component {
     <ul class="navbar-nav mr-auto">
    <li className="nav-item active mr-3" style={styles}><Link to="/">Home</Link></li>
    <li className="nav-item active mr-3"><Link to="/categories">Categories</Link></li>
-   <li className="nav-item active mr-3"><Link to="/login" onClick={this.props.action} >{loginStatus} </Link></li>
+   <li className="nav-item active mr-3"><Link to="/login" onClick={this.props.action} >{(userUID)? "Signed In" : "Log In/Sign Up"} </Link></li>
    <li className="nav-item active mr-3"><Link to="/profile">Profile</Link></li>
    <li className="nav-item active mr-3"><Link to="/messages">Messages</Link></li>
    

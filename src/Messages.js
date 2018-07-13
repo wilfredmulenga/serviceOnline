@@ -41,7 +41,7 @@ class Messages extends React.Component {
     
     componentWillMount(){
         //this.LoadMessages() 
-        (this.props.location.state['selecedPersonUserID']) ? selecedPersonUserID = this.props.location.state['selecedPersonUserID'] : null;
+        (this.props.location.state) ? selecedPersonUserID = this.props.location.state['selecedPersonUserID'] : null;
         console.log('componentWIllMount')
     }
     componentDidMount(){
@@ -53,8 +53,8 @@ class Messages extends React.Component {
             var data = snap.val();
             this.displayMessage(snap.key, data.name, data.text, data.profilePicUrl, data.imageUrl);
           }.bind(this);
-          Firebase.database().ref('messages/'+userUID+selecedPersonUserID).limitToLast(12).on('child_added', setMessage);
-          Firebase.database().ref('messages/'+userUID+selecedPersonUserID).limitToLast(12).on('child_added', setMessage);
+          Firebase.database().ref('messages/'+userUID).limitToLast(12).on('child_added', setMessage);
+          Firebase.database().ref('messages/'+userUID).limitToLast(12).on('child_added', setMessage);
          
       }
       
@@ -104,7 +104,7 @@ class Messages extends React.Component {
 
       saveMessage = (messageText) => {
         // Add a new message entry to the Firebase Database.
-         Firebase.database().ref('/messages/'+userUID+selecedPersonUserID).push({
+         Firebase.database().ref('/messages/'+selecedPersonUserID).push({
           name: this.getUserName(),
           text: messageText,
           profilePicUrl: this.getProfilePicUrl()
