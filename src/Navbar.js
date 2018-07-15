@@ -9,11 +9,7 @@ const styles = {
 var loginStatus = "Log In/Sign Up"
 
 var userUID;
-Firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-        userUID = user
-    }
-})
+
 class Navbar extends React.Component {
     constructor(props) {
         super(props);

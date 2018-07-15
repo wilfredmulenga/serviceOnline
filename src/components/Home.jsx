@@ -17,14 +17,6 @@ import Navbar from './Navbar';
 /* Modals */
 let loginStatus;
 let errorMessage;
-Firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    loginStatus = true;
-  } else {
-    loginStatus = false;
-  }
-});
-Modal.setAppElement('#root');
 
 const customStyles = {
   content: {
@@ -37,6 +29,10 @@ const customStyles = {
     width: 500,
   },
 };
+
+Modal.setAppElement('#root');
+
+
 
 /* we can use default props to set the initial value of the jobs that load when the page opens */
 /* Pages */
