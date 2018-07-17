@@ -329,9 +329,7 @@ class Home extends React.Component {
             <div className="row">
               <div className="col-6">
                 <h3>About</h3>
-                <p>Fixer or Fixer App is an online platform that links people to electricians, mechanics, maids, carpenters and plumbers. We call them, Fixers, that is, people who can fix things or handymen. The idea of Fixer was first made known to the public in November 2014 at Startup Weekend Lusaka. <br /><br />The original team members at that event were Jacob Mutale, Mumamba Mwansa, and Zipani Sinkala.
-                 Fixer App Zambia Limited was registered as a private company limited by shares in September 2015. Currently, we are working to scale up our operations to ensure we provide high quality services to our vendors and customers.
-              </p>
+
               </div>
               <div className="col-6">
                 <img style={{ width: 500, heigh: 300 }} src={serviceImage} />

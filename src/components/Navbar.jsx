@@ -4,7 +4,7 @@ import Firebase from '../config/firebase';
 import Modal from 'react-modal';
 import Button from '@material-ui/core/Button';
 
-
+/*global FB*/
 const customStyles = {
   content: {
     top: '50%',
@@ -16,6 +16,29 @@ const customStyles = {
     width: 500,
   },
 };
+
+var provider = new Firebase.auth.FacebookAuthProvider();
+// window.fbAsyncInit = function () {
+//   FB.init({
+//     appId: '1377461352398910',
+//     cookie: true,
+//     xfbml: true,
+//     version: '3.0'
+//   });
+
+//   FB.AppEvents.logPageView();
+
+// };
+
+// (function (d, s, id) {
+//   var js, fjs = d.getElementsByTagName(s)[0];
+//   if (d.getElementById(id)) { return; }
+//   js = d.createElement(s); js.id = id;
+//   js.src = "https://connect.facebook.net/en_US/sdk.js";
+//   fjs.parentNode.insertBefore(js, fjs);
+// }(document, 'script', 'facebook-jssdk'));
+
+
 
 let errorMessage;
 let loginStatus;
@@ -44,8 +67,55 @@ class Navbar extends React.Component {
     this.handleSignIn = this.handleSignIn.bind(this);
     this.closeSignInModal = this.closeSignInModal.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
+    this.handleFacebookLogin = this.handleFacebookLogin.bind(this);
 
   }
+
+  handleFacebookLogin() {
+
+    Firebase.auth().signInWithPopup(provider).then(function (result) {
+      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+      var token = result.credential.accessToken;
+      // The signed-in user info.
+      var user = result.user;
+      console.log(user)
+      console.log(token)
+      // ...
+    }).catch(function (error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+
+      var errorMessage = error.message;
+      console.log(errorMessage)
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // ...
+    });
+  }
+
+  //   componentWillMount() {
+  //     window.fbAsyncInit = function () {
+  //       FB.init({
+  //         appId: '1377461352398910',
+  //         cookie: true,
+  //         xfbml: true,
+  //         version: 'v3.0'
+  //       });
+
+  //       FB.AppEvents.logPageView();
+
+  //     };
+
+  //     (function (d, s, id) {
+  //   var js, fjs = d.getElementsByTagName(s)[0];
+  //   if (d.getElementById(id)) { return; }
+  //   js = d.createElement(s); js.id = id;
+  //   js.src = "https://connect.facebook.net/en_US/sdk.js";
+  //   fjs.parentNode.insertBefore(js, fjs);
+  // }(document, 'script', 'facebook-jssdk'));
+  //   }
 
   openSignUpModal() {
     if (loginStatus) {
@@ -174,7 +244,7 @@ class Navbar extends React.Component {
         {/* Navbar section */}
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <Link to="/"><a className="navbar-brand">
-            Fixer
+            Project Name
           </a></Link>
           <button
             className="navbar-toggler"
@@ -302,7 +372,7 @@ class Navbar extends React.Component {
               {this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : null}
             </form>
             <div className="row d-flex justify-content-center mt-4 mb-5">
-              <Button variant='contained' color='primary' type="submit" onClick={this.handleSignIn}>
+              <Button variant='contained' color='primary' type="submit" onClick={this.handleFacebookLogin}>
                 Sign In
                 </Button>
             </div>
