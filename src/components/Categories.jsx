@@ -78,6 +78,10 @@ class Tables extends React.Component {
     const peopleArray = [];
 
     // var jobs = firebase.database().ref('Jobs/'+ value);
+    //when user first visits categories section, they should see search results already
+    //this can be of popular professionals or a random section. for now i will set it to house cleaners
+    (values) ? values : 'House Cleaner'
+    console.log(values)
     Firebase.database()
       .ref('Users/')
       .orderByChild('profession')
@@ -240,10 +244,7 @@ class Tables extends React.Component {
                 {' '}
                 Models
               </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Maid
-              </a>
+
               <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
                 {' '}
                 Fashion Designers
@@ -458,12 +459,13 @@ class Tables extends React.Component {
                             <br />
                             Rating:<br />Skills: <br />City: <br />Status: <br />
                             <Link
-                              to={{
-                                pathname: '/messages',
-                                state: { selecedPersonUserID: selectedPerson.userID },
-                              }}>
+                            // to={{
+                            //   pathname: '/messages',
+                            //   state: { selecedPersonUserID: selectedPerson.userID },
+                            // }}
+                            >
                               {' '}
-                              <button>Connect</button>
+                              <a href='https://www.facebook.com/Snippets-1057471074393268/'><button >Connect</button></a>
                             </Link>
                           </div>
                         </div>
@@ -472,14 +474,14 @@ class Tables extends React.Component {
                       <div className="col-md-6">
                         <div>
                           <h5 className="mt-4">Gallery of Work</h5>
-                          {element.galleryOfWork.map((image, key) => (
+                          {/* {element.galleryOfWork.map((image, key) => (
                             <div className="row mb-3" key={i}>
                               <div className="col-md-6">
                                 <img className="img-thumbnail mr-2" src={image} />
                               </div>
                               <div>"captions of work"</div>
                             </div>
-                          ))}
+                          ))} */}
                         </div>
                       </div>
                     </div>

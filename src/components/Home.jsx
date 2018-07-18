@@ -8,19 +8,15 @@ import { browserHistory } from 'react-router';
 import Modal from 'react-modal';
 import Firebase from '../config/firebase';
 import landingPage from '../images/landingPage.jpeg';
+import workingIcon from '../images/icons8-work-light-100.png'
+import handIcon from '../images/icons8-handshake-100.png'
+import workerIcon from '../images/icons8-workers-100.png'
+import serviceImage from '../images/pexels-photo-580613.jpeg'
 import Navbar from './Navbar';
 
 /* Modals */
 let loginStatus;
 let errorMessage;
-Firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    loginStatus = true;
-  } else {
-    loginStatus = false;
-  }
-});
-Modal.setAppElement('#root');
 
 const customStyles = {
   content: {
@@ -33,6 +29,10 @@ const customStyles = {
     width: 500,
   },
 };
+
+Modal.setAppElement('#root');
+
+
 
 /* we can use default props to set the initial value of the jobs that load when the page opens */
 /* Pages */
@@ -108,10 +108,10 @@ class Home extends React.Component {
             console.log(errorCode, errorMessage);
             // ...
           }) &&
-          // cant setState within the catch function so I did it outside
-          this.setState({
-            error: errorMessage,
-          })
+        // cant setState within the catch function so I did it outside
+        this.setState({
+          error: errorMessage,
+        })
         : this.setState({
           passwordMisMatch: true,
         });
@@ -275,47 +275,69 @@ class Home extends React.Component {
               alt="landing page"
             />
           </div>
-          {/* How it Works section */}
-          <div style={{ textAlign: 'center' }}>
-            <h3 className="titles">How It Works</h3>
-            <div className="row  justify-content-center">
-              <div className="card col-3 mr-4 ">
-                <h5 className="card-title mt-3">I want to get hired</h5>
-                <p className="card-text">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                  officia deserunt mollit anim id est laborum
+          <div className="container">
+            {/* How it Works section */}
+            <div className="mt-5 flex mb-5" style={{ textAlign: 'center' }}>
+              <h3 className="titles">How It Works</h3>
+              <div className="row d-flex justify-content-between">
+                <div className="col-4">
+                  <img src={workingIcon} />
+                  <div className="card mt-3">
+                    <h5 className="card-title mt-3">I want to get hired</h5>
+                    <p className="card-text">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                      irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                      officia deserunt mollit anim id est laborum
                 </p>
+                  </div>
+                </div>
+                <div className=" col-4 ">
+                  <img src={workerIcon} />
+                  <div className='card mt-3'>
+                    <h5 className="card-title mt-3">I want to hire someone</h5>
+                    <p className="card-text">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                      irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                      officia deserunt mollit anim id est laborum.
+                </p>
+                  </div>
+                </div>
+
+                <div className="col-4">
+                  <img src={handIcon} />
+                  <div className="card mt-3">
+                    <h5 className="card-title mt-3">I want to be a Partner</h5>
+                    <p className="card-text">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                      irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                      officia deserunt mollit anim id est laborum.
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div className="card col-3 mr-4">
-                <h5 className="card-title mt-3">I want to hire someone</h5>
-                <p className="card-text">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                  officia deserunt mollit anim id est laborum.
-                </p>
+            </div>
+            {/* About */}
+            <div className="row">
+              <div className="col-6">
+                <h3>About</h3>
+
               </div>
-              <div className="card col-3 mr-4">
-                <h5 className="card-title mt-3">I want to be a Partner</h5>
-                <p className="card-text">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                  officia deserunt mollit anim id est laborum.
-                </p>
+              <div className="col-6">
+                <img style={{ width: 500, heigh: 300 }} src={serviceImage} />
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </div >
     );
   }
 }
