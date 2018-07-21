@@ -43,7 +43,7 @@ const suggestions = [
   { label: 'Dancers' },
   { label: 'Rappers' },
   { label: 'Artists' },
-  
+
 ];
 
 function renderInput(inputProps) {
@@ -76,10 +76,10 @@ function renderSuggestion(suggestion, { query, isHighlighted }) {
               {part.text}
             </span>
           ) : (
-            <strong key={String(index)} style={{ fontWeight: 500 }}>
-              {part.text}
-            </strong>
-          );
+              <strong key={String(index)} style={{ fontWeight: 500 }}>
+                {part.text}
+              </strong>
+            );
         })}
       </div>
     </MenuItem>
@@ -108,15 +108,15 @@ function getSuggestions(value) {
   return inputLength === 0
     ? []
     : suggestions.filter(suggestion => {
-        const keep =
-          count < 5 && suggestion.label.toLowerCase().slice(0, inputLength) === inputValue;
+      const keep =
+        count < 5 && suggestion.label.toLowerCase().slice(0, inputLength) === inputValue;
 
-        if (keep) {
-          count += 1;
-        }
+      if (keep) {
+        count += 1;
+      }
 
-        return keep;
-      });
+      return keep;
+    });
 }
 
 const styles = theme => ({
@@ -145,14 +145,14 @@ const styles = theme => ({
 
 
 class IntegrationAutosuggest extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       value: '',
       suggestions: [],
     };
   }
-  
+
 
   handleSuggestionsFetchRequested = ({ value }) => {
     this.setState({
@@ -170,53 +170,47 @@ class IntegrationAutosuggest extends React.Component {
     this.setState({
       value: newValue,
     });
-    
+
   };
-  
+
 
   render() {
     const { classes } = this.props;
 
     return (
-        <div className="row">
-      <Autosuggest
-        theme={{
-          container: classes.container,
-          suggestionsContainerOpen: classes.suggestionsContainerOpen,
-          suggestionsList: classes.suggestionsList,
-          suggestion: classes.suggestion,
-        }}
-        renderInputComponent={renderInput}
-        suggestions={this.state.suggestions}
-        onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
-        onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
-        renderSuggestionsContainer={renderSuggestionsContainer}
-        getSuggestionValue={getSuggestionValue}
-        renderSuggestion={renderSuggestion}
-        inputProps={{
-          classes,
-          placeholder: 'I am looking to hire ...',
-          value: this.state.value,
-          onChange: this.handleChange,
-        }}
-        onClick ={this.props.lol}
-      />
-     
+      <div className="row">
+        <Autosuggest
+          theme={{
+            container: classes.container,
+            suggestionsContainerOpen: classes.suggestionsContainerOpen,
+            suggestionsList: classes.suggestionsList,
+            suggestion: classes.suggestion,
+          }}
+          renderInputComponent={renderInput}
+          suggestions={this.state.suggestions}
+          onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
+          onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
+          renderSuggestionsContainer={renderSuggestionsContainer}
+          getSuggestionValue={getSuggestionValue}
+          renderSuggestion={renderSuggestion}
+          inputProps={{
+            classes,
+            placeholder: 'I am looking to hire ...',
+            value: this.state.value,
+            onChange: this.handleChange,
+          }}
+          onClick={this.props.lol}
+        />
+
       </div>
     );
   }
 }
 
-class  SearchButton extends React.Component {
-  render(){
-    return (
-      <button>Go Again</button>
-    )
-  }
-}
+
 
 IntegrationAutosuggest.defaultProps = {
-  check : "nothing yet"
+  check: "nothing yet"
 }
 
 IntegrationAutosuggest.propTypes = {

@@ -135,7 +135,7 @@ class Profile extends Component {
             console.log('write successful');
           }
         },
-      );
+    );
 
     // event.preventDefault();
     // alert(
@@ -350,11 +350,11 @@ class Profile extends Component {
                       id="professionSelect"
                       onChange={this.handleProfessionChange}>
                       <option value={'House Cleaner'}>House Cleaner</option>
-                      <option value={'Yard Cleaner'}>Yard Cleaner</option>
+                      {/* <option value={'Yard Cleaner'}>Yard Cleaner</option>
                       <option value={'Carpenter'}>Carpenter</option>
                       <option value={'Plumber'}>Plumber</option>
                       <option value={'Painter'}>Painter</option>
-                      <option value={'Other'}>Other</option>
+                      <option value={'Other'}>Other</option> */}
                     </select>
                     {/* <input type="text" value={this.state.profession} onChange={this.handleChangeInput}
                  class="form-control mb-3" placeholder="Profession" /> */}

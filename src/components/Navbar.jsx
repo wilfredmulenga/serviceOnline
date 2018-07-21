@@ -17,6 +17,17 @@ const customStyles = {
   },
 };
 
+// Firebase.auth().onAuthStateChanged(function (user) {
+//   if (user) {
+//     userUID = 'Logged In';
+//     loginStatus = true;
+//   } else {
+//     userUID = 'Log In/Sign Up';
+//     loginStatus = false;
+//     Navbar.openSignInModal
+//   }
+// })
+
 var provider = new Firebase.auth.FacebookAuthProvider();
 // window.fbAsyncInit = function () {
 //   FB.init({
@@ -41,8 +52,8 @@ var provider = new Firebase.auth.FacebookAuthProvider();
 
 
 let errorMessage;
-let loginStatus;
-var userUID = 'Logged In';
+let loginStatus = false;
+var userUID = 'Log In/ Sign Up';
 Modal.setAppElement('#root');
 class Navbar extends React.Component {
   constructor(props) {
@@ -118,14 +129,12 @@ class Navbar extends React.Component {
   //   }
 
   openSignUpModal() {
-    if (loginStatus) {
-      this.setState({ signOutModalIsOpen: true });
-    } else {
-      this.setState({
-        signUpModalIsOpen: true,
-        signInModalIsOpen: false,
-      });
-    }
+
+    this.setState({
+      signUpModalIsOpen: true,
+      signInModalIsOpen: false,
+    });
+
   }
 
   afterOpenModal() {
@@ -146,10 +155,14 @@ class Navbar extends React.Component {
   }
 
   openSignInModal() {
-    this.setState({
-      signInModalIsOpen: true,
-      signUpModalIsOpen: false,
-    })
+    if (loginStatus) {
+      this.setState({ signOutModalIsOpen: true });
+    } else {
+      this.setState({
+        signInModalIsOpen: true,
+        signUpModalIsOpen: false,
+      })
+    }
   }
 
   handleSignUp() {
@@ -204,7 +217,7 @@ class Navbar extends React.Component {
 
   handleSignOut() {
     Firebase.auth().signOut();
-    // browserHistory.push('/');
+    browserHistory.push('/');
   }
 
   handleInput(event) {
@@ -222,6 +235,13 @@ class Navbar extends React.Component {
         reenterPassword: event.target.value,
         passwordMisMatch: false,
       });
+    }
+  }
+
+  componentWillMount() {
+    console.log('component will mount')
+    if (!loginStatus) {
+      this.openSignInModal
     }
   }
 
@@ -372,7 +392,7 @@ class Navbar extends React.Component {
               {this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : null}
             </form>
             <div className="row d-flex justify-content-center mt-4 mb-5">
-              <Button variant='contained' color='primary' type="submit" onClick={this.handleFacebookLogin}>
+              <Button variant='contained' color='primary' type="submit" onClick={this.handleSignIn}>
                 Sign In
                 </Button>
             </div>

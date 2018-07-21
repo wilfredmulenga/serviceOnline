@@ -58,9 +58,9 @@ class Tables extends React.Component {
     this.handleCardClick = this.handleCardClick.bind(this);
   }
 
-  handleCardClick = (selecedPersonUserID) => {
+  handleCardClick = (selectedPersonUserID) => {
     for (const item in this.state.listOfPeople) {
-      selecedPersonUserID == this.state.listOfPeople[item].userID
+      selectedPersonUserID == this.state.listOfPeople[item].userID
         ? this.setState({
           selectedPerson: this.state.listOfPeople[item],
         })
@@ -91,17 +91,26 @@ class Tables extends React.Component {
         JobsSnapshot = snapshot.val();
         console.log(JobsSnapshot);
         let elements;
-        // React doesnt accept objects in states so it has to be converted into an array
-        for (const index in JobsSnapshot) {
-          elements = JobsSnapshot[index];
-          peopleArray.push(elements);
+        if (JobsSnapshot == null) {
+          this.setState({ listOfPeople: ['empty'] })
+          console.log(this.state.listOfPeople)
+        } else {
+          // React doesnt accept objects in states so it has to be converted into an array
+          for (const index in JobsSnapshot) {
+            elements = JobsSnapshot[index];
+            peopleArray.push(elements);
+          }
+          this.setState({
+            listOfPeople: peopleArray,
+          });
         }
-
-        this.setState({
-          listOfPeople: peopleArray,
-        });
       });
+
   };
+
+  componentWillMount() {
+    // this.handleClick('House Cleaner')
+  }
 
   render() {
     const { listOfPeople } = this.state;
@@ -190,7 +199,7 @@ class Tables extends React.Component {
               aria-expanded="false">
               Transportation
             </button>
-            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div className="dropdown-menu disabled" aria-labelledby="dropdownMenuButton">
               <a className="dropdown-item" onClick={() => this.handleClick('Carpenter')}>
                 Drivers
               </a>
@@ -409,7 +418,7 @@ class Tables extends React.Component {
 
            } */}
 
-            {listOfPeople.map((element, i) => (
+            {(listOfPeople != ["empty"]) ? listOfPeople.map((element, i) => (
               <div className="card col-md-6 pt-3 pb-3 " key={i} e>
                 <div className="row justify-content-start">
                   <div className="col-md-4  justify-content-start">
@@ -460,13 +469,12 @@ class Tables extends React.Component {
                             <br />
                             Rating:<br />Skills: <br />City: <br />Status: <br />
                             <Link
-                            // to={{
-                            //   pathname: '/messages',
-                            //   state: { selecedPersonUserID: selectedPerson.userID },
-                            // }}
-                            >
-                              {' '}
-                              <a href='https://www.facebook.com/Snippets-1057471074393268/'><button >Connect</button></a>
+                              to={{
+                                pathname: '/messages',
+                                state: { selectedPersonUserID: selectedPerson.userID },
+                              }}>
+                              {' '} {console.log(selectedPerson.userID)}
+                              <button >Connect</button>
                             </Link>
                           </div>
                         </div>
@@ -489,7 +497,7 @@ class Tables extends React.Component {
                   </Modal>
                 </div>
               </div>
-            ))}
+            )) : <div><h1>No search Results</h1></div>}
           </div>
         </div>
       </div>
