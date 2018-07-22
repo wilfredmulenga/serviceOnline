@@ -471,7 +471,7 @@ class Tables extends React.Component {
                             <Link
                               to={{
                                 pathname: '/messages',
-                                state: { selectedPersonUserID: selectedPerson.userID },
+                                state: { selectedPersonUserUID: selectedPerson.userUID },
                               }}>
                               {' '} {console.log(selectedPerson.userID)}
                               <button >Connect</button>
