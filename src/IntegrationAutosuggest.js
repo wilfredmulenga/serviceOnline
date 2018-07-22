@@ -43,6 +43,9 @@ const suggestions = [
   { label: 'Dancers' },
   { label: 'Rappers' },
   { label: 'Artists' },
+  { label: 'Maid' },
+  { label: 'Carpenter' },
+  { label: 'Electrician' }
 
 ];
 

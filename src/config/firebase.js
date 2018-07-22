@@ -1,15 +1,16 @@
-// firebase configuration
+//firebase configuration
 import firebase from 'firebase';
 
-const config = {
-  apiKey: process.env.REACT_APP_FIREBASE_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_DOMAIN,
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID,
-};
-firebase.initializeApp(config);
-const Firebase = firebase;
 
-export default Firebase;
+var config = {
+    apiKey: "AIzaSyDWHKJFtKRsA_YpQMjfnyL4dbUdttkn9Xo",
+    authDomain: "lsk-guide-jobs.firebaseapp.com",
+    databaseURL: "https://lsk-guide-jobs.firebaseio.com",
+    projectId: "lsk-guide-jobs",
+    storageBucket: "",
+    messagingSenderId: "319224351068"
+  };
+  firebase.initializeApp(config);
+  var Firebase = firebase;
+
+  export default Firebase;

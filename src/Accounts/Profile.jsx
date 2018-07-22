@@ -349,10 +349,10 @@ class Profile extends Component {
                       className="form-control mb-3"
                       id="professionSelect"
                       onChange={this.handleProfessionChange}>
-                      <option value={'House Cleaner'}>House Cleaner</option>
-                      {/* <option value={'Yard Cleaner'}>Yard Cleaner</option>
+                      <option value={'Maid'}>Maid</option>
+                      <option value={'Electrician'}>Yard Cleaner</option>
                       <option value={'Carpenter'}>Carpenter</option>
-                      <option value={'Plumber'}>Plumber</option>
+                      {/* <option value={'Plumber'}>Plumber</option>
                       <option value={'Painter'}>Painter</option>
                       <option value={'Other'}>Other</option> */}
                     </select>

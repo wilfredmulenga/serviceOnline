@@ -59,7 +59,7 @@ class Tables extends React.Component {
 
   handleCardClick = (selectedPersonUserID) => {
     for (const item in this.state.listOfPeople) {
-      selecedPersonUserID === this.state.listOfPeople[item].userID
+      selectedPersonUserID === this.state.listOfPeople[item].userID
         ? this.setState({
           selectedPerson: this.state.listOfPeople[item],
         })
@@ -80,7 +80,7 @@ class Tables extends React.Component {
     // var jobs = firebase.database().ref('Jobs/'+ value);
     //when user first visits categories section, they should see search results already
     //this can be of popular professionals or a random section. for now i will set it to house cleaners
-    (values) ? values : 'House Cleaner'
+    (values) ? values : 'Maid'
     console.log(values)
     Firebase.database()
       .ref('Users/')
@@ -121,8 +121,29 @@ class Tables extends React.Component {
             <h5>BROWSE JOBS</h5>
             <hr />
           </div>
+          {/* Three sample jobs for demo purposes. list can be as long as desired */}
+          <button
+            className="btn btn-primary mb-1"
+            type="button"
+            onClick={() => this.handleClick('Maid')}>Maid</button>
+          <button
+            className="btn btn-primary mb-1"
+            type="button"
+            onClick={() => this.handleClick('Electrician')}
+          >
+            Electrician
+            </button>
+          <button
+            className="btn btn-primary mb-1"
+            type="button"
+            onClick={() => this.handleClick('Carpenter')}
+          >
+            Carpenter
+            </button>
+
+          {/* commented out dropdown list of jobs for demo purposes */}
           {/* Personal Service */}
-          <div className="dropdown container-fluid mb-1 justify-content-start ">
+          {/* <div className="dropdown container-fluid mb-1 justify-content-start ">
             <button
               className="btn btn-primary dropdown-toggle-split"
               type="button"
@@ -187,7 +208,7 @@ class Tables extends React.Component {
             </div>
           </div>
           {/* Transportation */}
-          <div className="dropdown container justify-content-start mb-1">
+          {/* <div className="dropdown container justify-content-start mb-1">
             <button
               className="btn btn-primary dropdown-toggle-split"
               type="button"
@@ -223,10 +244,10 @@ class Tables extends React.Component {
                 Bus-Conductors
               </a>
             </div>
-          </div>
+          </div> */}
           {/* Fashion */}
 
-          <div className="dropdown container justify-content-start mb-1">
+          {/* <div className="dropdown container justify-content-start mb-1">
             <button
               className="btn btn-primary dropdown-toggle-split"
               type="button"
@@ -259,9 +280,9 @@ class Tables extends React.Component {
                 Fashion Designers
               </a>
             </div>
-          </div>
+          </div> */}
           {/* IT */}
-          <div className="dropdown container justify-content-start mb-1">
+          {/* <div className="dropdown container justify-content-start mb-1">
             <button
               className="btn btn-primary dropdown-toggle-split"
               type="button"
@@ -292,10 +313,10 @@ class Tables extends React.Component {
                 {' '}
                 Graphics Designers
               </a>
-            </div>
-          </div>
-          {/* Entertainment */}
-          <div className="dropdown container justify-content-start mb-1">
+            </div> */}
+        </div>
+        {/* Entertainment */}
+        {/* <div className="dropdown container justify-content-start mb-1">
             <button
               className="btn btn-primary dropdown-toggle-split"
               type="button"
@@ -334,9 +355,9 @@ class Tables extends React.Component {
                 Producers
               </a>
             </div>
-          </div>
-          {/* Music */}
-          <div className="dropdown container justify-content-start mb-1">
+          </div> */}
+        {/* Music */}
+        {/* <div className="dropdown container justify-content-start mb-1">
             <button
               className="btn btn-primary dropdown-toggle-split"
               type="button"
@@ -364,27 +385,27 @@ class Tables extends React.Component {
                 Rappers
               </a>
             </div>
-          </div>
-          {/* Art */}
-          <div className="dropdown container justify-content-start mb-1">
-            <button
-              className="btn btn-primary  dropdown-toggle-split"
-              type="button"
-              id="dropdownMenuButton"
-              style={{ width: 160 }}
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false">
-              Art
+          </div> */}
+        {/* Art */}
+        {/* <div className="dropdown container justify-content-start mb-1">
+          <button
+            className="btn btn-primary  dropdown-toggle-split"
+            type="button"
+            id="dropdownMenuButton"
+            style={{ width: 160 }}
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false">
+            Art
             </button>
-            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
-                Artists
+          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
+              Artists
               </a>
-            </div>
           </div>
-        </div>
-        <div className="card col center-align mr-3 ml-3 " style={{ textAlign: 'center' }}>
+        </div> 
+      </div> */}
+        <div className="card col center-align mr-3 ml-3 ">
           <div className="input-group mt-3 row justify-content-center ">
             {/* <input type="text" className="form-control col-6"
            placeholder="I am looking to hire a..."/> */}
@@ -428,24 +449,17 @@ class Tables extends React.Component {
                       alt={'profile pic'}
                     />
                   </div>
-                  <div className="col-md-4  text-align-left">
-                    Name:<br />
-                    Rating:<br />
-                    Skills: <br />
-                    City: <br />
-                    Status: {i} <br />
+                  <div className="col-md-8  text-align-start">
+                    Name:  {`${element.firstName} ${element.lastName}`}<br />
+
+                    Skills:{`${element.skills.map((element, i) => (
+                      element.label
+                    ))}`} <br />
+                    City: {element.city} <br />
+
                     <button onClick={() => this.handleCardClick(element.userID)}>View More</button>
                   </div>
-                  <div className="col-md-4 align-items-start">
-                    <p>
-                      {element.firstName}
-                      <br />
-                      {element.rating}
-                      <br />Crafting<br />
-                      {element.city}
-                      <br />Available<br />
-                    </p>
-                  </div>
+
 
                   {console.log(selectedPerson)}
                   {/* Modal when user clicks on a specific person */}
@@ -464,9 +478,14 @@ class Tables extends React.Component {
                             alt={'profile pic'}
                           />
                           <div className="col-md-6 ml-3">
-                            Name:{selectedPerson.firstName}
+                            Name:{`${element.firstName} ${element.lastName}`}
                             <br />
-                            Rating:<br />Skills: <br />City: <br />Status: <br />
+                            Skills:{`${element.skills.map((element, i) => (
+                              element.label
+                            ))}`} <br />
+                            City: {element.city} <br />
+
+
                             <Link
                               to={{
                                 pathname: '/messages',
@@ -477,19 +496,20 @@ class Tables extends React.Component {
                             </Link>
                           </div>
                         </div>
-                        <h5 className="mt-4">Reviews</h5>
+                        <h5 className="mt-4 mb-1">Brief Job Description</h5>
+                        {`${element.briefDescription}`}
                       </div>
                       <div className="col-md-6">
                         <div>
                           <h5 className="mt-4">Gallery of Work</h5>
-                          {/* {element.galleryOfWork.map((image, key) => (
+                          {element.galleryOfWork.map((image, key) => (
                             <div className="row mb-3" key={i}>
                               <div className="col-md-6">
                                 <img className="img-thumbnail mr-2" src={image} />
                               </div>
-                              <div>"captions of work"</div>
+
                             </div>
-                          ))} */}
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -499,7 +519,7 @@ class Tables extends React.Component {
             )) : <div><h1>No search Results</h1></div>}
           </div>
         </div>
-      </div>
+      </div >
     );
   }
 }
