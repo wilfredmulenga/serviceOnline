@@ -5,11 +5,10 @@
 
 import React from 'react';
 import { Link } from 'react-router';
+import Modal from 'react-modal';
 import Navbar from './Navbar';
 import Firebase from '../config/firebase';
 import IntegrationAutosuggest from '../IntegrationAutosuggest';
-
-import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
 const customStyles = {
@@ -60,7 +59,7 @@ class Tables extends React.Component {
 
   handleCardClick = (selectedPersonUserID) => {
     for (const item in this.state.listOfPeople) {
-      selectedPersonUserID == this.state.listOfPeople[item].userID
+      selecedPersonUserID === this.state.listOfPeople[item].userID
         ? this.setState({
           selectedPerson: this.state.listOfPeople[item],
         })
