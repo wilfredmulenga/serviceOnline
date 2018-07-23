@@ -48,3 +48,10 @@ body {
   display: inline-block;
   flex-grow: 1;
 }
+
+.link {
+  color: #FFF;
+}
+.link:hover {
+   color: #00F
+}

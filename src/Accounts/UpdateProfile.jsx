@@ -6,17 +6,40 @@ import Navbar from '../components/Navbar';
 import Chip from '@material-ui/core/Chip';
 import greybackground from '../images/greybackground.jpeg';
 import Firebase from '../config/firebase';
-// Firebase
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: '50%',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width: '90%',
+    // to make the modal scrollable if it is bigger than than the page
+    height: '500px',
+    overflow: 'scroll',
+  },
+};
+
 let userUID;
+let hasProfile = false;
+let element = '';
 Firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     userUID = user.uid;
     console.log(userUID);
+    let userPic = document.getElementById('userPic')
     Firebase.database()
-      .ref('Jobs/Carpenter')
-      .child(userUID)
+      .ref(`Users/${userUID}`)
       .on('value', (snapshot) => {
-        // console.log(snapshot.val())
+        const data = snapshot.val()
+        if (data.firstName != null) {
+          hasProfile = true
+          element = data
+        }
       });
   } else {
     console.log('signed out');
@@ -24,7 +47,7 @@ Firebase.auth().onAuthStateChanged((user) => {
 });
 
 // Components
-class Profile extends Component {
+class UpdateProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -74,6 +97,11 @@ class Profile extends Component {
       console.log(userUID);
     }
   }
+
+  componentWillMount() {
+
+  }
+
 
   // handle the deletion of a chip
   handleProfessionChange(event) {
@@ -238,10 +266,11 @@ class Profile extends Component {
     }
     return (
       <div>
-        <Navbar title={'Navbar Page'} loginStatus={userUID} />
+        <Navbar title={'Navbar Page'} />
         {
           // this.state.signedIn ?  null   :  <SignIn loginStatus={this.state.signedIn}/>
         }
+
         <div className="container justify-content-center">
           <div className="card">
             <div className="card-body">
@@ -353,11 +382,11 @@ class Profile extends Component {
                       <option value={'Electrician'}>Yard Cleaner</option>
                       <option value={'Carpenter'}>Carpenter</option>
                       {/* <option value={'Plumber'}>Plumber</option>
-                      <option value={'Painter'}>Painter</option>
-                      <option value={'Other'}>Other</option> */}
+                     <option value={'Painter'}>Painter</option>
+                     <option value={'Other'}>Other</option> */}
                     </select>
                     {/* <input type="text" value={this.state.profession} onChange={this.handleChangeInput}
-                 class="form-control mb-3" placeholder="Profession" /> */}
+                class="form-control mb-3" placeholder="Profession" /> */}
                     <textarea
                       className="form-control"
                       value={this.state.briefDescription}
@@ -385,7 +414,7 @@ class Profile extends Component {
                           onClick={this.addItem}
                           type="button">
                           Add
-                        </button>
+                       </button>
                       </div>
                     </div>
 
@@ -415,7 +444,7 @@ class Profile extends Component {
                         />
                         <label className="custom-file-label" htmlFor="inputGroupFile04">
                           Choose file
-                        </label>
+                       </label>
                       </div>
                       <div className="input-group-append">
                         <button // onClick={this.uploadHandler}
@@ -423,14 +452,14 @@ class Profile extends Component {
                           className="btn btn-outline-secondary"
                           type="button">
                           Upload
-                        </button>
+                       </button>
                       </div>
                     </div>
                   </div>
                 </div>
                 {/* <div className="imgPreview">
-          {$imagePreview}
-        </div> */}
+         {$imagePreview}
+       </div> */}
                 <div className="row col-md-12 mb-5">
                   {uploadedImages.map((element, i) => (
                     <div style={{ marginRight: 10 }}>{element}</div>
@@ -444,14 +473,15 @@ class Profile extends Component {
                   onClick={this.sendData} // type="submit"
                 >
                   Update Profile
-                </button>
+               </button>
               </div>
             </div>
           </div>
         </div>
+
       </div>
     );
   }
 }
 
-export default Profile;
+export default UpdateProfile;

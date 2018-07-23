@@ -4,7 +4,6 @@ import Firebase from '../config/firebase';
 import Modal from 'react-modal';
 import Button from '@material-ui/core/Button';
 
-/*global FB*/
 const customStyles = {
   content: {
     top: '50%',
@@ -17,43 +16,18 @@ const customStyles = {
   },
 };
 
-// Firebase.auth().onAuthStateChanged(function (user) {
-//   if (user) {
-//     userUID = 'Logged In';
-//     loginStatus = true;
-//   } else {
-//     userUID = 'Log In/Sign Up';
-//     loginStatus = false;
-//     Navbar.openSignInModal
-//   }
-// })
-
-var provider = new Firebase.auth.FacebookAuthProvider();
-// window.fbAsyncInit = function () {
-//   FB.init({
-//     appId: '1377461352398910',
-//     cookie: true,
-//     xfbml: true,
-//     version: '3.0'
-//   });
-
-//   FB.AppEvents.logPageView();
-
-// };
-
-// (function (d, s, id) {
-//   var js, fjs = d.getElementsByTagName(s)[0];
-//   if (d.getElementById(id)) { return; }
-//   js = d.createElement(s); js.id = id;
-//   js.src = "https://connect.facebook.net/en_US/sdk.js";
-//   fjs.parentNode.insertBefore(js, fjs);
-// }(document, 'script', 'facebook-jssdk'));
-
-
-
 let errorMessage;
-let loginStatus = false;
-var userUID = 'Log In/ Sign Up';
+let loginStatus
+
+Firebase.auth().onAuthStateChanged(function (user) {
+  if (user) {
+
+    loginStatus = true
+  } else {
+
+    loginStatus = false
+  };
+})
 Modal.setAppElement('#root');
 class Navbar extends React.Component {
   constructor(props) {
@@ -62,7 +36,7 @@ class Navbar extends React.Component {
       signUpModalIsOpen: false,
       signInModalIsOpen: false,
       signOutModalIsOpen: false,
-      // loginStatus: false,
+
       email: '',
       password: '',
       reenterPassword: '',
@@ -78,55 +52,11 @@ class Navbar extends React.Component {
     this.handleSignIn = this.handleSignIn.bind(this);
     this.closeSignInModal = this.closeSignInModal.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
-    this.handleFacebookLogin = this.handleFacebookLogin.bind(this);
+    //this.userPic = document.getElementById('userPic');
 
   }
 
-  handleFacebookLogin() {
 
-    Firebase.auth().signInWithPopup(provider).then(function (result) {
-      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-      var token = result.credential.accessToken;
-      // The signed-in user info.
-      var user = result.user;
-      console.log(user)
-      console.log(token)
-      // ...
-    }).catch(function (error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-
-      var errorMessage = error.message;
-      console.log(errorMessage)
-      // The email of the user's account used.
-      var email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
-      // ...
-    });
-  }
-
-  //   componentWillMount() {
-  //     window.fbAsyncInit = function () {
-  //       FB.init({
-  //         appId: '1377461352398910',
-  //         cookie: true,
-  //         xfbml: true,
-  //         version: 'v3.0'
-  //       });
-
-  //       FB.AppEvents.logPageView();
-
-  //     };
-
-  //     (function (d, s, id) {
-  //   var js, fjs = d.getElementsByTagName(s)[0];
-  //   if (d.getElementById(id)) { return; }
-  //   js = d.createElement(s); js.id = id;
-  //   js.src = "https://connect.facebook.net/en_US/sdk.js";
-  //   fjs.parentNode.insertBefore(js, fjs);
-  // }(document, 'script', 'facebook-jssdk'));
-  //   }
 
   openSignUpModal() {
 
@@ -176,7 +106,8 @@ class Navbar extends React.Component {
           .createUserWithEmailAndPassword(this.state.email, this.state.password)
           .then((user) => {
             console.log(user);
-            browserHistory.push('/signup');
+            //browserHistory.push('/signup');
+
           })
           .catch((error) => {
             // Handle Errors here.
@@ -200,7 +131,7 @@ class Navbar extends React.Component {
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then((user) => {
         loginStatus = true;
-        browserHistory.push('/categories');
+
       })
       .catch((error) => {
         // Handle Errors here.
@@ -213,11 +144,16 @@ class Navbar extends React.Component {
     this.setState({
       error: errorMessage,
     });
+    browserHistory.push('/categories');
   }
 
   handleSignOut() {
     Firebase.auth().signOut();
-    browserHistory.push('/');
+    this.setState({
+      signOutModalIsOpen: false,
+      signInModalIsOpen: true
+    })
+
   }
 
   handleInput(event) {
@@ -247,25 +183,18 @@ class Navbar extends React.Component {
 
   componentDidMount() {
 
-    Firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        userUID = 'Logged In';
-        loginStatus = true;
-      } else {
-        userUID = 'Log In/Sign Up';
-        loginStatus = false;
-      }
-    })
-  }
 
+  }
   render() {
     return (
-      <div className="App">
+      <div className="App" id="navbar">
         {/* Navbar section */}
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <Link to="/"><a className="navbar-brand">
+        <nav className="navbar navbar-expand-lg "
+          style={{ backgroundColor: '#182157' }}>
+          <Link to="/" className="navbar-brand link">
             Project Name
-          </a></Link>
+
+         </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -276,24 +205,22 @@ class Navbar extends React.Component {
             aria-label="Toggle navigation">
             <span className="navbar-toggler-icon" />
           </button>
-          <div className="collapse navbar-collapse">
-            <ul className="navbar-nav mr-auto">
+          <div className="collapse navbar-collapse  navbar-right ">
+            {/* <img id='userPic' style={{ width: 40, height: 40, borderRadius: 20 }} /> */}
+            <ul className="navbar-nav mr-auto ">
 
               <li className="nav-item active mr-3">
-                <Link to="/categories">Categories</Link>
+                <Link to="/categories" className="link">Categories</Link>
               </li>
+              <Link to="/login" className="link" //onClick={this.props.action} 
+                onClick={this.openSignInModal}>
+                <li className="nav-item active mr-3" id='login'>{
+                  (loginStatus) ? `Sign Out` : `Sign In`
+                }
+                </li>
+              </Link>
               <li className="nav-item active mr-3">
-                <Link to="/login" //onClick={this.props.action}
-                  onClick={this.openSignInModal}
-                >
-                  {userUID}
-                </Link>
-              </li>
-              <li className="nav-item active mr-3">
-                <Link to="/profile">Profile</Link>
-              </li>
-              <li className="nav-item active mr-3">
-                <Link to="/messages">Messages</Link>
+                <Link to="/viewprofile" className="link">Profile</Link>
               </li>
             </ul>
           </div>
@@ -406,9 +333,12 @@ class Navbar extends React.Component {
         </Modal>
         {/* Sign Out Modal */}
         <Modal isOpen={this.state.signOutModalIsOpen} style={customStyles}>
-          Sign Out ? <button onClick={this.handleSignOut}>Yes</button>
+          <h5> Sign Out ? </h5>
+          <div style={{ textAlign: 'center' }}>
+            <Button className='ml-5' variant='contained' color='secondary' onClick={this.handleSignOut}>Yes</Button>
+          </div>
         </Modal>
-      </div>
+      </div >
     );
   }
 }

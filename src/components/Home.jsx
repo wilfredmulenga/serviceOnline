@@ -326,7 +326,7 @@ class Home extends React.Component {
               </div>
             </div>
             {/* About */}
-            <div className="row">
+            {/* <div className="row">
               <div className="col-6">
                 <h3>About</h3>
 
@@ -334,7 +334,7 @@ class Home extends React.Component {
               <div className="col-6">
                 <img style={{ width: 500, heigh: 300 }} src={serviceImage} />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div >
