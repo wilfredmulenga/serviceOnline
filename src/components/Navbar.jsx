@@ -144,7 +144,7 @@ class Navbar extends React.Component {
     this.setState({
       error: errorMessage,
     });
-    browserHistory.push('/categories');
+    this.closeAllModals()
   }
 
   handleSignOut() {
@@ -253,7 +253,7 @@ class Navbar extends React.Component {
             </div>
             <div className="col mb-3">
               <input
-                type="text"
+                type="password"
                 value={this.state.password}
                 onChange={this.handleInput}
                 className="form-control"
@@ -262,7 +262,7 @@ class Navbar extends React.Component {
             </div>
             <div className="col mt-2  mb-3">
               <input
-                type="text"
+                type="password"
                 value={this.state.reenterPassword}
                 onChange={this.handleInput}
                 className="form-control"
@@ -309,7 +309,7 @@ class Navbar extends React.Component {
               </div>
               <div className="col mb-4">
                 <input
-                  type="text"
+                  type="password"
                   value={this.state.password}
                   onChange={this.handleInput}
                   className="form-control"

@@ -165,6 +165,7 @@ class Home extends React.Component {
       <div>
         <div id="home">
           <Navbar title="Home" action={this.openModal} />
+
           {/* <SignUp Modal /> */}
 
           <Modal
@@ -272,8 +273,12 @@ class Home extends React.Component {
             <img
               src={landingPage} // style={{width:"1520px"}}
               className={'img-fluid'}
-              alt="landing page"
-            />
+              alt="landing page" />
+            <div style={{
+              position: 'absolute', bottom: 0, width: '100%', height: '50%',
+              textAlign: 'center'
+            }}>
+              <p style={{ fontSize: 80, color: '#ffff' }}>Helping you get the right service</p></div>
           </div>
           <div className="container">
             {/* How it Works section */}
@@ -285,12 +290,7 @@ class Home extends React.Component {
                   <div className="card mt-3">
                     <h5 className="card-title mt-3">I want to get hired</h5>
                     <p className="card-text">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                      irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                      officia deserunt mollit anim id est laborum
+                      Our platform creates lets people who are not in the formal sector be able to list their skills and services thus opening up the window that has been overlooked by other Job-listing sites. Whether you are a Carpenter, Welder, Barberman, this site will help bring the customers to you.
                 </p>
                   </div>
                 </div>
@@ -299,12 +299,7 @@ class Home extends React.Component {
                   <div className='card mt-3'>
                     <h5 className="card-title mt-3">I want to hire someone</h5>
                     <p className="card-text">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                      irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                      officia deserunt mollit anim id est laborum.
+                      Looking for a good hairdresser but just don't know where to look. Or maybe your Kitchen needs some remodeling. Our platform lists the very best professionals in the informal job sector, skilled for the job you may require. Feel free to browse through our category section to get started.
                 </p>
                   </div>
                 </div>
@@ -314,12 +309,7 @@ class Home extends React.Component {
                   <div className="card mt-3">
                     <h5 className="card-title mt-3">I want to be a Partner</h5>
                     <p className="card-text">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                      irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                      officia deserunt mollit anim id est laborum.
+                      We are always looking for ways to improve our platform and from new angles or ideas. We feel that people with informal jobs could use a platform that is taylored specifically for them to showcase their work. If you share the same passion as well do, we would be happy to hear from you.
                     </p>
                   </div>
                 </div>

@@ -27,6 +27,10 @@ const customStyles = {
   },
 };
 
+let loginStatus = true;
+
+
+
 class Categories extends React.Component {
   constructor(props) {
     super(props);
@@ -109,13 +113,20 @@ class Tables extends React.Component {
   };
 
   componentWillMount() {
-    // this.handleClick('House Cleaner')
+    Firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        loginStatus = true
+      } else {
+        loginStatus = false
+      }
+    });
   }
 
   render() {
     const { listOfPeople } = this.state;
     const { selectedPerson } = this.state;
-    return (
+    console.log(loginStatus)
+    return ((loginStatus) ?
       <div className="row container-fluid justify-content-start mt-4">
         <div className="card col-md-2 ml-3 d-flex">
           <div className="mt-3 justify-content-start text-center">
@@ -428,8 +439,8 @@ class Tables extends React.Component {
                   className="btn btn-default"
                   type="button"
                   onClick={() => {
-                    const value = document.getElementsByClassName('MuiInput-input-17')['0'].value;
-
+                    const value = document.getElementById('jobInput').value;
+                    console.log(document.getElementById('jobInput').value)
                     this.handleClick(value);
                   }}>
                   Go!
@@ -528,7 +539,7 @@ class Tables extends React.Component {
             )) : <div><h1>No search Results</h1></div>}
           </div>
         </div>
-      </div >
+      </div > : <div className='justify-content-center mt-5'><h5>Sign In to View Categories</h5></div>
     );
   }
 }

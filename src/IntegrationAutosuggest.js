@@ -183,6 +183,7 @@ class IntegrationAutosuggest extends React.Component {
     return (
       <div className="row">
         <Autosuggest
+
           theme={{
             container: classes.container,
             suggestionsContainerOpen: classes.suggestionsContainerOpen,
@@ -201,6 +202,7 @@ class IntegrationAutosuggest extends React.Component {
             placeholder: 'I am looking to hire ...',
             value: this.state.value,
             onChange: this.handleChange,
+            id: 'jobInput'
           }}
           onClick={this.props.lol}
         />
