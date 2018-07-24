@@ -2,6 +2,7 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Firebase from '../config/firebase';
+import Button from '@material-ui/core/Button';
 
 let selectedPersonUserUID = '';
 let userUID;
@@ -124,11 +125,12 @@ class Messages extends React.Component {
       for (const index in data) {
         properties.push(data[index])
       }
-      console.log(elements['0'])
+      // console.log(elements['0'])
       this.displayChatHistory(elements['0']['name'], elements['0']['text'], elements['0']['userUID'])
     }.bind(this);
     Firebase.database()
       .ref(`Users/${userUID}/messages`)
+      .limitToLast(1)
       .on('child_added', setChatHistory);
   }
 
@@ -216,7 +218,7 @@ class Messages extends React.Component {
     return (
       <div>
         <Navbar title="Categories" />
-        <div className="container row">
+        <div className="container row mt-3">
           <div className="col-md-4">
             <div className='card'>
               <div id='chatHistory' className='chatHistory'>
@@ -229,7 +231,8 @@ class Messages extends React.Component {
                 <div id="messages" className="message-form" />
                 <div className="messageInputContainer">
                   <input className="messageInput" type="text" id="messageInput" />
-                  <button onClick={this.messageSubmit}>SEND</button>
+                  <Button variant='outlined' style={{ backgroundColor: '#FFF', color: '#000' }}
+                    onClick={this.messageSubmit}>SEND</Button>
                 </div>
               </div>
             </div>

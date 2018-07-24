@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import Navbar from '../components/Navbar';
-// import SignIn from './SignIn'
+import { browserHistory } from 'react-router';
 import Chip from '@material-ui/core/Chip';
 import greybackground from '../images/greybackground.jpeg';
 import Firebase from '../config/firebase';
@@ -31,12 +31,12 @@ Firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     userUID = user.uid;
     console.log(userUID);
-    let userPic = document.getElementById('userPic')
+
     Firebase.database()
       .ref(`Users/${userUID}`)
       .on('value', (snapshot) => {
         const data = snapshot.val()
-        if (data.firstName != null) {
+        if ((data != null) && data.firstName != null) {
           hasProfile = true
           element = data
         }
@@ -70,7 +70,8 @@ class UpdateProfile extends Component {
       status: 'available',
       reviews: [],
       briefDescription: '',
-      profession: 'House Cleaner',
+      profession: '',
+      UploadModalOpen: false,
       // skills : [],
       // profilePicPreviewUrl is actually base64 of the image
       profilePicPreviewUrl: '',
@@ -86,21 +87,15 @@ class UpdateProfile extends Component {
     this.handleChangeImages = this.handleChangeImages.bind(this);
     this.handleChangeProfilePic = this.handleChangeProfilePic.bind(this);
     this.handleProfessionChange = this.handleProfessionChange.bind(this);
-    this.populateInputs = this.populateInputs.bind(this);
+
     // this.fileChangedHandler = this.fileChangedHandler(this)
     // this.uploadHandler = this.uploadHandler(this)
     // this.handleChange = this.handleChange.bind(this)
   }
-  // If user is already signed in. Populate inputs
-  populateInputs() {
-    if (userUID) {
-      console.log(userUID);
-    }
-  }
 
-  componentWillMount() {
 
-  }
+
+
 
 
   // handle the deletion of a chip
@@ -164,15 +159,17 @@ class UpdateProfile extends Component {
           }
         },
     );
+    this.setState({
+      UploadModalOpen: true
+    })
+    setTimeout(
+      function () {
 
-    // event.preventDefault();
-    // alert(
-    //   `Selected file - ${this.fileInput.files[0].name}`
-    // );
-    // this.state.uploadedImages.push(this.fileInput.files[0])
-    // const uploadedImages = [...this.state.uploadedImages]
-    // this.setState({uploadedImages})
-    // console.log(this.state.uploadedImages)
+      }
+        .bind(this),
+      2000
+    );
+    browserHistory.push('/categories')
   }
   handleChangeImages(event) {
     const reader = new FileReader();
@@ -250,15 +247,15 @@ class UpdateProfile extends Component {
     const { profilePicPreviewUrl } = this.state;
     let $profilePicPreview = null;
     if (profilePicPreviewUrl) {
-      $profilePicPreview = <img src={profilePicPreviewUrl} />;
+      $profilePicPreview = <img className="img-thumbnail" src={profilePicPreviewUrl} />;
     } else {
-      $profilePicPreview = <img src={greybackground} />;
+      $profilePicPreview = <img className="img-thumbnail" src={greybackground} />;
     }
     // Gallery of Work Images
     const { imagePreviewUrl } = this.state;
     let $imagePreview = null;
     if (imagePreviewUrl) {
-      $imagePreview = <img src={imagePreviewUrl} />;
+      $imagePreview = <img className="img-thumbnail" src={imagePreviewUrl} />;
       this.state.uploadedImages.push($imagePreview);
       this.state.uploadedImagesBase64.push(imagePreviewUrl);
     } else {
@@ -379,7 +376,7 @@ class UpdateProfile extends Component {
                       id="professionSelect"
                       onChange={this.handleProfessionChange}>
                       <option value={'Maid'}>Maid</option>
-                      <option value={'Electrician'}>Yard Cleaner</option>
+                      <option value={'Electrician'}>Electrician</option>
                       <option value={'Carpenter'}>Carpenter</option>
                       {/* <option value={'Plumber'}>Plumber</option>
                      <option value={'Painter'}>Painter</option>
@@ -465,20 +462,29 @@ class UpdateProfile extends Component {
                     <div style={{ marginRight: 10 }}>{element}</div>
                   ))}
                 </div>
+
               </form>
               <div className="col-md-12 text-center">
                 {/* To have the page reload after the submit button is pressed put the button inside the form div */}
                 <button
-                  className="btn btn-success"
-                  onClick={this.sendData} // type="submit"
-                >
+                  className="btn btn-success" type="submit"
+                  onClick={this.sendData}>
                   Update Profile
                </button>
               </div>
             </div>
           </div>
         </div>
+        <Modal isOpen={this.state.UploadModalOpen}
 
+          style={customStyles}>
+
+          <div style={{ textAlign: 'center' }}>
+            {/* <img src={} /> */}
+            <h5>Successfully Updated</h5>
+            <h5>View in Categories</h5>
+          </div>
+        </Modal>
       </div>
     );
   }

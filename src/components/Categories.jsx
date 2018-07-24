@@ -9,6 +9,7 @@ import Modal from 'react-modal';
 import Navbar from './Navbar';
 import Firebase from '../config/firebase';
 import IntegrationAutosuggest from '../IntegrationAutosuggest';
+import Button from '@material-ui/core/Button';
 
 Modal.setAppElement('#root');
 const customStyles = {
@@ -64,7 +65,7 @@ class Tables extends React.Component {
           selectedPerson: this.state.listOfPeople[item],
         })
         : null;
-      console.log(this.state.listOfPeople[0].userID);
+      // console.log(this.state.listOfPeople[0].userUID);
     }
     this.openModal();
   };
@@ -122,24 +123,30 @@ class Tables extends React.Component {
             <hr />
           </div>
           {/* Three sample jobs for demo purposes. list can be as long as desired */}
-          <button
-            className="btn btn-primary mb-1"
+          <Button
+            className="btn  mb-1"
             type="button"
-            onClick={() => this.handleClick('Maid')}>Maid</button>
-          <button
-            className="btn btn-primary mb-1"
+            variant='contained'
+            style={{ backgroundColor: '#FFF', color: '#000' }}
+            onClick={() => this.handleClick('Maid')}>Maid</Button>
+          <Button
+            className="btn mb-1"
             type="button"
+            variant='contained'
+            style={{ backgroundColor: '#FFF', color: '#000' }}
             onClick={() => this.handleClick('Electrician')}
           >
             Electrician
-            </button>
-          <button
-            className="btn btn-primary mb-1"
+            </Button>
+          <Button
+            className="btn  mb-1"
             type="button"
+            variant='contained'
+            style={{ backgroundColor: '#FFF', color: '#000' }}
             onClick={() => this.handleClick('Carpenter')}
           >
             Carpenter
-            </button>
+            </Button>
 
           {/* commented out dropdown list of jobs for demo purposes */}
           {/* Personal Service */}
@@ -450,18 +457,19 @@ class Tables extends React.Component {
                     />
                   </div>
                   <div className="col-md-8  text-align-start">
-                    Name:  {`${element.firstName} ${element.lastName}`}<br />
+                    <b>   Name: </b> {`${element.firstName} ${element.lastName}`}<br />
 
-                    Skills:{`${element.skills.map((element, i) => (
+                    <b>  Skills: </b>{`${element.skills.map((element, i) => (
                       element.label
                     ))}`} <br />
-                    City: {element.city} <br />
+                    <b> City:</b> {element.city} <br />
 
-                    <button onClick={() => this.handleCardClick(element.userID)}>View More</button>
+                    <Button className='mt-5' variant='contained' style={{ backgroundColor: '#FFF', color: '#000' }}
+                      onClick={() => this.handleCardClick(element.userID)}>View More</Button>
                   </div>
 
 
-                  {console.log(selectedPerson)}
+
                   {/* Modal when user clicks on a specific person */}
 
                   <Modal
@@ -478,21 +486,22 @@ class Tables extends React.Component {
                             alt={'profile pic'}
                           />
                           <div className="col-md-6 ml-3">
-                            Name:{`${element.firstName} ${element.lastName}`}
+                            <b> Name: </b>{`${element.firstName} ${element.lastName}`}
                             <br />
-                            Skills:{`${element.skills.map((element, i) => (
+                            <b> Skills: </b>{`${element.skills.map((element, i) => (
                               element.label
                             ))}`} <br />
-                            City: {element.city} <br />
+                            <b> City: </b>{element.city} <br />
 
 
                             <Link
                               to={{
                                 pathname: '/messages',
-                                state: { selectedPersonUserUID: selectedPerson.userUID },
+                                state: { selectedPersonUserUID: element.userUID },
                               }}>
-                              {' '} {console.log(selectedPerson.userID)}
-                              <button >Connect</button>
+                              {' '} {console.log(element.userUID)}
+                              <Button className="mt-3" variant='contained' style={{ backgroundColor: '#FFF', color: '#000' }}
+                              >Connect</Button>
                             </Link>
                           </div>
                         </div>

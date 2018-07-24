@@ -19,20 +19,23 @@ class ViewProfile extends Component {
             if (user) {
                 userUID = user.uid;
                 console.log(userUID);
-                let userPic = document.getElementById('userPic')
+
                 Firebase.database()
                     .ref(`Users/${userUID}`)
                     .on('value', (snapshot) => {
                         const data = snapshot.val()
-                        if (data.firstName != null) {
-                            this.setState({
-                                listOfPeople: data
-                            })
+                        console.log(snapshot.val())
+                        if ((data == null)) {
+                            browserHistory.push('/updateprofile')
 
+                        } else {
+                            this.setState({
+                                listOfPeople: snapshot.val()
+                            })
                         }
                     });
             } else {
-                console.log('signed out');
+                console.log('signed out')
             }
         });
     }
@@ -57,17 +60,17 @@ class ViewProfile extends Component {
                                     style={{ width: 160, height: 160 }}
                                     alt={'profile pic'}
                                 />
-                                <div className="col-md-6 ml-3"><h5>
-                                    Name:{`${listOfPeople.firstName} ${listOfPeople.lastName}`}</h5>
-
-                                    <h5>
-                                        Skills:{`${listOfPeople.skills.map((element, i) => (
+                                <div className="col-md-6 ml-3"><b>
+                                    Name:</b>{`${listOfPeople.firstName} ${listOfPeople.lastName}`}
+                                    <br />
+                                    <b>
+                                        Skills: </b>{`${listOfPeople.skills.map((element, i) => (
                                             element.label
-                                        ))}`} <br /></h5>
-                                    <h5>
-                                        City: {listOfPeople.city} <br />
-                                    </h5>
-                                    <Button className="mt-3" variant='contained' color='primary'
+                                        ))}`} <br />
+                                    <b>
+                                        City: </b>{listOfPeople.city} <br />
+
+                                    <Button className="mt-3" variant='contained' style={{ backgroundColor: '#FFF', color: '#000' }}
                                         onClick={() => browserHistory.push('/messages')}>Messages</Button>
 
                                 </div>
@@ -89,7 +92,7 @@ class ViewProfile extends Component {
                             </div>
                         </div>
                     </div>
-                        <div className='mt-5' style={{ textAlign: 'center' }}><Button variant='contained' color='primary'
+                        <div className='mt-5' style={{ textAlign: 'center' }}><Button variant='contained' style={{ backgroundColor: '#FFF', color: '#000' }}
                             onClick={() => browserHistory.push('/updateprofile')}>Update Profile</Button></div>
 
                     </div> : <div className="mt-5" style={{ textAlign: 'center' }}><h1>Sign In to View your profile</h1></div>}
