@@ -63,12 +63,15 @@ class ViewProfile extends Component {
                                 <div className="col-md-6 ml-3"><b>
                                     Name:</b>{`${listOfPeople.firstName} ${listOfPeople.lastName}`}
                                     <br />
+                                    <b>Profession: </b>{listOfPeople.profession} <br />
                                     <b>
                                         Skills: </b>{`${listOfPeople.skills.map((element, i) => (
                                             element.label
                                         ))}`} <br />
                                     <b>
                                         City: </b>{listOfPeople.city} <br />
+
+
 
                                     <Button className="mt-3" variant='contained' style={{ backgroundColor: '#FFF', color: '#000' }}
                                         onClick={() => browserHistory.push('/messages')}>Messages</Button>

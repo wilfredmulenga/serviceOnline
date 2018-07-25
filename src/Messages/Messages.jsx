@@ -16,6 +16,8 @@ const customStyles = {
     },
   },
 };
+
+
 function LoadMessages() {
   const setMessage = function (snap) {
     const data = snap.val();
@@ -26,10 +28,10 @@ function LoadMessages() {
     .ref(`Users/${selectedPersonUserUID}/messages/${userUID}`)
     .limitToLast(12)
     .on('child_added', setMessage);
-  // Firebase.database()
-  //   .ref(`messages/${userUID}`)
-  //   .limitToLast(12)
-  //   .on('child_added', setMessage);
+  Firebase.database()
+    .ref(`messages/${userUID}`)
+    .limitToLast(12)
+    .on('child_added', setMessage);
 };
 function displayMessage(key, name, text, picUrl, imageUrl) {
   const MESSAGE_TEMPLATE =
@@ -213,7 +215,7 @@ class Messages extends React.Component {
 
   getProfilePicUrl = () =>
     Firebase.auth().currentUser.photoURL ||
-    'https://storage.googleapis.com/lsk-guide-jobs.appspot.com/pexels-photo-428361.jpeg';
+    'https://storage.googleapis.com/lsk-guide-jobs.appspot.com/profile_placeholder.png';
   render() {
     return (
       <div>

@@ -77,6 +77,7 @@ class UpdateProfile extends Component {
       profilePicPreviewUrl: '',
       // base64 of uploaded Images
       uploadedImagesBase64: [],
+      userUID: ''
     };
     this.handleDelete = this.handleDelete.bind(this);
     this.addItem = this.addItem.bind(this);
@@ -150,6 +151,7 @@ class UpdateProfile extends Component {
           skills: this.state.chipData,
           briefDescription: this.state.briefDescription,
           galleryOfWork: this.state.uploadedImagesBase64,
+          userUID: userUID
         },
         (error) => {
           if (error) {
