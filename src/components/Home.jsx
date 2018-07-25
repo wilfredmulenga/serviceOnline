@@ -275,10 +275,10 @@ class Home extends React.Component {
               className={'img-fluid'}
               alt="landing page" />
             <div style={{
-              position: 'absolute', bottom: 0, width: '100%', height: '50%',
+              position: 'absolute', bottom: 0, width: '100%', height: '20%',
               textAlign: 'center'
             }}>
-              <p style={{ fontSize: 80, color: '#ffff' }}>Helping you get the right service</p></div>
+              <p style={{ fontSize: 30, color: '#ffff' }}>Helping you get the right service</p></div>
           </div>
           <div className="container">
             {/* How it Works section */}
