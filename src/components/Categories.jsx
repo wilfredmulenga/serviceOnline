@@ -10,6 +10,7 @@ import Navbar from './Navbar';
 import Firebase from '../config/firebase';
 import IntegrationAutosuggest from '../IntegrationAutosuggest';
 import Button from '@material-ui/core/Button';
+import { browserHistory } from 'react-router';
 
 Modal.setAppElement('#root');
 const customStyles = {
@@ -60,6 +61,20 @@ class Tables extends React.Component {
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleCardClick = this.handleCardClick.bind(this);
+    this.handleConnect = this.handleConnect.bind(this);
+  }
+
+  handleConnect = (value) => {
+    var PostRef = Firebase.database()
+      .ref(`Users/${value}/Messages`).push()
+    var PostRefKey = PostRef.getKey()
+    Firebase.database().ref(`Users/${value}/Messages`).push(PostRefKey)
+    //console.log(PostRef.getKey())
+    browserHistory.push({
+      pathname: '/messages',
+      // search: '?the=search',
+      state: { messageKey: PostRefKey }
+    })
   }
 
   handleCardClick = (selectedPersonUserID) => {
@@ -108,6 +123,7 @@ class Tables extends React.Component {
             listOfPeople: peopleArray,
           });
         }
+        console.log(peopleArray)
       });
 
   };
@@ -159,270 +175,7 @@ class Tables extends React.Component {
             Carpenter
             </Button>
 
-          {/* commented out dropdown list of jobs for demo purposes */}
-          {/* Personal Service */}
-          {/* <div className="dropdown container-fluid mb-1 justify-content-start ">
-            <button
-              className="btn btn-primary dropdown-toggle-split"
-              type="button"
-              id="dropdownMenuButton"
-              style={{ width: 160 }}
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false">
-              Personal Service
-            </button>
-            <div className="dropdown-menu flex-grow-1" aria-labelledby="dropdownMenuButton">
-              <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
-                Waiters & Waitresses
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Bartenders
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Shop Assistants
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Security Guards
-              </a>
-              <a
-                className="dropdown-item"
-                value={'action'}
-                onClick={() => this.handleClick('House Cleaner')}>
-                {' '}
-                House Cleaners
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Shop Assistants
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Gardeners
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Babysitters
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Caretakers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Travel Agent
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Retail-Estate Agent
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Wedding Planner
-              </a>
-            </div>
-          </div>
-          {/* Transportation */}
-          {/* <div className="dropdown container justify-content-start mb-1">
-            <button
-              className="btn btn-primary dropdown-toggle-split"
-              type="button"
-              id="dropdownMenuButton"
-              style={{ width: 160 }}
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false">
-              Transportation
-            </button>
-            <div className="dropdown-menu disabled" aria-labelledby="dropdownMenuButton">
-              <a className="dropdown-item" onClick={() => this.handleClick('Carpenter')}>
-                Drivers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Deliverers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Taxi-Drivers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Bus-Drivers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Maid
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Bus-Conductors
-              </a>
-            </div>
-          </div> */}
-          {/* Fashion */}
-
-          {/* <div className="dropdown container justify-content-start mb-1">
-            <button
-              className="btn btn-primary dropdown-toggle-split"
-              type="button"
-              id="dropdownMenuButton"
-              style={{ width: 160 }}
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false">
-              Fashion
-            </button>
-            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
-                Hairdressers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Barber Men
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Makeup Artists
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Models
-              </a>
-
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Fashion Designers
-              </a>
-            </div>
-          </div> */}
-          {/* IT */}
-          {/* <div className="dropdown container justify-content-start mb-1">
-            <button
-              className="btn btn-primary dropdown-toggle-split"
-              type="button"
-              id="dropdownMenuButton"
-              style={{ width: 160 }}
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false">
-              IT
-            </button>
-            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
-                IT Technicians
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Front-End Developers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Back-End Developers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Web Designers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Graphics Designers
-              </a>
-            </div> */}
         </div>
-        {/* Entertainment */}
-        {/* <div className="dropdown container justify-content-start mb-1">
-            <button
-              className="btn btn-primary dropdown-toggle-split"
-              type="button"
-              id="dropdownMenuButton"
-              style={{ width: 160 }}
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false">
-              Entertainment
-            </button>
-            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
-                Actors & Actresses
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                News Presenters
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                News Writers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Reporters
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Bloggers
-              </a>
-              <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
-                Script-Writers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Producers
-              </a>
-            </div>
-          </div> */}
-        {/* Music */}
-        {/* <div className="dropdown container justify-content-start mb-1">
-            <button
-              className="btn btn-primary dropdown-toggle-split"
-              type="button"
-              id="dropdownMenuButton"
-              style={{ width: 160 }}
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false">
-              Music
-            </button>
-            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
-                Singers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Dancers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Performers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Rappers
-              </a>
-            </div>
-          </div> */}
-        {/* Art */}
-        {/* <div className="dropdown container justify-content-start mb-1">
-          <button
-            className="btn btn-primary  dropdown-toggle-split"
-            type="button"
-            id="dropdownMenuButton"
-            style={{ width: 160 }}
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false">
-            Art
-            </button>
-          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
-              Artists
-              </a>
-          </div>
-        </div> 
-      </div> */}
         <div className="card col center-align mr-3 ml-3 ">
           <div className="input-group mt-3 row justify-content-center ">
             {/* <input type="text" className="form-control col-6"
@@ -507,15 +260,17 @@ class Tables extends React.Component {
                               <b> City: </b>{element.city} <br />
 
 
-                              <Link
+                              {/* <Link
                                 to={{
                                   pathname: '/messages',
                                   state: { selectedPersonUserUID: element.userUID },
-                                }}>
-                                {' '} {console.log(element.userUID)}
-                                <Button className="mt-3" variant='contained' style={{ backgroundColor: '#FFF', color: '#000' }}
-                                >Connect</Button>
-                              </Link>
+                                }}> */}
+                              {' '} {console.log(element.userUID)}
+                              <Button className="mt-3" variant='contained'
+                                style={{ backgroundColor: '#FFF', color: '#000' }}
+                                onClick={() => this.handleConnect(element.userUID)}
+                              >Connect</Button>
+                              {/* </Link> */}
                             </div>
                           </div>
                           <h5 className="mt-4 mb-1">Brief Job Description</h5>
@@ -547,3 +302,267 @@ class Tables extends React.Component {
 }
 
 export default Categories;
+{/* commented out dropdown list of jobs for demo purposes */ }
+{/* Personal Service */ }
+{/* <div className="dropdown container-fluid mb-1 justify-content-start ">
+            <button
+              className="btn btn-primary dropdown-toggle-split"
+              type="button"
+              id="dropdownMenuButton"
+              style={{ width: 160 }}
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false">
+              Personal Service
+            </button>
+            <div className="dropdown-menu flex-grow-1" aria-labelledby="dropdownMenuButton">
+              <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
+                Waiters & Waitresses
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Bartenders
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Shop Assistants
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Security Guards
+              </a>
+              <a
+                className="dropdown-item"
+                value={'action'}
+                onClick={() => this.handleClick('House Cleaner')}>
+                {' '}
+                House Cleaners
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Shop Assistants
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Gardeners
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Babysitters
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Caretakers
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Travel Agent
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Retail-Estate Agent
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Wedding Planner
+              </a>
+            </div>
+          </div>
+          {/* Transportation */}
+{/* <div className="dropdown container justify-content-start mb-1">
+            <button
+              className="btn btn-primary dropdown-toggle-split"
+              type="button"
+              id="dropdownMenuButton"
+              style={{ width: 160 }}
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false">
+              Transportation
+            </button>
+            <div className="dropdown-menu disabled" aria-labelledby="dropdownMenuButton">
+              <a className="dropdown-item" onClick={() => this.handleClick('Carpenter')}>
+                Drivers
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Deliverers
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Taxi-Drivers
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Bus-Drivers
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Maid
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Bus-Conductors
+              </a>
+            </div>
+          </div> */}
+{/* Fashion */ }
+
+{/* <div className="dropdown container justify-content-start mb-1">
+            <button
+              className="btn btn-primary dropdown-toggle-split"
+              type="button"
+              id="dropdownMenuButton"
+              style={{ width: 160 }}
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false">
+              Fashion
+            </button>
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
+                Hairdressers
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Barber Men
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Makeup Artists
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Models
+              </a>
+
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Fashion Designers
+              </a>
+            </div>
+          </div> */}
+{/* IT */ }
+{/* <div className="dropdown container justify-content-start mb-1">
+            <button
+              className="btn btn-primary dropdown-toggle-split"
+              type="button"
+              id="dropdownMenuButton"
+              style={{ width: 160 }}
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false">
+              IT
+            </button>
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
+                IT Technicians
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Front-End Developers
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Back-End Developers
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Web Designers
+              </a>
+              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                {' '}
+                Graphics Designers
+              </a>
+            </div> */}
+
+{/* Entertainment */ }
+{/* <div className="dropdown container justify-content-start mb-1">
+                <button
+                  className="btn btn-primary dropdown-toggle-split"
+                  type="button"
+                  id="dropdownMenuButton"
+                  style={{ width: 160 }}
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false">
+                  Entertainment
+                </button>
+                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
+                    Actors & Actresses
+                  </a>
+                  <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                    {' '}
+                    News Presenters
+                  </a>
+                  <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                    {' '}
+                    News Writers
+                  </a>
+                  <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                    {' '}
+                    Reporters
+                  </a>
+                  <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                    {' '}
+                    Bloggers
+                  </a>
+                  <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
+                    Script-Writers
+                  </a>
+                  <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                    {' '}
+                    Producers
+                  </a>
+                </div>
+              </div> */}
+{/* Music */ }
+{/* <div className="dropdown container justify-content-start mb-1">
+                <button
+                  className="btn btn-primary dropdown-toggle-split"
+                  type="button"
+                  id="dropdownMenuButton"
+                  style={{ width: 160 }}
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false">
+                  Music
+                </button>
+                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
+                    Singers
+                  </a>
+                  <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                    {' '}
+                    Dancers
+                  </a>
+                  <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                    {' '}
+                    Performers
+                  </a>
+                  <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
+                    {' '}
+                    Rappers
+                  </a>
+                </div>
+              </div> */}
+{/* Art */ }
+{/* <div className="dropdown container justify-content-start mb-1">
+              <button
+                className="btn btn-primary  dropdown-toggle-split"
+                type="button"
+                id="dropdownMenuButton"
+                style={{ width: 160 }}
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
+                Art
+                </button>
+              <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
+                  Artists
+                  </a>
+              </div>
+            </div> 
+          </div> */}

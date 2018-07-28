@@ -84,6 +84,9 @@ Firebase.auth().onAuthStateChanged((user) => {
 class Messages extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      messageKey: this.props.location.state.messageKey
+    }
     //this.LoadMessages = this.LoadMessages.bind(this);
     //this.displayMessage = this.displayMessage.bind(this);
     this.handleMouseClick = this.handleMouseClick.bind(this);
@@ -94,7 +97,7 @@ class Messages extends React.Component {
   componentDidMount() {
     LoadMessages();
     this.LoadChatHistory();
-    console.log('component did mount');
+    console.log(this.props.location.state.messageKey);
     document.addEventListener('click', this.handleMouseClick)
   }
 
@@ -131,7 +134,7 @@ class Messages extends React.Component {
       this.displayChatHistory(elements['0']['name'], elements['0']['text'], elements['0']['userUID'])
     }.bind(this);
     Firebase.database()
-      .ref(`Users/${userUID}/messages`)
+      .ref(`Users/messages/${userUID}/${selectedPersonUserUID}`)
       .limitToLast(1)
       .on('child_added', setChatHistory);
   }
