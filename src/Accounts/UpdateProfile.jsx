@@ -82,7 +82,7 @@ class UpdateProfile extends Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.addItem = this.addItem.bind(this);
     this.sendData = this.sendData.bind(this);
-    this.handleChangeImages = this.handleChangeImages.bind(this);
+
     this.handleChangeInput = this.handleChangeInput.bind(this);
     // this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChangeImages = this.handleChangeImages.bind(this);
@@ -93,10 +93,6 @@ class UpdateProfile extends Component {
     // this.uploadHandler = this.uploadHandler(this)
     // this.handleChange = this.handleChange.bind(this)
   }
-
-
-
-
 
 
   // handle the deletion of a chip
