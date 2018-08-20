@@ -8,25 +8,10 @@ import greybackground from '../images/greybackground.jpeg';
 import Firebase from '../config/firebase';
 import Modal from 'react-modal';
 
-Modal.setAppElement('#root');
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: '50%',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    width: '90%',
-    // to make the modal scrollable if it is bigger than than the page
-    height: '500px',
-    overflow: 'scroll',
-  },
-};
-
 let userUID;
 let hasProfile = false;
-let element = '';
+let userDetails
+
 Firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     userUID = user.uid;
@@ -36,9 +21,10 @@ Firebase.auth().onAuthStateChanged((user) => {
       .ref(`Users/${userUID}`)
       .on('value', (snapshot) => {
         const data = snapshot.val()
-        if ((data != null) && data.firstName != null) {
+        if (data) {
           hasProfile = true
-          element = data
+          userDetails = data
+
         }
       });
   } else {
@@ -48,11 +34,13 @@ Firebase.auth().onAuthStateChanged((user) => {
 
 // Components
 class UpdateProfile extends Component {
+
   constructor(props) {
     super(props);
+    //userDetails = this.props.location.state.userDetails;
     this.state = {
       signedIn: true,
-      chipData: [{ label: 'Sowing' }, { label: 'Plumbing' }, { label: 'Wood-Work' }],
+      chipData: [],
       input: '',
       selectedFile: ['asa', 'asa'],
       uploadedImages: [],
@@ -70,7 +58,7 @@ class UpdateProfile extends Component {
       status: 'available',
       reviews: [],
       briefDescription: '',
-      profession: '',
+      profession: 'Maid',
       UploadModalOpen: false,
       // skills : [],
       // profilePicPreviewUrl is actually base64 of the image
@@ -93,6 +81,10 @@ class UpdateProfile extends Component {
     // this.uploadHandler = this.uploadHandler(this)
     // this.handleChange = this.handleChange.bind(this)
   }
+
+
+
+
 
 
   // handle the deletion of a chip
@@ -156,17 +148,7 @@ class UpdateProfile extends Component {
             console.log('write successful');
           }
         },
-    );
-    this.setState({
-      UploadModalOpen: true
-    })
-    setTimeout(
-      function () {
-
-      }
-        .bind(this),
-      2000
-    );
+      );
     browserHistory.push('/categories')
   }
   handleChangeImages(event) {
@@ -247,7 +229,7 @@ class UpdateProfile extends Component {
     if (profilePicPreviewUrl) {
       $profilePicPreview = <img className="img-thumbnail" src={profilePicPreviewUrl} />;
     } else {
-      $profilePicPreview = <img className="img-thumbnail" src={greybackground} />;
+      $profilePicPreview = <img className="img-thumbnail" src={this.state.profilePic} />;
     }
     // Gallery of Work Images
     const { imagePreviewUrl } = this.state;
@@ -257,7 +239,7 @@ class UpdateProfile extends Component {
       this.state.uploadedImages.push($imagePreview);
       this.state.uploadedImagesBase64.push(imagePreviewUrl);
     } else {
-      $imagePreview = <div className="previewText">Please select an Image for Preview</div>;
+      $imagePreview = <img className="img-thumbnail" src={this.state.uploadedImages} />;
     }
     return (
       <div>
@@ -413,13 +395,13 @@ class UpdateProfile extends Component {
                       </div>
                     </div>
 
-                    {this.state.chipData.map(data => (
+                    {(this.state.chipData) ? this.state.chipData.map(data => (
                       <Chip
                         // key={data.key}
                         label={data.label}
                         onDelete={this.handleDelete(data)}
                       />
-                    ))}
+                    )) : null}
                   </div>
                 </div>
                 <h3>Gallery of Your Work</h3>
@@ -456,33 +438,25 @@ class UpdateProfile extends Component {
          {$imagePreview}
        </div> */}
                 <div className="row col-md-12 mb-5">
-                  {uploadedImages.map((element, i) => (
+                  {(uploadedImages) ? uploadedImages.map((element, i) => (
                     <div style={{ marginRight: 10 }}>{element}</div>
-                  ))}
+                  )) : null}
                 </div>
 
-              </form>
-              <div className="col-md-12 text-center">
                 {/* To have the page reload after the submit button is pressed put the button inside the form div */}
                 <button
-                  className="btn btn-success" type="submit"
+                  className="btn btn-success" type="submit" //change onClick to onSubmit if you want it not to submit without filling out all the feeds
+
                   onClick={this.sendData}>
                   Update Profile
                </button>
-              </div>
+
+              </form>
+
             </div>
           </div>
         </div>
-        <Modal isOpen={this.state.UploadModalOpen}
 
-          style={customStyles}>
-
-          <div style={{ textAlign: 'center' }}>
-            {/* <img src={} /> */}
-            <h5>Successfully Updated</h5>
-            <h5>View in Categories</h5>
-          </div>
-        </Modal>
       </div>
     );
   }

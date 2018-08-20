@@ -9,6 +9,7 @@ import Home from './components/Home';
 import Messages from './Messages/Messages';
 import ViewProfile from './Accounts/ViewProfile';
 import UpdateProfile from './Accounts/UpdateProfile';
+import PhoneLogin from './Accounts/PhoneLogin';
 
 class App extends Component {
   render() {
@@ -20,6 +21,7 @@ class App extends Component {
         <Route path="/updateprofile" component={UpdateProfile} />
         <Route path="/messages" component={Messages} />
         <Route path='/viewprofile' component={ViewProfile} />
+        <Route path='/phonelogin' component={PhoneLogin} />
       </Router>
     );
   }

@@ -14,6 +14,7 @@ import workerIcon from '../images/icons8-workers-100.png'
 import serviceImage from '../images/pexels-photo-580613.jpeg'
 import Navbar from './Navbar';
 
+
 /* Modals */
 let loginStatus;
 let errorMessage;
@@ -32,8 +33,6 @@ const customStyles = {
 
 Modal.setAppElement('#root');
 
-
-
 /* we can use default props to set the initial value of the jobs that load when the page opens */
 /* Pages */
 
@@ -48,6 +47,7 @@ class Home extends React.Component {
       // loginStatus: false,
       email: '',
       password: '',
+      phoneNumber: '',
       reenterPassword: '',
       passwordMisMatch: false,
       error: null,
@@ -60,6 +60,7 @@ class Home extends React.Component {
     this.handleSignIn = this.handleSignIn.bind(this);
     this.closeSignInModal = this.closeSignInModal.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
+
   }
 
   openModal() {
@@ -86,6 +87,8 @@ class Home extends React.Component {
       modalIsOpen: true,
     });
   }
+
+
 
   handleSignUp() {
     // var email ="asa@yahoo.com";
@@ -147,7 +150,13 @@ class Home extends React.Component {
       this.setState({
         email: event.target.value,
       });
-    } else if (event.target.placeholder === 'password') {
+
+    } else if (event.target.placeholder === 'phone number') {
+      this.setState({
+        phoneNumber: event.target.value,
+      });
+    }
+    else if (event.target.placeholder === 'password') {
       this.setState({
         password: event.target.value,
         passwordMisMatch: false,
@@ -316,15 +325,12 @@ class Home extends React.Component {
               </div>
             </div>
             {/* About */}
-            {/* <div className="row">
+            <div className="row">
               <div className="col-6">
-                <h3>About</h3>
 
               </div>
-              <div className="col-6">
-                <img style={{ width: 500, heigh: 300 }} src={serviceImage} />
-              </div>
-            </div> */}
+
+            </div>
           </div>
         </div>
       </div >

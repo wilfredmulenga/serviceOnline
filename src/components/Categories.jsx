@@ -29,8 +29,26 @@ const customStyles = {
 };
 
 let loginStatus = true;
+let userUID;
+let displayName = 'Anonymous';
+let pic = 'https://storage.googleapis.com/lsk-guide-jobs.appspot.com/profile_placeholder.png';
+Firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    userUID = user.uid;
+    Firebase.database().ref(`Users/${userUID}`).on('value', (snapshot) => {
+      var data = snapshot.val()
+      if (data != null) {
+        displayName = `${data.firstName} ${data.lastName}`;
+        pic = data.pic
+      }
+    })
 
-
+  } else {
+    browserHistory.push({
+      pathname: '/phonelogin'
+    })
+  }
+});
 
 class Categories extends React.Component {
   constructor(props) {
@@ -68,7 +86,23 @@ class Tables extends React.Component {
     var PostRef = Firebase.database()
       .ref(`Users/${value}/Messages`).push()
     var PostRefKey = PostRef.getKey()
-    Firebase.database().ref(`Users/${value}/Messages`).push(PostRefKey)
+    Firebase.database().ref(`Users/${value}/Messages`)
+      .push({
+        messageKey: PostRefKey,
+        name: displayName,
+        text: "New Message",
+        profilePicUrl: pic
+      })
+    Firebase.database().ref(`Users/${userUID}/Messages`)
+      .push({
+        messageKey: PostRefKey,
+        name: displayName,
+        text: "New Message",
+        profilePicUrl: pic
+      })
+      .catch((error) => {
+        console.error('Error writing new message to Firebase Database', error);
+      });
     //console.log(PostRef.getKey())
     browserHistory.push({
       pathname: '/messages',
@@ -177,16 +211,15 @@ class Tables extends React.Component {
 
         </div>
         <div className="card col center-align mr-3 ml-3 ">
-          <div className="input-group mt-3 row justify-content-center ">
-            {/* <input type="text" className="form-control col-6"
-           placeholder="I am looking to hire a..."/> */}
+          {/* <div className="input-group mt-3 row justify-content-center ">
+           
             <div className="col-5">
               <IntegrationAutosuggest
                 lol={this.state.value}
                 onClick={() => alert(this.state.value)}
               />
             </div>
-            <div>
+            <div className='col-1 ml-4'>
               <span className="input-group-btn">
                 <button
                   className="btn btn-default"
@@ -200,7 +233,7 @@ class Tables extends React.Component {
                 </button>
               </span>
             </div>
-          </div>
+          </div> */}
           <div className="row pl-2 mt-4">
             {/* {
            listOfPeople.forEach((element,i)=>{
@@ -233,7 +266,7 @@ class Tables extends React.Component {
                   </div>
 
 
-
+                  {console.log(selectedPerson.skills, "skills")}
                   {/* Modal when user clicks on a specific person */}
                   {(selectedPerson.firstName != '' && selectedPerson.lastName != '' && selectedPerson.age != ''
                     && selectedPerson.city != '' && selectedPerson.briefDescription != '' && selectedPerson.email != ''
@@ -242,51 +275,60 @@ class Tables extends React.Component {
                       isOpen={this.state.modalIsOpen}
                       style={customStyles}
                       contentLabel="Example Modal">
-                      <div className="row">
-                        <div className="col-md-6">
-                          <div className="row">
-                            <img
-                              className="rounded-circle"
-                              src={selectedPerson.pic}
-                              style={{ width: 160, height: 160 }}
-                              alt={'profile pic'}
-                            />
-                            <div className="col-md-6 ml-3">
-                              <b> Name: </b>{`${element.firstName} ${element.lastName}`}
-                              <br />
-                              <b> Skills: </b>{`${element.skills.map((element, i) => (
-                                element.label
-                              ))}`} <br />
-                              <b> City: </b>{element.city} <br />
+                      <div clasName="container ">
+                        <div className=" row mb-3 justify-content-end"
+                        >
+                          <Button
 
-
-                              {/* <Link
-                                to={{
-                                  pathname: '/messages',
-                                  state: { selectedPersonUserUID: element.userUID },
-                                }}> */}
-                              {' '} {console.log(element.userUID)}
-                              <Button className="mt-3" variant='contained'
-                                style={{ backgroundColor: '#FFF', color: '#000' }}
-                                onClick={() => this.handleConnect(element.userUID)}
-                              >Connect</Button>
-                              {/* </Link> */}
-                            </div>
-                          </div>
-                          <h5 className="mt-4 mb-1">Brief Job Description</h5>
-                          {`${element.briefDescription}`}
+                            type="button"
+                            onClick={() => this.setState({
+                              modalIsOpen: false
+                            })}
+                            variant='contained'
+                            color="secondary">
+                            Cancel
+            </Button>
                         </div>
-                        <div className="col-md-6">
-                          <div>
-                            <h5 className="mt-4">Gallery of Work</h5>
-                            {element.galleryOfWork.map((image, key) => (
-                              <div className="row mb-3" key={i}>
-                                <div className="col-md-6">
-                                  <img className="img-thumbnail mr-2" src={image} />
-                                </div>
+                        <div className="row">
 
+                          <div className="col-md-6">
+                            <div className="row">
+                              <img
+                                className="rounded-circle"
+                                src={selectedPerson.pic}
+                                style={{ width: 160, height: 160 }}
+                                alt={'profile pic'}
+                              />
+                              <div className="col-md-6 ml-3">
+                                <b> Name: </b>{`${selectedPerson.firstName} ${selectedPerson.lastName}`}
+                                <br />
+                                <b> Skills: </b>{(selectedPerson.skills) ? selectedPerson.skills.map((element, i) => (
+                                  element.label
+                                )) : null} <br />
+                                <b> City: </b>{selectedPerson.city} <br />
+
+                                <Button className="mt-3" variant='contained'
+                                  style={{ backgroundColor: '#FFF', color: '#000' }}
+                                  onClick={() => this.handleConnect(selectedPerson.userUID)}
+                                >Connect</Button>
+                                {/* </Link> */}
                               </div>
-                            ))}
+                            </div>
+                            <h5 className="mt-4 mb-1">Brief Job Description</h5>
+                            {`${selectedPerson.briefDescription}`}
+                          </div>
+                          <div className="col-md-6">
+                            <div>
+                              <h5 className="mt-4">Gallery of Work</h5>
+                              {(selectedPerson.galleryOfWork) ? selectedPerson.galleryOfWork.map((image, i) => (
+                                <div className="row mb-3" key={i}>
+                                  <div className="col-md-6">
+                                    <img className="img-thumbnail mr-2" src={image} />
+                                  </div>
+
+                                </div>
+                              )) : null}
+                            </div>
                           </div>
                         </div>
                       </div>

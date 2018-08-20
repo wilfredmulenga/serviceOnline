@@ -174,17 +174,7 @@ class Navbar extends React.Component {
     }
   }
 
-  componentWillMount() {
-    console.log('component will mount')
-    if (!loginStatus) {
-      this.openSignInModal
-    }
-  }
 
-  componentDidMount() {
-
-
-  }
   render() {
     return (
       <div className="App" id="navbar">
@@ -192,7 +182,7 @@ class Navbar extends React.Component {
         <nav className="navbar navbar-expand-lg "
           style={{ backgroundColor: '#182157' }}>
           <Link to="/" className="navbar-brand link">
-            Nchito
+            Fixer
 
          </Link>
           <button
@@ -221,6 +211,9 @@ class Navbar extends React.Component {
               </Link>
               <li className="nav-item active mr-3">
                 <Link to="/viewprofile" className="link">Profile</Link>
+              </li>
+              <li className="nav-item active mr-3">
+                <Link to="/phonelogin" className="link">Login</Link>
               </li>
             </ul>
           </div>
