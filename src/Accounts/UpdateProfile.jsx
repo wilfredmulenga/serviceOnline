@@ -180,6 +180,19 @@ class UpdateProfile extends Component {
     reader.readAsDataURL(file);
   }
   // handle input change except for those that need images
+  // we can use a switch statement here 
+
+  // handleChangeInput = ({ value }) => {
+  //   switch (key) {
+  //     case value:
+        
+  //       break;
+    
+  //     default:
+  //       break;
+  //   }
+
+  // } 
   handleChangeInput(event) {
     if (event.target.placeholder === 'First Name') {
       this.setState({
