@@ -4,15 +4,15 @@ import Firebase from '../config/firebase';
 import { browserHistory } from 'react-router';
 import Button from '@material-ui/core/Button';
 
-let loginStatus;
-Firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-        loginStatus = true
+let loginStatus = true;
+// Firebase.auth().onAuthStateChanged(function (user) {
+//     if (user) {
+//         loginStatus = true
 
-    } else {
-        loginStatus = false
-    };
-})
+//     } else {
+//         loginStatus = false
+//     };
+// })
 
 
 const uiConfig = {
@@ -31,21 +31,17 @@ class PhoneLogin extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = {
-            loginStatus: false
-        }
+
         this.handleSignOut = this.handleSignOut.bind(this)
     }
 
 
 
     handleSignOut() {
-        this.setState({
-            loginStatus: false
-        })
+
         Firebase.auth().signOut();
         browserHistory.push('/')
-        console.log("login", this.state.loginStatus)
+
     }
     render() {
         return <div  >

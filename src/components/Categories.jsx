@@ -44,9 +44,10 @@ Firebase.auth().onAuthStateChanged((user) => {
     })
 
   } else {
-    browserHistory.push({
-      pathname: '/phonelogin'
-    })
+    //comment out and when app loads, takes user to /phonelogin
+    // browserHistory.push({
+    //   pathname: '/phonelogin'
+    // })
   }
 });
 
@@ -80,6 +81,7 @@ class Tables extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.handleCardClick = this.handleCardClick.bind(this);
     this.handleConnect = this.handleConnect.bind(this);
+    this.handleClick('Maid')
   }
 
   handleConnect = (value) => {

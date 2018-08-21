@@ -21,7 +21,7 @@ class App extends Component {
         <Route path="/updateprofile" component={UpdateProfile} />
         <Route path="/messages" component={Messages} />
         <Route path='/viewprofile' component={ViewProfile} />
-        <Route path='/phonelogin' component={PhoneLogin} />
+        {/* <Route path='/phonelogin' component={PhoneLogin} /> */}
       </Router>
     );
   }

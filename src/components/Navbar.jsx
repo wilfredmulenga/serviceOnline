@@ -182,7 +182,7 @@ class Navbar extends React.Component {
         <nav className="navbar navbar-expand-lg "
           style={{ backgroundColor: '#182157' }}>
           <Link to="/" className="navbar-brand link">
-            Fixer
+            Nchito
 
          </Link>
           <button
@@ -212,9 +212,9 @@ class Navbar extends React.Component {
               <li className="nav-item active mr-3">
                 <Link to="/viewprofile" className="link">Profile</Link>
               </li>
-              <li className="nav-item active mr-3">
+              {/* <li className="nav-item active mr-3">
                 <Link to="/phonelogin" className="link">Login</Link>
-              </li>
+              </li> */}
             </ul>
           </div>
         </nav>
