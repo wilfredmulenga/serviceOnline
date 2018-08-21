@@ -1,8 +1,3 @@
-// this page initially is supposed to hold just content that describes the project
-// however, having trouble using signing in and out modals so I added them to the
-// "log in/sign up" link using props. so if the user clicks that link while on the home page
-// the "Sign Up" or "Sign In" modals will display. they can also sign out from this page if they are initially logged in
-
 import React from 'react';
 import { browserHistory } from 'react-router';
 import Modal from 'react-modal';
@@ -11,7 +6,6 @@ import landingPage from '../images/landingPage.jpeg';
 import workingIcon from '../images/icons8-work-light-100.png'
 import handIcon from '../images/icons8-handshake-100.png'
 import workerIcon from '../images/icons8-workers-100.png'
-import serviceImage from '../images/pexels-photo-580613.jpeg'
 import Navbar from './Navbar';
 
 
@@ -295,7 +289,7 @@ class Home extends React.Component {
               <h3 className="titles">How It Works</h3>
               <div className="row d-flex justify-content-between">
                 <div className="col-4">
-                  <img src={workingIcon} />
+                  <img src={workingIcon} alt="working icon" />
                   <div className="card mt-3">
                     <h5 className="card-title mt-3">I want to get hired</h5>
                     <p className="card-text">
@@ -304,7 +298,7 @@ class Home extends React.Component {
                   </div>
                 </div>
                 <div className=" col-4 ">
-                  <img src={workerIcon} />
+                  <img src={workerIcon} alt='worker icon' />
                   <div className='card mt-3'>
                     <h5 className="card-title mt-3">I want to hire someone</h5>
                     <p className="card-text">
@@ -314,7 +308,7 @@ class Home extends React.Component {
                 </div>
 
                 <div className="col-4">
-                  <img src={handIcon} />
+                  <img src={handIcon} alt="hand icon" />
                   <div className="card mt-3">
                     <h5 className="card-title mt-3">I want to be a Partner</h5>
                     <p className="card-text">

@@ -4,7 +4,6 @@ import Firebase from '../config/firebase';
 import { Link, browserHistory } from 'react-router';
 import Button from '@material-ui/core/Button';
 
-let element = '';
 let userUID
 class ViewProfile extends Component {
     constructor(props) {
@@ -25,7 +24,7 @@ class ViewProfile extends Component {
                     .ref(`Users/${userUID}`)
                     .on('value', (snapshot) => {
                         const data = snapshot.val()
-                        
+
                         if (data && !data.userUID) {
                             browserHistory.push('/updateprofile')
 
@@ -70,11 +69,12 @@ class ViewProfile extends Component {
                                 backgroundColor: '#FFF',
                                 color: '#000'
                             }}
-                        //onClick={() => browserHistory.push('/updateprofile')}
-                        ><Link to={{
+                            onClick={() => browserHistory.push('/updateprofile')}
+                        >Update Profile
+                            {/* <Link to={{
                             pathname: '/updateprofile',
                             state: { userDetails: listOfPeople }
-                        }} >Update Profile</Link>
+                        }} >Update Profile</Link> */}
                         </Button>
                         <Button className="btn  mb-1" variant='contained' style={{ backgroundColor: '#FFF', color: '#000' }}
                             onClick={() => browserHistory.push('/messages')}>Messages</Button>
@@ -123,7 +123,7 @@ class ViewProfile extends Component {
                                     {listOfPeople.galleryOfWork.map((image, i) => (
                                         <div key={i} className="row mb-3" >
                                             <div className="col-md-6">
-                                                <img className="img-thumbnail mr-2" src={image} />
+                                                <img className="img-thumbnail mr-2" alt=" gallery of work" src={image} />
                                             </div>
                                         </div>
                                     ))}
@@ -144,19 +144,6 @@ class ViewProfile extends Component {
     }
 }
 
-const customStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: '50%',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-        width: '90%',
-        // to make the modal scrollable if it is bigger than than the page
-        height: '500px',
-        overflow: 'scroll',
-    },
-};
+
 
 export default ViewProfile;

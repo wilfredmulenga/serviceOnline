@@ -1,4 +1,3 @@
-// Overlay component to where people chat
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Firebase from '../config/firebase';
@@ -6,16 +5,7 @@ import Button from '@material-ui/core/Button';
 
 let selectedPersonUserUID = '';
 let userUID;
-const customStyles = {
-  content: {
-    width: '200px',
-    height: '100px',
-    color: 'grey',
-    absolute: {
-      position: 'absolute',
-    },
-  },
-};
+
 
 Firebase.auth().onAuthStateChanged((user) => {
   if (user) {
@@ -47,7 +37,7 @@ class Messages extends React.Component {
     document.addEventListener('click', this.handleMouseClick)
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
 
     this.LoadChatHistory()
     document.removeEventListener('click', this.handleMouseClick)
@@ -165,8 +155,6 @@ class Messages extends React.Component {
       }
       this.loadMessages()
     }
-
-
     // div.querySelector('.pic').style.backgroundImage = `url(${picUrl})`;
 
     // if (text) { // If the message is text.

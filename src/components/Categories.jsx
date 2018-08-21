@@ -1,16 +1,10 @@
-// this has two components, categories which just houses the navbar and tables components
-// and the tables component which houses the body of the page such as the 'browse jobs'
-// tab on the left, the autocomplete search bar and where all the content is displayed when the user picks a
-// certain profession/job
-
 import React from 'react';
-import { Link } from 'react-router';
 import Modal from 'react-modal';
 import Navbar from './Navbar';
 import Firebase from '../config/firebase';
-import IntegrationAutosuggest from '../IntegrationAutosuggest';
 import Button from '@material-ui/core/Button';
 import { browserHistory } from 'react-router';
+import Loader from './Loader'
 
 Modal.setAppElement('#root');
 const customStyles = {
@@ -69,7 +63,6 @@ class Categories extends React.Component {
 }
 
 let JobsSnapshot;
-const newArray = [];
 class Tables extends React.Component {
   constructor(props) {
     super(props);
@@ -81,7 +74,7 @@ class Tables extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.handleCardClick = this.handleCardClick.bind(this);
     this.handleConnect = this.handleConnect.bind(this);
-    this.handleClick('Maid')
+
   }
 
   handleConnect = (value) => {
@@ -118,8 +111,7 @@ class Tables extends React.Component {
       selectedPersonUserID === this.state.listOfPeople[item].userUID
         ? this.setState({
           selectedPerson: this.state.listOfPeople[item],
-        })
-        : null;
+        }) : null;
       console.log(this.state.selectedPerson);
     }
     this.openModal();
@@ -133,9 +125,6 @@ class Tables extends React.Component {
   handleClick = (values) => {
     const peopleArray = [];
 
-    // var jobs = firebase.database().ref('Jobs/'+ value);
-    //when user first visits categories section, they should see search results already
-    //this can be of popular professionals or a random section. for now i will set it to house cleaners
     (values) ? values : 'Maid'
     console.log(values)
     Firebase.database()
@@ -164,7 +153,7 @@ class Tables extends React.Component {
 
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     Firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         loginStatus = true
@@ -244,7 +233,7 @@ class Tables extends React.Component {
 
            } */}
 
-            {(listOfPeople != ["empty"]) ? listOfPeople.map((element, i) => (
+            {(listOfPeople !== ["empty"]) ? listOfPeople.map((element, i) => (
               <div className="card col-md-6 pt-3 pb-3 " key={i} e>
                 <div className="row justify-content-start">
                   <div className="col-md-4  justify-content-start">
@@ -270,9 +259,9 @@ class Tables extends React.Component {
 
                   {console.log(selectedPerson.skills, "skills")}
                   {/* Modal when user clicks on a specific person */}
-                  {(selectedPerson.firstName != '' && selectedPerson.lastName != '' && selectedPerson.age != ''
-                    && selectedPerson.city != '' && selectedPerson.briefDescription != '' && selectedPerson.email != ''
-                    && selectedPerson.phoneNumber != '' && selectedPerson.nrc != '') ?
+                  {(selectedPerson.firstName !== '' && selectedPerson.lastName !== '' && selectedPerson.age !== ''
+                    && selectedPerson.city !== '' && selectedPerson.briefDescription !== '' && selectedPerson.email !== ''
+                    && selectedPerson.phoneNumber !== '' && selectedPerson.nrc !== '') ?
                     <Modal
                       isOpen={this.state.modalIsOpen}
                       style={customStyles}
@@ -325,7 +314,7 @@ class Tables extends React.Component {
                               {(selectedPerson.galleryOfWork) ? selectedPerson.galleryOfWork.map((image, i) => (
                                 <div className="row mb-3" key={i}>
                                   <div className="col-md-6">
-                                    <img className="img-thumbnail mr-2" src={image} />
+                                    <img className="img-thumbnail mr-2" src={image} alt="gallery of" />
                                   </div>
 
                                 </div>
@@ -337,7 +326,7 @@ class Tables extends React.Component {
                     </Modal> : null}
                 </div>
               </div>
-            )) : <div><h1>No search Results</h1></div>}
+            )) : Loader}
           </div>
         </div>
       </div > : <div className='justify-content-center mt-5'><h5>Sign In to View Categories</h5></div>
@@ -346,267 +335,3 @@ class Tables extends React.Component {
 }
 
 export default Categories;
-{/* commented out dropdown list of jobs for demo purposes */ }
-{/* Personal Service */ }
-{/* <div className="dropdown container-fluid mb-1 justify-content-start ">
-            <button
-              className="btn btn-primary dropdown-toggle-split"
-              type="button"
-              id="dropdownMenuButton"
-              style={{ width: 160 }}
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false">
-              Personal Service
-            </button>
-            <div className="dropdown-menu flex-grow-1" aria-labelledby="dropdownMenuButton">
-              <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
-                Waiters & Waitresses
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Bartenders
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Shop Assistants
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Security Guards
-              </a>
-              <a
-                className="dropdown-item"
-                value={'action'}
-                onClick={() => this.handleClick('House Cleaner')}>
-                {' '}
-                House Cleaners
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Shop Assistants
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Gardeners
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Babysitters
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Caretakers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Travel Agent
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Retail-Estate Agent
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Wedding Planner
-              </a>
-            </div>
-          </div>
-          {/* Transportation */}
-{/* <div className="dropdown container justify-content-start mb-1">
-            <button
-              className="btn btn-primary dropdown-toggle-split"
-              type="button"
-              id="dropdownMenuButton"
-              style={{ width: 160 }}
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false">
-              Transportation
-            </button>
-            <div className="dropdown-menu disabled" aria-labelledby="dropdownMenuButton">
-              <a className="dropdown-item" onClick={() => this.handleClick('Carpenter')}>
-                Drivers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Deliverers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Taxi-Drivers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Bus-Drivers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Maid
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Bus-Conductors
-              </a>
-            </div>
-          </div> */}
-{/* Fashion */ }
-
-{/* <div className="dropdown container justify-content-start mb-1">
-            <button
-              className="btn btn-primary dropdown-toggle-split"
-              type="button"
-              id="dropdownMenuButton"
-              style={{ width: 160 }}
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false">
-              Fashion
-            </button>
-            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
-                Hairdressers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Barber Men
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Makeup Artists
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Models
-              </a>
-
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Fashion Designers
-              </a>
-            </div>
-          </div> */}
-{/* IT */ }
-{/* <div className="dropdown container justify-content-start mb-1">
-            <button
-              className="btn btn-primary dropdown-toggle-split"
-              type="button"
-              id="dropdownMenuButton"
-              style={{ width: 160 }}
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false">
-              IT
-            </button>
-            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
-                IT Technicians
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Front-End Developers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Back-End Developers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Web Designers
-              </a>
-              <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                {' '}
-                Graphics Designers
-              </a>
-            </div> */}
-
-{/* Entertainment */ }
-{/* <div className="dropdown container justify-content-start mb-1">
-                <button
-                  className="btn btn-primary dropdown-toggle-split"
-                  type="button"
-                  id="dropdownMenuButton"
-                  style={{ width: 160 }}
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false">
-                  Entertainment
-                </button>
-                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
-                    Actors & Actresses
-                  </a>
-                  <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                    {' '}
-                    News Presenters
-                  </a>
-                  <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                    {' '}
-                    News Writers
-                  </a>
-                  <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                    {' '}
-                    Reporters
-                  </a>
-                  <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                    {' '}
-                    Bloggers
-                  </a>
-                  <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
-                    Script-Writers
-                  </a>
-                  <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                    {' '}
-                    Producers
-                  </a>
-                </div>
-              </div> */}
-{/* Music */ }
-{/* <div className="dropdown container justify-content-start mb-1">
-                <button
-                  className="btn btn-primary dropdown-toggle-split"
-                  type="button"
-                  id="dropdownMenuButton"
-                  style={{ width: 160 }}
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false">
-                  Music
-                </button>
-                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
-                    Singers
-                  </a>
-                  <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                    {' '}
-                    Dancers
-                  </a>
-                  <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                    {' '}
-                    Performers
-                  </a>
-                  <a className="dropdown-item" value={'action'} onClick={() => this.handleClick}>
-                    {' '}
-                    Rappers
-                  </a>
-                </div>
-              </div> */}
-{/* Art */ }
-{/* <div className="dropdown container justify-content-start mb-1">
-              <button
-                className="btn btn-primary  dropdown-toggle-split"
-                type="button"
-                id="dropdownMenuButton"
-                style={{ width: 160 }}
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false">
-                Art
-                </button>
-              <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a className="dropdown-item" onClick={() => this.handleClick('House Cleaner')}>
-                  Artists
-                  </a>
-              </div>
-            </div> 
-          </div> */}

@@ -9,8 +9,7 @@ import Firebase from '../config/firebase';
 import Modal from 'react-modal';
 
 let userUID;
-let hasProfile = false;
-let userDetails
+
 
 Firebase.auth().onAuthStateChanged((user) => {
   if (user) {
@@ -58,7 +57,7 @@ class UpdateProfile extends Component {
       status: 'available',
       reviews: [],
       briefDescription: '',
-      profession: 'Maid',
+      profession: 'Other',
       UploadModalOpen: false,
       // skills : [],
       // profilePicPreviewUrl is actually base64 of the image
@@ -70,30 +69,15 @@ class UpdateProfile extends Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.addItem = this.addItem.bind(this);
     this.sendData = this.sendData.bind(this);
-
     this.handleChangeInput = this.handleChangeInput.bind(this);
-    // this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChangeImages = this.handleChangeImages.bind(this);
     this.handleChangeProfilePic = this.handleChangeProfilePic.bind(this);
     this.handleProfessionChange = this.handleProfessionChange.bind(this);
-
-    // this.fileChangedHandler = this.fileChangedHandler(this)
-    // this.uploadHandler = this.uploadHandler(this)
-    // this.handleChange = this.handleChange.bind(this)
   }
 
-
-
-
-
-
-  // handle the deletion of a chip
   handleProfessionChange(event) {
     this.setState({ profession: event.target.value });
   }
-  //  componentDidUpdate(){
-  //   this.handleProfessionChange()
-  //  }
 
   handleDelete = data => () => {
     if (data.label === 'nameOfChip') {
@@ -120,7 +104,7 @@ class UpdateProfile extends Component {
       input: event.target.value,
     });
   };
-  // handle uploading an image for "Gallery Of Your Work"
+
   sendData() {
     // console.log(this.state.profession)
     Firebase.database()
@@ -185,9 +169,9 @@ class UpdateProfile extends Component {
   // handleChangeInput = ({ value }) => {
   //   switch (key) {
   //     case value:
-        
+
   //       break;
-    
+
   //     default:
   //       break;
   //   }
@@ -235,7 +219,6 @@ class UpdateProfile extends Component {
 
   render() {
     const { uploadedImages } = this.state;
-    const { uploadedImagesBase64 } = this.state;
     // Profile Picture Upload
     const { profilePicPreviewUrl } = this.state;
     let $profilePicPreview = null;
@@ -247,7 +230,8 @@ class UpdateProfile extends Component {
     // Gallery of Work Images
     const { imagePreviewUrl } = this.state;
     let $imagePreview = null;
-    if (imagePreviewUrl) {
+    if (imagePreviewUrl && !this.state.uploadedImages.includes($imagePreview)
+      && !this.state.uploadedImagesBase64.includes(imagePreviewUrl)) {
       $imagePreview = <img className="img-thumbnail" src={imagePreviewUrl} />;
       this.state.uploadedImages.push($imagePreview);
       this.state.uploadedImagesBase64.push(imagePreviewUrl);
@@ -257,9 +241,6 @@ class UpdateProfile extends Component {
     return (
       <div>
         <Navbar title={'Navbar Page'} />
-        {
-          // this.state.signedIn ?  null   :  <SignIn loginStatus={this.state.signedIn}/>
-        }
 
         <div className="container justify-content-center">
           <div className="card">
@@ -452,7 +433,7 @@ class UpdateProfile extends Component {
        </div> */}
                 <div className="row col-md-12 mb-5">
                   {(uploadedImages) ? uploadedImages.map((element, i) => (
-                    <div style={{ marginRight: 10 }}>{element}</div>
+                    <div key={i} style={{ marginRight: 10 }}>{element}</div>
                   )) : null}
                 </div>
 
@@ -460,7 +441,7 @@ class UpdateProfile extends Component {
                 <button
                   className="btn btn-success" type="submit" //change onClick to onSubmit if you want it not to submit without filling out all the feeds
 
-                  onClick={this.sendData}>
+                  onSubmit={this.sendData}>
                   Update Profile
                </button>
 

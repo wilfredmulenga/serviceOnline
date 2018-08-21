@@ -1,6 +1,3 @@
-// Here is where all the routing to different pages takes place
-// The actual links are in Navbar.js
-
 import React, { Component } from 'react';
 import { Router, browserHistory, Route } from 'react-router';
 import './styles/App.css';
@@ -9,7 +6,7 @@ import Home from './components/Home';
 import Messages from './Messages/Messages';
 import ViewProfile from './Accounts/ViewProfile';
 import UpdateProfile from './Accounts/UpdateProfile';
-import PhoneLogin from './Accounts/PhoneLogin';
+
 
 class App extends Component {
   render() {

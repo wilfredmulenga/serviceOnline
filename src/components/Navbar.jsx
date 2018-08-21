@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, browserHistory } from 'react-router';
+import { Link } from 'react-router';
 import Firebase from '../config/firebase';
 import Modal from 'react-modal';
 import Button from '@material-ui/core/Button';
