@@ -24,18 +24,21 @@ const customStyles = {
 
 let loginStatus = true;
 let userUID;
+let userData;
+const peopleArray = []
 let displayName = 'Anonymous';
 let pic = 'https://storage.googleapis.com/lsk-guide-jobs.appspot.com/profile_placeholder.png';
 Firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     userUID = user.uid;
-    Firebase.database().ref(`Users/${userUID}`).on('value', (snapshot) => {
-      var data = snapshot.val()
-      if (data != null) {
-        displayName = `${data.firstName} ${data.lastName}`;
-        pic = data.pic
-      }
-    })
+    // Firebase.database().ref(`Users/${userUID}`).on('value', (snapshot) => {
+    //   var data = snapshot.val()
+    //   if (data != null) {
+    //     displayName = `${data.firstName} ${data.lastName}`;
+    //     pic = data.pic
+    //   }
+    // })
+    // newFucn()
 
   } else {
     //comment out and when app loads, takes user to /phonelogin
@@ -44,6 +47,33 @@ Firebase.auth().onAuthStateChanged((user) => {
     // })
   }
 });
+
+function newFucn() {
+  Firebase.database()
+    .ref('Users/')
+    .orderByChild('profession')
+    .on('value', (snapshot) => {
+      JobsSnapshot = snapshot.val();
+      console.log("logged in", JobsSnapshot);
+      let elements;
+      if (JobsSnapshot == null) {
+        // this.setState({ listOfPeople: ['empty'] })
+        // console.log(this.state.listOfPeople)
+      } else {
+        // React doesnt accept objects in states so it has to be converted into an array
+        for (const index in JobsSnapshot) {
+          elements = JobsSnapshot[index];
+          peopleArray.push(elements);
+        }
+        userData = peopleArray
+        // this.setState({
+        //   listOfPeople: peopleArray,
+        // });
+      }
+      console.log(userData)
+    });
+}
+// console.log(newFucn == true)
 
 class Categories extends React.Component {
   constructor(props) {
@@ -70,11 +100,12 @@ class Tables extends React.Component {
       listOfPeople: [],
       job: '',
       selectedPerson: [],
+      loading: true
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleCardClick = this.handleCardClick.bind(this);
     this.handleConnect = this.handleConnect.bind(this);
-
+    this.handleClick('Maid')
   }
 
   handleConnect = (value) => {
@@ -145,13 +176,15 @@ class Tables extends React.Component {
             peopleArray.push(elements);
           }
           this.setState({
-            listOfPeople: peopleArray,
+            //listOfPeople: peopleArray,
+            loading: false
           });
         }
         console.log(peopleArray)
       });
 
   };
+
 
   UNSAFE_componentWillMount() {
     Firebase.auth().onAuthStateChanged((user) => {
@@ -167,42 +200,45 @@ class Tables extends React.Component {
     const { listOfPeople } = this.state;
     const { selectedPerson } = this.state;
     console.log(loginStatus)
-    return ((loginStatus) ?
-      <div className="row container-fluid justify-content-start mt-4">
-        <div className="card col-md-2 ml-3 d-flex">
-          <div className="mt-3 justify-content-start text-center">
-            <h5>BROWSE JOBS</h5>
-            <hr />
-          </div>
-          {/* Three sample jobs for demo purposes. list can be as long as desired */}
-          <Button
-            className="btn  mb-1"
-            type="button"
-            variant='contained'
-            style={{ backgroundColor: '#FFF', color: '#000' }}
-            onClick={() => this.handleClick('Maid')}>Maid</Button>
-          <Button
-            className="btn mb-1"
-            type="button"
-            variant='contained'
-            style={{ backgroundColor: '#FFF', color: '#000' }}
-            onClick={() => this.handleClick('Electrician')}
-          >
-            Electrician
+    if (this.state.loading) { return <Loader /> } else {
+      console.log("user", userData)
+      return (
+        <div className="row container-fluid justify-content-start mt-4">
+          <div className="card col-md-2 ml-3 d-flex">
+            <div className="mt-3 justify-content-start text-center">
+              <h5>BROWSE JOBS</h5>
+              <hr />
+            </div>
+            {/* Three sample jobs for demo purposes. list can be as long as desired */}
+            <Button
+              className="btn  mb-1"
+              type="button"
+              variant='contained'
+              style={{ backgroundColor: '#FFF', color: '#000' }}
+            // onClick={() => this.handleClick('Maid')}
+            >Maid</Button>
+            <Button
+              className="btn mb-1"
+              type="button"
+              variant='contained'
+              style={{ backgroundColor: '#FFF', color: '#000' }}
+            //onClick={() => this.handleClick('Electrician')}
+            >
+              Electrician
             </Button>
-          <Button
-            className="btn  mb-1"
-            type="button"
-            variant='contained'
-            style={{ backgroundColor: '#FFF', color: '#000' }}
-            onClick={() => this.handleClick('Carpenter')}
-          >
-            Carpenter
+            <Button
+              className="btn  mb-1"
+              type="button"
+              variant='contained'
+              style={{ backgroundColor: '#FFF', color: '#000' }}
+            //onClick={() => this.handleClick('Carpenter')}
+            >
+              Carpenter
             </Button>
 
-        </div>
-        <div className="card col center-align mr-3 ml-3 ">
-          {/* <div className="input-group mt-3 row justify-content-center ">
+          </div>
+          <div className="card col center-align mr-3 ml-3 ">
+            {/* <div className="input-group mt-3 row justify-content-center ">
            
             <div className="col-5">
               <IntegrationAutosuggest
@@ -225,112 +261,113 @@ class Tables extends React.Component {
               </span>
             </div>
           </div> */}
-          <div className="row pl-2 mt-4">
-            {/* {
+            <div className="row pl-2 mt-4">
+              {/* {
            listOfPeople.forEach((element,i)=>{
              newArray.push(Object.values(element))
            })
 
            } */}
 
-            {(listOfPeople !== ["empty"]) ? listOfPeople.map((element, i) => (
-              <div className="card col-md-6 pt-3 pb-3 " key={i} e>
-                <div className="row justify-content-start">
-                  <div className="col-md-4  justify-content-start">
-                    <img
-                      className="card-img-top rounded-circle"
-                      src={element.pic}
-                      style={{ width: 160, height: 160 }}
-                      alt={'profile pic'}
-                    />
-                  </div>
-                  <div className="col-md-8  text-align-start">
-                    <b>   Name: </b> {`${element.firstName} ${element.lastName}`}<br />
+              {(listOfPeople !== ["empty"]) ? listOfPeople.map((element, i) => (
+                <div className="card col-md-6 pt-3 pb-3 " key={i} >
+                  <div className="row justify-content-start">
+                    <div className="col-md-4  justify-content-start">
+                      <img
+                        className="card-img-top rounded-circle"
+                        src={element.pic}
+                        style={{ width: 160, height: 160 }}
+                        alt={'profile pic'}
+                      />
+                    </div>
+                    <div className="col-md-8  text-align-start">
+                      <b>   Name: </b> {`${element.firstName} ${element.lastName}`}<br />
 
-                    <b>  Skills: </b>{`${element.skills.map((element, i) => (
-                      element.label
-                    ))}`} <br />
-                    <b> City:</b> {element.city} <br />
+                      <b>  Skills: </b>{`${element.skills.map((element, i) => (
+                        element.label
+                      ))}`} <br />
+                      <b> City:</b> {element.city} <br />
 
-                    <Button className='mt-5' variant='contained' style={{ backgroundColor: '#FFF', color: '#000' }}
-                      onClick={() => this.handleCardClick(element.userUID)}>View More</Button>
-                  </div>
+                      <Button className='mt-5' variant='contained' style={{ backgroundColor: '#FFF', color: '#000' }}
+                        onClick={() => this.handleCardClick(element.userUID)}>View More</Button>
+                    </div>
 
 
-                  {console.log(selectedPerson.skills, "skills")}
-                  {/* Modal when user clicks on a specific person */}
-                  {(selectedPerson.firstName !== '' && selectedPerson.lastName !== '' && selectedPerson.age !== ''
-                    && selectedPerson.city !== '' && selectedPerson.briefDescription !== '' && selectedPerson.email !== ''
-                    && selectedPerson.phoneNumber !== '' && selectedPerson.nrc !== '') ?
-                    <Modal
-                      isOpen={this.state.modalIsOpen}
-                      style={customStyles}
-                      contentLabel="Example Modal">
-                      <div clasName="container ">
-                        <div className=" row mb-3 justify-content-end"
-                        >
-                          <Button
+                    {console.log(selectedPerson.skills, "skills")}
+                    {/* Modal when user clicks on a specific person */}
+                    {(selectedPerson.firstName !== '' && selectedPerson.lastName !== '' && selectedPerson.age !== ''
+                      && selectedPerson.city !== '' && selectedPerson.briefDescription !== '' && selectedPerson.email !== ''
+                      && selectedPerson.phoneNumber !== '' && selectedPerson.nrc !== '') ?
+                      <Modal
+                        isOpen={this.state.modalIsOpen}
+                        style={customStyles}
+                        contentLabel="Example Modal">
+                        <div clasName="container ">
+                          <div className=" row mb-3 justify-content-end"
+                          >
+                            <Button
 
-                            type="button"
-                            onClick={() => this.setState({
-                              modalIsOpen: false
-                            })}
-                            variant='contained'
-                            color="secondary">
-                            Cancel
+                              type="button"
+                              onClick={() => this.setState({
+                                modalIsOpen: false
+                              })}
+                              variant='contained'
+                              color="secondary">
+                              Cancel
             </Button>
-                        </div>
-                        <div className="row">
+                          </div>
+                          <div className="row">
 
-                          <div className="col-md-6">
-                            <div className="row">
-                              <img
-                                className="rounded-circle"
-                                src={selectedPerson.pic}
-                                style={{ width: 160, height: 160 }}
-                                alt={'profile pic'}
-                              />
-                              <div className="col-md-6 ml-3">
-                                <b> Name: </b>{`${selectedPerson.firstName} ${selectedPerson.lastName}`}
-                                <br />
-                                <b> Skills: </b>{(selectedPerson.skills) ? selectedPerson.skills.map((element, i) => (
-                                  element.label
-                                )) : null} <br />
-                                <b> City: </b>{selectedPerson.city} <br />
+                            <div className="col-md-6">
+                              <div className="row">
+                                <img
+                                  className="rounded-circle"
+                                  src={selectedPerson.pic}
+                                  style={{ width: 160, height: 160 }}
+                                  alt={'profile pic'}
+                                />
+                                <div className="col-md-6 ml-3">
+                                  <b> Name: </b>{`${selectedPerson.firstName} ${selectedPerson.lastName}`}
+                                  <br />
+                                  <b> Skills: </b>{(selectedPerson.skills) ? selectedPerson.skills.map((element, i) => (
+                                    element.label
+                                  )) : null} <br />
+                                  <b> City: </b>{selectedPerson.city} <br />
 
-                                <Button className="mt-3" variant='contained'
-                                  style={{ backgroundColor: '#FFF', color: '#000' }}
-                                  onClick={() => this.handleConnect(selectedPerson.userUID)}
-                                >Connect</Button>
-                                {/* </Link> */}
+                                  <Button className="mt-3" variant='contained'
+                                    style={{ backgroundColor: '#FFF', color: '#000' }}
+                                    onClick={() => this.handleConnect(selectedPerson.userUID)}
+                                  >Connect</Button>
+                                  {/* </Link> */}
+                                </div>
+                              </div>
+                              <h5 className="mt-4 mb-1">Brief Job Description</h5>
+                              {`${selectedPerson.briefDescription}`}
+                            </div>
+                            <div className="col-md-6">
+                              <div>
+                                <h5 className="mt-4">Gallery of Work</h5>
+                                {(selectedPerson.galleryOfWork) ? selectedPerson.galleryOfWork.map((image, i) => (
+                                  <div className="row mb-3" key={i}>
+                                    <div className="col-md-6">
+                                      <img className="img-thumbnail mr-2" src={image} alt="gallery of" />
+                                    </div>
+
+                                  </div>
+                                )) : null}
                               </div>
                             </div>
-                            <h5 className="mt-4 mb-1">Brief Job Description</h5>
-                            {`${selectedPerson.briefDescription}`}
-                          </div>
-                          <div className="col-md-6">
-                            <div>
-                              <h5 className="mt-4">Gallery of Work</h5>
-                              {(selectedPerson.galleryOfWork) ? selectedPerson.galleryOfWork.map((image, i) => (
-                                <div className="row mb-3" key={i}>
-                                  <div className="col-md-6">
-                                    <img className="img-thumbnail mr-2" src={image} alt="gallery of" />
-                                  </div>
-
-                                </div>
-                              )) : null}
-                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Modal> : null}
+                      </Modal> : null}
+                  </div>
                 </div>
-              </div>
-            )) : Loader}
+              )) : Loader}
+            </div>
           </div>
-        </div>
-      </div > : <div className='justify-content-center mt-5'><h5>Sign In to View Categories</h5></div>
-    );
+        </div >
+      );
+    }
   }
 }
 

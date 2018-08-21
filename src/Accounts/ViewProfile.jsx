@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import Firebase from '../config/firebase';
 import { Link, browserHistory } from 'react-router';
 import Button from '@material-ui/core/Button';
+import Loader from '../components/Loader'
 
 let userUID
 class ViewProfile extends Component {
@@ -135,7 +136,7 @@ class ViewProfile extends Component {
                             <div className='mt-5' style={{ textAlign: 'center' }}>
 
 
-                            </div></div> : <div className="mt-5" style={{ textAlign: 'center' }}><h1>Sign In to View your profile</h1></div>}
+                            </div></div> : Loader}
                     </div>
                 </div>
             </div>

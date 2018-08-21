@@ -10,6 +10,7 @@ import Modal from 'react-modal';
 
 let userUID;
 
+let userDetails
 
 Firebase.auth().onAuthStateChanged((user) => {
   if (user) {
@@ -21,7 +22,7 @@ Firebase.auth().onAuthStateChanged((user) => {
       .on('value', (snapshot) => {
         const data = snapshot.val()
         if (data) {
-          hasProfile = true
+
           userDetails = data
 
         }
