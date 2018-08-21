@@ -123,22 +123,30 @@ class UpdateProfile extends Component {
   // handle uploading an image for "Gallery Of Your Work"
   sendData() {
     // console.log(this.state.profession)
+    const { profilePicPreviewUrl, firstName, lastName, email, phoneNumber, city,
+    age, nrc, profession, chipData, briefDescription, uploadedImagesBase64 }  = this.state;
+    
+    // not a good way but will do for now
+    if (!firstName.length || email.length || age.length || nrc.length || profession.length) {
+      return;
+    }
+
     Firebase.database()
       .ref(`Users/${userUID}`)
       .set(
         {
-          pic: this.state.profilePicPreviewUrl,
-          firstName: this.state.firstName,
-          lastName: this.state.lastName,
-          email: this.state.email,
-          phoneNumber: this.state.phoneNumber,
-          city: this.state.city,
-          age: this.state.age,
-          nrc: this.state.nrc,
-          profession: this.state.profession,
-          skills: this.state.chipData,
-          briefDescription: this.state.briefDescription,
-          galleryOfWork: this.state.uploadedImagesBase64,
+          pic: profilePicPreviewUrl,
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          phoneNumber: phoneNumber,
+          city: city,
+          age: age,
+          nrc: nrc,
+          profession: profession,
+          skills: chipData,
+          briefDescription: briefDescription,
+          galleryOfWork: uploadedImagesBase64,
           userUID: userUID
         },
         (error) => {
@@ -182,56 +190,63 @@ class UpdateProfile extends Component {
   // handle input change except for those that need images
   // we can use a switch statement here 
 
-  // handleChangeInput = ({ value }) => {
-  //   switch (key) {
-  //     case value:
-        
-  //       break;
-    
-  //     default:
-  //       break;
-  //   }
+  handleChangeInput = ({ target: { value, placeholder }}) => {
+    switch (placeholder) {
+      case 'First Name':
+          this.setState({
+              firstName: value,
+            });
+        break;
+      case 'Last Name':
+          this.setState({
+           lastName: value,
+        });
+        break;
+      case 'Phone Number':
+          this.setState({
+            phoneNumber: value,
+          });
+      break;
+      case 'Email': 
+       this.setState({
+        email: value,
+      });
+      break;
+      case 'City':
+        this.setState({
+          city: value,
+      });
+      break;
+    case 'Age':
+      this.setState({
+        age: value,
+      });
+    break;
+    case 'NRC Number':
+      this.setState({
+        nrc: value,
+      });
+    break;
+    case 'Profession':
+      this.setState({
+        profession: value,
+      });
+    break;
 
-  // } 
-  handleChangeInput(event) {
-    if (event.target.placeholder === 'First Name') {
+    case 'Brief Description of Profession/ Duties':
       this.setState({
-        firstName: event.target.value,
+        briefDescription: value,
       });
-    } else if (event.target.placeholder === 'Last Name') {
+    break;
+    // not so useful
+    default:
       this.setState({
-        lastName: event.target.value,
+          error: 'Please fill in all required fields ',
       });
-    } else if (event.target.placeholder === 'Phone Number') {
-      this.setState({
-        phoneNumber: event.target.value,
-      });
-    } else if (event.target.placeholder === 'Email') {
-      this.setState({
-        email: event.target.value,
-      });
-    } else if (event.target.placeholder === 'City') {
-      this.setState({
-        city: event.target.value,
-      });
-    } else if (event.target.placeholder === 'Age') {
-      this.setState({
-        age: event.target.value,
-      });
-    } else if (event.target.placeholder === 'NRC Number') {
-      this.setState({
-        nrc: event.target.value,
-      });
-    } else if (event.target.placeholder === 'Profession') {
-      this.setState({
-        profession: event.target.value,
-      });
-    } else if (event.target.placeholder === 'Brief Description of Profession/ Duties') {
-      this.setState({
-        briefDescription: event.target.value,
-      });
+    break;
     }
-  }
+
+  } 
 
   render() {
     const { uploadedImages } = this.state;

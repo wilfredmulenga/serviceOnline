@@ -26,7 +26,7 @@ class ViewProfile extends Component {
                     .on('value', (snapshot) => {
                         const data = snapshot.val()
                         
-                        if (data && !data.userUID) {
+                        if (data.userUID) {
                             browserHistory.push('/updateprofile')
 
                         } else {
@@ -49,8 +49,11 @@ class ViewProfile extends Component {
         browserHistory.push('/');
     }
 
-    UNSAFE_componentWillMount() {
-        this.handleLoad()
+    // UNSAFE_componentWillMount() {
+    //     this.handleLoad()
+    // }
+    componentDidMount(){
+        this.handleLoad();
     }
 
     render() {
