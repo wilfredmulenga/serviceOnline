@@ -25,11 +25,13 @@ class ViewProfile extends Component {
                     .ref(`Users/${userUID}`)
                     .on('value', (snapshot) => {
                         const data = snapshot.val()
-
-                        if ((data.userUID == null)) {
+                        
+                        if (data && !data.userUID) {
                             browserHistory.push('/updateprofile')
 
                         } else {
+                            // this update to states will not be called properly 
+                            // because the component is not yet mmounted at this point
                             this.setState({
                                 listOfPeople: snapshot.val()
                             })
@@ -47,9 +49,10 @@ class ViewProfile extends Component {
         browserHistory.push('/');
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.handleLoad()
     }
+
     render() {
         const { listOfPeople } = this.state;
 
