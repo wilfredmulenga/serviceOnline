@@ -1,12 +1,14 @@
 // This is the profile component
 
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import Navbar from '../components/Navbar';
 import { browserHistory } from 'react-router';
 import Chip from '@material-ui/core/Chip';
 import greybackground from '../images/greybackground.jpeg';
 import Firebase from '../config/firebase';
 import Modal from 'react-modal';
+import { UserContext } from './UserContext';
+
 
 let userUID;
 let hasProfile = false;
@@ -269,9 +271,14 @@ class UpdateProfile extends Component {
     } else {
       $imagePreview = <img className="img-thumbnail" src={this.state.uploadedImages} />;
     }
+    // rename the following to better names
     return (
-      <div>
-        <Navbar title={'Navbar Page'} />
+      <UserContext.Consumer>
+
+      {
+        user => ( // use the user wherever you want
+          <Fragment>
+          <Navbar title={'Navbar Page'} />
         {
           // this.state.signedIn ?  null   :  <SignIn loginStatus={this.state.signedIn}/>
         }
@@ -484,8 +491,12 @@ class UpdateProfile extends Component {
             </div>
           </div>
         </div>
+          </Fragment>
+        )
+      }
+        
 
-      </div>
+      </UserContext.Consumer>
     );
   }
 }

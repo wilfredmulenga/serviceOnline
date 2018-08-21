@@ -10,10 +10,12 @@ import Messages from './Messages/Messages';
 import ViewProfile from './Accounts/ViewProfile';
 import UpdateProfile from './Accounts/UpdateProfile';
 import PhoneLogin from './Accounts/PhoneLogin';
-
+import { Provider } from './Accounts/UserContext';
+ 
 class App extends Component {
   render() {
     return (
+      <Provider>
       <Router history={browserHistory}>
         <Route path="/" component={Home} />
         <Route path="/categories" component={Categories} />
@@ -23,6 +25,7 @@ class App extends Component {
         <Route path='/viewprofile' component={ViewProfile} />
         {/* <Route path='/phonelogin' component={PhoneLogin} /> */}
       </Router>
+      </Provider>
     );
   }
 }

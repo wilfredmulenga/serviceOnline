@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import Navbar from '../components/Navbar';
 import Firebase from '../config/firebase';
 import { Link, browserHistory } from 'react-router';
 import Button from '@material-ui/core/Button';
+import { UserContext } from './UserContext';
 
 let element = '';
 let userUID
@@ -25,7 +26,7 @@ class ViewProfile extends Component {
                     .ref(`Users/${userUID}`)
                     .on('value', (snapshot) => {
                         const data = snapshot.val()
-                        
+                        console.log(data)
                         if (data.userUID) {
                             browserHistory.push('/updateprofile')
 
@@ -60,13 +61,19 @@ class ViewProfile extends Component {
         const { listOfPeople } = this.state;
 
         return (
-            <div>
-                <Navbar title={'Navbar Page'} />
+            <UserContext.Consumer>
+
+                {
+                    fire => (
+                        <Fragment>
+
+                     <Navbar title={'Navbar Page'} />
                 <div className="row container-fluid justify-content-start mt-4">
                     <div className="card col-md-2 ml-3 d-flex">
                         <div className="justify-content-start text-center">
-                            <h3 className='mb-3'>Account</h3>
+                            <h3 className='mb-3'>Account {fire}</h3>
                         </div>
+
                         <Button variant='contained'
                             className="btn  mb-1"
                             style={{
@@ -132,20 +139,20 @@ class ViewProfile extends Component {
                                     ))}
                                 </div>
                             </div>
-
-
-
                             <div className='mt-5' style={{ textAlign: 'center' }}>
 
 
                             </div></div> : <div className="mt-5" style={{ textAlign: 'center' }}><h1>Sign In to View your profile</h1></div>}
                     </div>
                 </div>
-            </div>
 
+                        </Fragment>
+                    )
+                } 
+            </UserContext.Consumer>
         )
     }
-}
+    }
 
 const customStyles = {
     content: {
