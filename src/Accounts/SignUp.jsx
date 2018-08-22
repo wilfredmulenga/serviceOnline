@@ -54,24 +54,22 @@ class SignUp extends React.Component {
   }
 
 
-  handleSignIn() {
-    Firebase.auth()
-      .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then((user) => {
-        loginStatus = true;
-        browserHistory.push('/categories');
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        // var errorMessage = error.message;
-        errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-        // ...
+  handleInput(event) {
+    if (event.target.placeholder === 'email') {
+      this.setState({
+        email: event.target.value,
       });
-    this.setState({
-      error: errorMessage,
-    });
+    } else if (event.target.placeholder === 'password') {
+      this.setState({
+        password: event.target.value,
+        passwordMisMatch: false,
+      });
+    } else if (event.target.placeholder === 're-enter password') {
+      this.setState({
+        reenterPassword: event.target.value,
+        passwordMisMatch: false,
+      });
+    }
   }
 
 

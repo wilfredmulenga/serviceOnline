@@ -7,7 +7,19 @@ import workingIcon from '../images/icons8-work-light-100.png'
 import handIcon from '../images/icons8-handshake-100.png'
 import workerIcon from '../images/icons8-workers-100.png'
 import Navbar from './Navbar';
+import Loader from './Loader';
 
+var loadJobs
+
+function checkData() {
+  Firebase.database()
+    .ref('Users/')
+    .orderByChild('profession')
+    .on('value', (snapshot) => {
+      console.log("app.js", snapshot.val());
+      loadJobs = snapshot.val()
+    })
+}
 
 /* Modals */
 let loginStatus;
@@ -164,74 +176,24 @@ class Home extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <div id="home">
-          <Navbar title="Home" action={this.openModal} />
+    if (!checkData) { return <Loader /> } else {
+      return (
+        <div>
+          <div id="home">
+            <Navbar title="Home" action={this.openModal} />
 
-          {/* <SignUp Modal /> */}
+            {/* <SignUp Modal /> */}
 
-          <Modal
-            isOpen={this.state.modalIsOpen}
-            onAfterOpen={this.afterOpenModal}
-            onRequestClose={this.closeModal}
-            style={customStyles}
-            contentLabel="Example Modal">
-            <button onClick={this.closeModal}>close</button>
+            <Modal
+              isOpen={this.state.modalIsOpen}
+              onAfterOpen={this.afterOpenModal}
+              onRequestClose={this.closeModal}
+              style={customStyles}
+              contentLabel="Example Modal">
+              <button onClick={this.closeModal}>close</button>
 
-            <h2 ref={subtitle => (this.subtitle = subtitle)}>Sign Up</h2>
+              <h2 ref={subtitle => (this.subtitle = subtitle)}>Sign Up</h2>
 
-            <form>
-              <div className="col mb-3">
-                <input
-                  type="email"
-                  value={this.state.email}
-                  onChange={this.handleInput}
-                  className="form-control"
-                  required
-                  placeholder="email"
-                />
-              </div>
-              <div className="col mb-3">
-                <input
-                  type="password"
-                  value={this.state.password}
-                  onChange={this.handleInput}
-                  className="form-control"
-                  placeholder="password"
-                />
-              </div>
-              <div className="col  mb-3">
-                <input
-                  type="password"
-                  value={this.state.reenterPassword}
-                  onChange={this.handleInput}
-                  className="form-control"
-                  placeholder="re-enter password"
-                />
-
-                {this.state.passwordMisMatch ? (
-                  <p style={{ color: 'red' }}>passwords did not match</p>
-                ) : null}
-                {this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : null}
-              </div>
-            </form>
-            <div className="align-right">
-              <button className="md-3" type="submit" onClick={this.handleSignUp}>
-                Sign Up
-              </button>
-            </div>
-            <div>
-              If you already have an account, you can{' '}
-              <button color="secondary" onClick={this.closeModal}>
-                Sign In
-              </button>
-            </div>
-          </Modal>
-          {/* Sign In Modal */}
-          <Modal isOpen={this.state.signInModalIsOpen} style={customStyles}>
-            <div>
-              <h2>Sign In</h2>
               <form>
                 <div className="col mb-3">
                   <input
@@ -243,7 +205,7 @@ class Home extends React.Component {
                     placeholder="email"
                   />
                 </div>
-                <div className="col mb-4">
+                <div className="col mb-3">
                   <input
                     type="password"
                     value={this.state.password}
@@ -252,83 +214,135 @@ class Home extends React.Component {
                     placeholder="password"
                   />
                 </div>
-                {this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : null}
+                <div className="col  mb-3">
+                  <input
+                    type="password"
+                    value={this.state.reenterPassword}
+                    onChange={this.handleInput}
+                    className="form-control"
+                    placeholder="re-enter password"
+                  />
+
+                  {this.state.passwordMisMatch ? (
+                    <p style={{ color: 'red' }}>passwords did not match</p>
+                  ) : null}
+                  {this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : null}
+                </div>
               </form>
-              <div className="md-3 align-right">
-                <button type="submit" onClick={this.handleSignIn}>
-                  Sign In
-                </button>
+              <div className="align-right">
+                <button className="md-3" type="submit" onClick={this.handleSignUp}>
+                  Sign Up
+              </button>
               </div>
               <div>
-                Don't have an account? You can{' '}
-                <button color="secondary" onClick={this.closeSignInModal}>
-                  Sign Up
+                If you already have an account, you can{' '}
+                <button color="secondary" onClick={this.closeModal}>
+                  Sign In
+              </button>
+              </div>
+            </Modal>
+            {/* Sign In Modal */}
+            <Modal isOpen={this.state.signInModalIsOpen} style={customStyles}>
+              <div>
+                <h2>Sign In</h2>
+                <form>
+                  <div className="col mb-3">
+                    <input
+                      type="email"
+                      value={this.state.email}
+                      onChange={this.handleInput}
+                      className="form-control"
+                      required
+                      placeholder="email"
+                    />
+                  </div>
+                  <div className="col mb-4">
+                    <input
+                      type="password"
+                      value={this.state.password}
+                      onChange={this.handleInput}
+                      className="form-control"
+                      placeholder="password"
+                    />
+                  </div>
+                  {this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : null}
+                </form>
+                <div className="md-3 align-right">
+                  <button type="submit" onClick={this.handleSignIn}>
+                    Sign In
                 </button>
+                </div>
+                <div>
+                  Don't have an account? You can{' '}
+                  <button color="secondary" onClick={this.closeSignInModal}>
+                    Sign Up
+                </button>
+                </div>
               </div>
+            </Modal>
+            {/* Sign Out Modal */}
+            <Modal isOpen={this.state.signOutModalIsOpen} style={customStyles}>
+              Sign Out ? <button onClick={this.handleSignOut}>Yes</button>
+            </Modal>
+
+            <div>
+              <img
+                src={landingPage} // style={{width:"1520px"}}
+                className={'img-fluid'}
+                alt="landing page" />
+              <div style={{
+                position: 'absolute', bottom: 0, width: '100%', height: '20%',
+                textAlign: 'center'
+              }}>
+                <p style={{ fontSize: 30, color: '#ffff' }}>Helping you get the right service</p></div>
             </div>
-          </Modal>
-          {/* Sign Out Modal */}
-          <Modal isOpen={this.state.signOutModalIsOpen} style={customStyles}>
-            Sign Out ? <button onClick={this.handleSignOut}>Yes</button>
-          </Modal>
-
-          <div>
-            <img
-              src={landingPage} // style={{width:"1520px"}}
-              className={'img-fluid'}
-              alt="landing page" />
-            <div style={{
-              position: 'absolute', bottom: 0, width: '100%', height: '20%',
-              textAlign: 'center'
-            }}>
-              <p style={{ fontSize: 30, color: '#ffff' }}>Helping you get the right service</p></div>
-          </div>
-          <div className="container">
-            {/* How it Works section */}
-            <div className="mt-5 flex mb-5" style={{ textAlign: 'center' }}>
-              <h3 className="titles">How It Works</h3>
-              <div className="row d-flex justify-content-between">
-                <div className="col-4">
-                  <img src={workingIcon} alt="working icon" />
-                  <div className="card mt-3">
-                    <h5 className="card-title mt-3">I want to get hired</h5>
-                    <p className="card-text">
-                      Our platform creates lets people who are not in the formal sector be able to list their skills and services thus opening up the window that has been overlooked by other Job-listing sites. Whether you are a Carpenter, Welder, Barberman, this site will help bring the customers to you.
+            <div className="container">
+              {/* How it Works section */}
+              <div className="mt-5 flex mb-5" style={{ textAlign: 'center' }}>
+                <h3 className="titles">How It Works</h3>
+                <div className="row d-flex justify-content-between">
+                  <div className="col-4">
+                    <img src={workingIcon} alt="working icon" />
+                    <div className="card mt-3">
+                      <h5 className="card-title mt-3">I want to get hired</h5>
+                      <p className="card-text">
+                        Our platform creates lets people who are not in the formal sector be able to list their skills and services thus opening up the window that has been overlooked by other Job-listing sites. Whether you are a Carpenter, Welder, Barberman, this site will help bring the customers to you.
                 </p>
+                    </div>
                   </div>
-                </div>
-                <div className=" col-4 ">
-                  <img src={workerIcon} alt='worker icon' />
-                  <div className='card mt-3'>
-                    <h5 className="card-title mt-3">I want to hire someone</h5>
-                    <p className="card-text">
-                      Looking for a good hairdresser but just don't know where to look. Or maybe your Kitchen needs some remodeling. Our platform lists the very best professionals in the informal job sector, skilled for the job you may require. Feel free to browse through our category section to get started.
+                  <div className=" col-4 ">
+                    <img src={workerIcon} alt='worker icon' />
+                    <div className='card mt-3'>
+                      <h5 className="card-title mt-3">I want to hire someone</h5>
+                      <p className="card-text">
+                        Looking for a good hairdresser but just don't know where to look. Or maybe your Kitchen needs some remodeling. Our platform lists the very best professionals in the informal job sector, skilled for the job you may require. Feel free to browse through our category section to get started.
                 </p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="col-4">
-                  <img src={handIcon} alt="hand icon" />
-                  <div className="card mt-3">
-                    <h5 className="card-title mt-3">I want to be a Partner</h5>
-                    <p className="card-text">
-                      We are always looking for ways to improve our platform and from new angles or ideas. We feel that people with informal jobs could use a platform that is taylored specifically for them to showcase their work. If you share the same passion as well do, we would be happy to hear from you.
+                  <div className="col-4">
+                    <img src={handIcon} alt="hand icon" />
+                    <div className="card mt-3">
+                      <h5 className="card-title mt-3">I want to be a Partner</h5>
+                      <p className="card-text">
+                        We are always looking for ways to improve our platform and from new angles or ideas. We feel that people with informal jobs could use a platform that is taylored specifically for them to showcase their work. If you share the same passion as well do, we would be happy to hear from you.
                     </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            {/* About */}
-            <div className="row">
-              <div className="col-6">
+              {/* About */}
+              <div className="row">
+                <div className="col-6">
+
+                </div>
 
               </div>
-
             </div>
           </div>
-        </div>
-      </div >
-    );
+        </div >
+      );
+    }
   }
 }
 

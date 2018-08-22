@@ -8,9 +8,18 @@ import ViewProfile from './Accounts/ViewProfile';
 import UpdateProfile from './Accounts/UpdateProfile';
 import SignIn from './Accounts/SignIn'
 import SignUp from './Accounts/SignUp'
+import Firebase from './config/firebase'
 
+Firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+
+  } else {
+    browserHistory.push('/signin')
+  }
+})
 
 class App extends Component {
+
   render() {
     return (
       <Router history={browserHistory}>

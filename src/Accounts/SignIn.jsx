@@ -32,7 +32,7 @@ class SignIn extends React.Component {
       this.setState({
         password: event.target.value,
       });
-      console.log(this.state.password)
+
     }
   }
 
@@ -41,7 +41,7 @@ class SignIn extends React.Component {
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then((user) => {
         loginStatus = true;
-        browserHistory.push('/categories');
+        browserHistory.push('/');
       })
       .catch((error) => {
         // Handle Errors here.
