@@ -64,14 +64,14 @@ class ViewProfile extends Component {
             <UserContext.Consumer>
 
                 {
-                    fire => (
+                    user => ( // use the user wherever you want
                         <Fragment>
 
                      <Navbar title={'Navbar Page'} />
                 <div className="row container-fluid justify-content-start mt-4">
                     <div className="card col-md-2 ml-3 d-flex">
                         <div className="justify-content-start text-center">
-                            <h3 className='mb-3'>Account {fire}</h3>
+                            <h3 className='mb-3'>Account </h3>
                         </div>
 
                         <Button variant='contained'
