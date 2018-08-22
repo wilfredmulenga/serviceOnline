@@ -6,6 +6,8 @@ import Home from './components/Home';
 import Messages from './Messages/Messages';
 import ViewProfile from './Accounts/ViewProfile';
 import UpdateProfile from './Accounts/UpdateProfile';
+import SignIn from './Accounts/SignIn'
+import SignUp from './Accounts/SignUp'
 
 
 class App extends Component {
@@ -14,7 +16,8 @@ class App extends Component {
       <Router history={browserHistory}>
         <Route path="/" component={Home} />
         <Route path="/categories" component={Categories} />
-        <Route path="/login" component={Home} />
+        <Route path="/signin" component={SignIn} />
+        <Route path="/signup" component={SignUp} />
         <Route path="/updateprofile" component={UpdateProfile} />
         <Route path="/messages" component={Messages} />
         <Route path='/viewprofile' component={ViewProfile} />

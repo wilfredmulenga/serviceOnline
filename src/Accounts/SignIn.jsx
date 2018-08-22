@@ -1,73 +1,104 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import Modal from 'react-modal';
+import Firebase from '../config/firebase';
+import { browserHistory } from 'react-router';
+let loginStatus;
+let errorMessage;
 
-Modal.setAppElement('#root');
 
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-};
+
+
 
 
 class SignIn extends React.Component {
   constructor() {
     super();
     this.state = {
-      modalIsOpen: true,
-      loginStatus: false,
-    };
+      email: '',
+      password: '',
+      error: ''
+    }
+    this.handleInput = this.handleInput.bind(this);
+    this.handleSignIn = this.handleSignIn.bind(this)
+  }
+  handleInput(event) {
+    if (event.target.placeholder === 'email') {
+      this.setState({
+        email: event.target.value,
+      });
 
-    this.openModal = this.openModal.bind(this);
-    this.afterOpenModal = this.afterOpenModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    }
+    else if (event.target.placeholder === 'password') {
+      this.setState({
+        password: event.target.value,
+      });
+      console.log(this.state.password)
+    }
   }
 
-  openModal() {
-    this.setState({ modalIsOpen: true });
+  handleSignIn() {
+    Firebase.auth()
+      .signInWithEmailAndPassword(this.state.email, this.state.password)
+      .then((user) => {
+        loginStatus = true;
+        browserHistory.push('/categories');
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        // var errorMessage = error.message;
+        errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+        // ...
+      });
+    this.setState({
+      error: errorMessage,
+    });
   }
 
-  afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    this.subtitle.style.color = '#f00';
-  }
-
-  closeModal() {
-    this.setState({ modalIsOpen: false });
-  }
 
   render() {
     return (
       <div>
-        <button onClick={this.openModal}>Open Modal</button>
-        {
-          <Modal
-            isOpen={this.state.modalIsOpen}
-            onAfterOpen={this.afterOpenModal}
-            onRequestClose={this.closeModal}
-            style={customStyles}
-            contentLabel="Example Modal">
-            <button onClick={this.closeModal}>close</button>
-            <Button color="secondary" onClick={this.closeModal}>
+        <div>
+          <h2>Sign In</h2>
+          <form>
+            <div className="col mb-3">
+              <input
+                type="email"
+                value={this.state.email}
+                onChange={this.handleInput}
+                className="form-control"
+                required
+                placeholder="email"
+              />
+            </div>
+            <div className="col mb-4">
+              <input
+                type="password"
+                value={this.state.password}
+                onChange={this.handleInput}
+                className="form-control"
+                placeholder="password"
+              />
+            </div>
+            {this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : null}
+          </form>
+          <div className="row d-flex justify-content-center mt-4 mb-5">
+            <Button variant='contained' color='primary' type="submit"
+              onClick={this.handleSignIn}>
+              Sign In
+                </Button>
+          </div>
+          <div>
+            Don't have an account? You can{' '}
+            <Button variant='contained' color="secondary"
+              onClick={() => browserHistory.push('/signup')}
+            >
               Sign Up
-            </Button>
-            <h2 ref={subtitle => (this.subtitle = subtitle)}>Sign In</h2>
-
-            <form>
-              username
-              <input />
-              password
-              <input />
-              <Button color="primary">OK</Button>
-            </form>
-          </Modal>
-        }
+                </Button>
+          </div>
+        </div>
       </div>
     );
   }

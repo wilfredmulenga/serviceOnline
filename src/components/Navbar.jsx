@@ -96,8 +96,7 @@ class Navbar extends React.Component {
   }
 
   handleSignUp() {
-    // var email ="asa@yahoo.com";
-    // var password = "12345678";
+
 
     this.state.email === ''
       ? this.setState({ error: 'email field cannot be empty' })
