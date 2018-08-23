@@ -44,7 +44,7 @@ class ViewProfile extends Component {
     }
 
     handleSignOut() {
-        console.log()
+
         Firebase.auth().signOut();
         browserHistory.push('/');
     }
@@ -79,7 +79,8 @@ class ViewProfile extends Component {
                         </Button>
                         <Button className="btn  mb-1" variant='contained' style={{ backgroundColor: '#FFF', color: '#000' }}
                             onClick={() => browserHistory.push('/messages')}>Messages</Button>
-
+                        <Button className="btn  mb-1" variant='contained' style={{ backgroundColor: '#FFF', color: '#000' }}
+                            onClick={() => this.handleSignOut}>Log Out</Button>
                     </div>
 
                     <div className="card col center-align mr-3 ml-3">
