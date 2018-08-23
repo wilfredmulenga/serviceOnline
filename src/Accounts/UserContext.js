@@ -4,6 +4,7 @@ import Firebase from '../config/firebase'
 
 export const UserContext = React.createContext();
 const peopleArray = []
+let __firebase = []
 let JobsSnapshot
 function handleLoad() {
     console.log("handle load ")
@@ -23,11 +24,11 @@ function handleLoad() {
                     peopleArray.push(elements);
                 }
             }
-            console.log("uer context", peopleArray)
+            __firebase = peopleArray
+            console.log("user context", __firebase)
         });
 }
 handleLoad()
-const __firebase = 'firebase'
 
 export const Provider = ({ children }) => (
     <UserContext.Provider value={__firebase}>
