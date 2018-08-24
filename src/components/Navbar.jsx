@@ -31,7 +31,8 @@ class Navbar extends React.Component {
         {/* Navbar section */}
         <nav className="navbar navbar-expand-lg "
           style={{ backgroundColor: '#182157' }}>
-          <Link to="/" className="navbar-brand link">
+          <Link to="/" className="navbar-brand link" style={{lineHeight: '1.3',fontSize:'23px',
+                         letterSpacing: 'normal',fontWeight: 'bold',textTransform: 'capitalize'}}>
             Nchito
 
          </Link>
