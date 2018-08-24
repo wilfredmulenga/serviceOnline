@@ -52,13 +52,13 @@ class Navbar extends React.Component {
               <li className="nav-item active mr-3">
                 <Link to="/categories" className="link">Categories</Link>
               </li>
-              <Link to="/login" className="link" //onClick={this.props.action} 
+              {/* <Link to="/login" className="link" //onClick={this.props.action} 
                 onClick={this.openSignInModal}>
                 <li className="nav-item active mr-3" id='login'>{
                   (loginStatus) ? `Sign Out` : `Sign In`
                 }
                 </li>
-              </Link>
+              </Link> */}
               <li className="nav-item active mr-3">
                 <Link to="/viewprofile" className="link">Profile</Link>
               </li>

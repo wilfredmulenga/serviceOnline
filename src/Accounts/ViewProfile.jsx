@@ -24,7 +24,7 @@ class ViewProfile extends Component {
 
                 Firebase.database()
                     .ref(`Users/${userUID}`)
-                    .on('value', (snapshot) => {
+                    .once('child_added', (snapshot) => {
                         const data = snapshot.val()
 
                         if (data && !data.userUID) {
@@ -65,7 +65,8 @@ class ViewProfile extends Component {
 
                 {
                     user => ( // use the user wherever you want
-                        <Fragment>
+
+                        < Fragment >
 
                             <Navbar title={'Navbar Page'} />
                             <div className="row container-fluid justify-content-start mt-4">

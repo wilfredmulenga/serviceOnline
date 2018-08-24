@@ -6,12 +6,13 @@ export const UserContext = React.createContext();
 const peopleArray = []
 let __firebase = []
 let JobsSnapshot
+
 function handleLoad() {
     console.log("handle load ")
     Firebase.database()
         .ref('Users/')
         .orderByChild('profession')
-        .on('value', (snapshot) => {
+        .once('value', (snapshot) => {
             JobsSnapshot = snapshot.val();
 
             let elements;

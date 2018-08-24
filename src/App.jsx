@@ -9,15 +9,15 @@ import UpdateProfile from './Accounts/UpdateProfile';
 import SignIn from './Accounts/SignIn'
 import SignUp from './Accounts/SignUp'
 import Firebase from './config/firebase'
-import Provider from './Accounts/UserContext'
+import { Provider } from './Accounts/UserContext'
 
-Firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
+// Firebase.auth().onAuthStateChanged((user) => {
+//   if (user) {
 
-  } else {
-    browserHistory.push('/signin')
-  }
-})
+//   } else {
+//     browserHistory.push('/signin')
+//   }
+// })
 
 class App extends Component {
 

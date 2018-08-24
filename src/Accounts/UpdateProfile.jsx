@@ -14,25 +14,25 @@ let userUID;
 
 let userDetails
 
-Firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    userUID = user.uid;
-    console.log(userUID);
+// Firebase.auth().onAuthStateChanged((user) => {
+//   if (user) {
+//     userUID = user.uid;
+//     console.log(userUID);
 
-    Firebase.database()
-      .ref(`Users/${userUID}`)
-      .on('value', (snapshot) => {
-        const data = snapshot.val()
-        if (data) {
+//     Firebase.database()
+//       .ref(`Users/${userUID}`)
+//       .on('value', (snapshot) => {
+//         const data = snapshot.val()
+//         if (data) {
 
-          userDetails = data
+//           userDetails = data
 
-        }
-      });
-  } else {
-    console.log('signed out');
-  }
-});
+//         }
+//       });
+//   } else {
+//     console.log('signed out');
+//   }
+// });
 
 // Components
 class UpdateProfile extends Component {

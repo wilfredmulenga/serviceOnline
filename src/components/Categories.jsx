@@ -27,25 +27,25 @@ let userUID;
 const peopleArray = [];
 let displayName = 'Anonymous';
 let pic = 'https://storage.googleapis.com/lsk-guide-jobs.appspot.com/profile_placeholder.png';
-Firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    userUID = user.uid;
-    // Firebase.database().ref(`Users/${userUID}`).on('value', (snapshot) => {
-    //   var data = snapshot.val()
-    //   if (data != null) {
-    //     displayName = `${data.firstName} ${data.lastName}`;
-    //     pic = data.pic
-    //   }
-    // })
-    // newFucn()
+// Firebase.auth().onAuthStateChanged((user) => {
+//   if (user) {
+//     userUID = user.uid;
+//     // Firebase.database().ref(`Users/${userUID}`).on('value', (snapshot) => {
+//     //   var data = snapshot.val()
+//     //   if (data != null) {
+//     //     displayName = `${data.firstName} ${data.lastName}`;
+//     //     pic = data.pic
+//     //   }
+//     // })
+//     // newFucn()
 
-  } else {
-    //comment out and when app loads, takes user to /phonelogin
-    // browserHistory.push({
-    //   pathname: '/phonelogin'
-    // })
-  }
-});
+//   } else {
+//     //comment out and when app loads, takes user to /phonelogin
+//     // browserHistory.push({
+//     //   pathname: '/phonelogin'
+//     // })
+//   }
+// });
 
 
 // console.log(newFucn == true)
@@ -131,7 +131,7 @@ class Tables extends React.Component {
   }
 
   handleLoadUsers = () => {
-    console.log("load users")
+
     Firebase.database()
       .ref('Users/')
       .orderByChild('profession')
@@ -183,15 +183,7 @@ class Tables extends React.Component {
     }
   }
 
-  UNSAFE_componentWillMount() {
-    Firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        loginStatus = true
-      } else {
-        loginStatus = false
-      }
-    });
-  }
+
 
   render() {
     const { listOfPeople } = this.state;
