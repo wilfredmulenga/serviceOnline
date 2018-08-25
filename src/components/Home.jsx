@@ -1,6 +1,5 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
-import Modal from 'react-modal';
 import Firebase from '../config/firebase';
 import landingPage from '../images/landingPage.jpeg';
 import workingIcon from '../images/icons8-work-light-100.png'
@@ -15,22 +14,44 @@ import Loader from './Loader';
 
 
 class Home extends React.Component {
-  constructor() {
-    super();
-
+  constructor(props) {
+    super(props);
     this.state = {
-
-    };
-
+      loading: false,
+      listOfPeople: ["users"]
+    }
+    //this.handleLoadUsers = this.handleLoadUsers.bind(this)
+    //this.handleLoadUsers()
   }
 
+  // handleLoadUsers = () => {
+  //   console.log("handle loaders")
+  //   Firebase.database()
+  //     .ref('Users/')
+  //     .on('value', (snapshot) => {
+  //       JobsSnapshot = snapshot.val();
+  //       let elements;
+  //       // React doesnt accept objects in states so it has to be converted into an array
+  //       for (const index in JobsSnapshot) {
+  //         elements = JobsSnapshot[index];
+  //         peopleArray.push(elements);
+  //       }
+  //       this.setState({
+  //         loading: true,
+  //         listOfPeople: peopleArray
+  //       })
+  //       console.log("home", peopleArray)
+  //     });
+
+  // };
 
   render() {
+
 
     return (
       <div>
         <div id="home">
-          <Navbar title="Home" />
+          <Navbar userData={"some data"} />
           <div>
             <img
               src={landingPage} // style={{width:"1520px"}}
@@ -40,7 +61,7 @@ class Home extends React.Component {
               position: 'absolute', bottom: 0, width: '100%', height: '70%',
               textAlign: 'center'
             }}>
-              <p style={{ fontSize: 30, color: '#fff' ,float:'left', marginLeft:'20px', fontStyle:'oblique'}}>Helping you get the right service</p></div>
+              <p style={{ fontSize: 30, color: '#fff', float: 'left', marginLeft: '20px', fontStyle: 'oblique' }}>Helping you get the right service</p></div>
           </div>
           <div className="container">
             {/* How it Works section */}
@@ -86,9 +107,9 @@ class Home extends React.Component {
             </div>
           </div>
         </div>
-      </div >
-    );
+      </div >)
   }
+
 }
 
 

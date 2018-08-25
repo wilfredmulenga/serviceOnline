@@ -29,7 +29,7 @@ function handleLoad() {
             console.log("user context", __firebase)
         });
 }
-handleLoad()
+//handleLoad()
 
 export const Provider = ({ children }) => (
     <UserContext.Provider value={__firebase}>

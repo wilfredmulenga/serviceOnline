@@ -7,14 +7,14 @@ let selectedPersonUserUID = '';
 let userUID;
 
 
-Firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    userUID = user.uid;
-    console.log('signed in');
-  } else {
-    console.log('signed out');
-  }
-});
+// Firebase.auth().onAuthStateChanged((user) => {
+//   if (user) {
+//     userUID = user.uid;
+//     console.log('signed in');
+//   } else {
+//     console.log('signed out');
+//   }
+// });
 
 class Messages extends React.Component {
   constructor(props) {

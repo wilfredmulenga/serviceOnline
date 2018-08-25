@@ -54,7 +54,7 @@ class ViewProfile extends Component {
     //     this.handleLoad()
     // }
     componentDidMount() {
-        this.handleLoad();
+        //this.handleLoad();
     }
 
     render() {
@@ -91,7 +91,7 @@ class ViewProfile extends Component {
                                     <Button className="btn  mb-1" variant='contained' style={{ backgroundColor: '#FFF', color: '#000' }}
                                         onClick={() => browserHistory.push('/messages')}>Messages</Button>
                                     <Button className="btn  mb-1" variant='contained' style={{ backgroundColor: '#FFF', color: '#000' }}
-                                        onClick={() => this.handleSignOut}>Log Out</Button>
+                                        onClick={this.handleSignOut}>Log Out</Button>
                                 </div>
 
                                 <div className="card col center-align mr-3 ml-3">
@@ -145,7 +145,7 @@ class ViewProfile extends Component {
                                         <div className='mt-5' style={{ textAlign: 'center' }}>
 
 
-                                        </div></div> : Loader}
+                                        </div></div> : <Loader />}
                                 </div>
                             </div>
 
