@@ -72,7 +72,7 @@ class App extends Component {
           loading: true,
           listOfPeople: peopleArray
         })
-        console.log("home", peopleArray)
+        //console.log("home", peopleArray)
       });
 
   };
@@ -82,11 +82,11 @@ class App extends Component {
         <Provider>
           <Router history={browserHistory}>
             <Route path="/" component={Home} />
-            <Route path="/categories" component={Categories} userData={peopleArray} />
+            <Route path="/categories" component={Categories} userData={peopleArray} userUID={userUID} />
             <Route path="/signin" component={SignIn} />
             <Route path="/signup" component={SignUp} />
-            <Route path="/updateprofile" component={UpdateProfile} />
-            <Route path="/messages" component={Messages} />
+            <Route path="/updateprofile" component={UpdateProfile} userData={currentUser} />
+            <Route path="/messages" component={Messages} userUID={userUID} />
             <Route path='/viewprofile' component={ViewProfile} userData={currentUser} />
             {/* <Route path='/phonelogin' component={PhoneLogin} /> */}
           </Router>

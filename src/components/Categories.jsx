@@ -23,7 +23,7 @@ const customStyles = {
 };
 
 let loginStatus = true;
-let userUID;
+
 const peopleArray = [];
 let displayName = 'Anonymous';
 let pic = 'https://storage.googleapis.com/lsk-guide-jobs.appspot.com/profile_placeholder.png';
@@ -55,16 +55,18 @@ class Categories extends React.Component {
     super(props);
     this.state = {
       modalIsOpen: false,
-      userData: this.props.route.userData
+      userData: this.props.route.userData,
+      userUID: this.props.route.userUID
     };
-    //console.log(this.props.route.userData)
+    console.log("categories", this.props.route.userUID)
   }
 
   render() {
     return (
       <div>
         <Navbar title="Categories" />
-        <Tables userData={this.state.userData} />
+        <Tables userData={this.state.userData}
+          userUID={this.state.userUID} />
       </div>
     );
   }
@@ -76,6 +78,7 @@ class Tables extends React.Component {
     super(props);
     this.state = {
       listOfPeople: this.props.userData,
+      userUID: this.props.userUID,
       job: '',
       selectedPerson: [],
       loading: true,
@@ -85,13 +88,20 @@ class Tables extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.handleCardClick = this.handleCardClick.bind(this);
     this.handleConnect = this.handleConnect.bind(this);
-
+    //userUID = this.props.route.userUID
   }
 
   handleConnect = (value) => {
     var PostRef = Firebase.database()
       .ref(`Users/${value}/Messages`).push()
     var PostRefKey = PostRef.getKey()
+    Firebase.database().ref(`Users/${this.state.userUID}/Messages`)
+      .push({
+        messageKey: PostRefKey,
+        name: displayName,
+        text: "New Message",
+        profilePicUrl: pic
+      })
     Firebase.database().ref(`Users/${value}/Messages`)
       .push({
         messageKey: PostRefKey,
@@ -99,13 +109,7 @@ class Tables extends React.Component {
         text: "New Message",
         profilePicUrl: pic
       })
-    Firebase.database().ref(`Users/${userUID}/Messages`)
-      .push({
-        messageKey: PostRefKey,
-        name: displayName,
-        text: "New Message",
-        profilePicUrl: pic
-      })
+
       .catch((error) => {
         console.error('Error writing new message to Firebase Database', error);
       });

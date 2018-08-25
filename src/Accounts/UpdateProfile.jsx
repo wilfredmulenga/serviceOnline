@@ -12,7 +12,7 @@ import { UserContext } from './UserContext';
 
 let userUID;
 
-let userDetails
+let userData
 
 // Firebase.auth().onAuthStateChanged((user) => {
 //   if (user) {
@@ -39,27 +39,27 @@ class UpdateProfile extends Component {
 
   constructor(props) {
     super(props);
-    //userDetails = this.props.location.state.userDetails;
+    userData = this.props.route.userData['0'];
     this.state = {
       signedIn: true,
-      chipData: [],
+      chipData: userData.skills,
       input: '',
       selectedFile: ['asa', 'asa'],
-      uploadedImages: [],
+      uploadedImages: userData.galleryOfWork,
       file: '',
       imagePreviewUrl: '',
-      profilePic: '',
-      firstName: '',
-      lastName: '',
-      age: '',
-      nrc: '',
-      phoneNumber: '',
-      email: '',
-      city: '',
+      profilePic: userData.pic,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      age: userData.age,
+      nrc: userData.nrc,
+      phoneNumber: userData.phoneNumber,
+      email: userData.email,
+      city: userData.city,
       rating: 3,
       status: 'available',
       reviews: [],
-      briefDescription: '',
+      briefDescription: userData.briefDescription,
       profession: 'Other',
       UploadModalOpen: false,
       // skills : [],

@@ -27,6 +27,7 @@ class Messages extends React.Component {
     this.handleMouseClick = this.handleMouseClick.bind(this);
     this.messageSubmit = this.messageSubmit.bind(this);
     this.handleEnter = this.handleEnter.bind(this);
+    userUID = this.props.route.userUID
   }
 
   componentDidMount() {
@@ -112,10 +113,11 @@ class Messages extends React.Component {
 
 
   LoadChatHistory = () => {
+    console.log("chathistory", userUID)
     const setChatHistory = function (snap) {
       const data = snap.val();
       let elements = Object.values(data);
-      console.log("loadchathistory", elements)
+      //  console.log("loadchathistory", elements)
       let properties = [];
       for (const index in data) {
         properties.push(data[index])

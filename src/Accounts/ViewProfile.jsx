@@ -15,7 +15,7 @@ class ViewProfile extends Component {
         this.state = {
             listOfPeople: this.props.route.userData['0']
         }
-        console.log("viewprofile", this.state.listOfPeople)
+        //console.log("viewprofile", this.state.listOfPeople)
     }
     handleLoad() {
         Firebase.auth().onAuthStateChanged((user) => {
