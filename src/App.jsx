@@ -14,14 +14,10 @@ import Loader from './components/Loader'
 import jsonData from './database/NchitoUserDatabase.json'
 
 let peopleArray = [];
+let currentUser = []
+let userUID
 let JobsSnapshot;
-// Firebase.auth().onAuthStateChanged((user) => {
-//   if (user) {
-//     //handleLoadUsers()
-//   } else {
-//     browserHistory.push('/signin')
-//   }
-// })
+
 
 class App extends Component {
   constructor(props) {
@@ -34,30 +30,54 @@ class App extends Component {
     this.handleLoadUsers()
     //console.log(jsonData["Users"])
   }
-
+  //fetching data from firebase or json in ./database folder
   handleLoadUsers = () => {
     console.log("handle loaders")
-    //Firebase.database()
-    // .ref('Users/')
-    // .on('value', (snapshot) => {
-    //   JobsSnapshot = snapshot.val();
-    JobsSnapshot = jsonData["Users"]
-    let elements;
-    // React doesnt accept objects in states so it has to be converted into an array
-    for (const index in JobsSnapshot) {
-      elements = JobsSnapshot[index];
-      peopleArray.push(elements);
-    }
-    this.setState({
-      loading: true,
-      listOfPeople: peopleArray
+    Firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        //handleLoadUsers()
+        userUID = user.uid
+        console.log(userUID)
+      } else {
+        browserHistory.push('/signin')
+      }
     })
-    console.log("home", peopleArray)
-    // });
+    Firebase.database()
+      .ref('Users/')
+      .on('value', (snapshot) => {
+        JobsSnapshot = snapshot.val();
+        JobsSnapshot = jsonData["Users"]
+        let elements;
+        // React doesnt accept objects in states so it has to be converted into an array
+        for (const index in JobsSnapshot) {
+          elements = JobsSnapshot[index];
+          peopleArray.push(elements);
+        }
+        let currentUserObject
+        for (const index in JobsSnapshot) {
+          //console.log(JobsSnapshot[index]['userUID'])
+
+          if (JobsSnapshot[index]['userUID'] == userUID
+            // 'O6VVUA0fm1QpOt23QaOctFux27h1'
+          ) {
+            currentUserObject = JobsSnapshot[index]
+          }
+        }
+
+        currentUser.push(currentUserObject)
+        console.log(currentUser)
+
+
+        this.setState({
+          loading: true,
+          listOfPeople: peopleArray
+        })
+        console.log("home", peopleArray)
+      });
 
   };
   render() {
-    if (true) {
+    if (this.state.loading) {
       return (
         <Provider>
           <Router history={browserHistory}>
@@ -67,7 +87,7 @@ class App extends Component {
             <Route path="/signup" component={SignUp} />
             <Route path="/updateprofile" component={UpdateProfile} />
             <Route path="/messages" component={Messages} />
-            <Route path='/viewprofile' component={ViewProfile} />
+            <Route path='/viewprofile' component={ViewProfile} userData={currentUser} />
             {/* <Route path='/phonelogin' component={PhoneLogin} /> */}
           </Router>
         </Provider>
