@@ -7,7 +7,7 @@ var config = {
   authDomain: "lsk-guide-jobs.firebaseapp.com",
   databaseURL: "https://lsk-guide-jobs.firebaseio.com",
   projectId: "lsk-guide-jobs",
-  storageBucket: "",
+  storageBucket: "gs://lsk-guide-jobs.appspot.com",
   messagingSenderId: "319224351068"
 };
 firebase.initializeApp(config);

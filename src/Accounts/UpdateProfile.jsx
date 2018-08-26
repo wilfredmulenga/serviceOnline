@@ -8,11 +8,17 @@ import greybackground from '../images/greybackground.jpeg';
 import Firebase from '../config/firebase';
 import Modal from 'react-modal';
 import { UserContext } from './UserContext';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+
+import Button from '@material-ui/core/Button'
 
 
 let userUID;
 
 let userData
+
+
 
 // Firebase.auth().onAuthStateChanged((user) => {
 //   if (user) {
@@ -67,7 +73,8 @@ class UpdateProfile extends Component {
       profilePicPreviewUrl: '',
       // base64 of uploaded Images
       uploadedImagesBase64: [],
-      userUID: ''
+      userUID: userData.userUID,
+      open: true
     };
     this.handleDelete = this.handleDelete.bind(this);
     this.addItem = this.addItem.bind(this);
@@ -76,7 +83,17 @@ class UpdateProfile extends Component {
     this.handleChangeImages = this.handleChangeImages.bind(this);
     this.handleChangeProfilePic = this.handleChangeProfilePic.bind(this);
     this.handleProfessionChange = this.handleProfessionChange.bind(this);
+    this.handleClose = this.handleClose.bind(this)
+    this.saveImageMessage = this.saveImageMessage.bind(this)
   }
+  handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({ open: false });
+  };
+
 
   handleProfessionChange(event) {
     this.setState({ profession: event.target.value });
@@ -161,7 +178,7 @@ class UpdateProfile extends Component {
   }
 
   // profile pic change handler
-  handleChangeProfilePic(event) {
+  handleChangeProfilePic = (event) => {
     const reader = new FileReader();
     const file = event.target.files[0];
 
@@ -172,8 +189,33 @@ class UpdateProfile extends Component {
       });
     };
 
-    reader.readAsDataURL(file);
+    //reader.readAsDataURL(file);
+    this.saveImageMessage(file)
   }
+  saveImageMessage = function (file) {
+    console.log("save image")
+    // 1 - We add a message with a loading icon that will get updated with the shared image.
+    // Firebase.database().ref(`pics/${this.state.userUID}`).set({
+    //name: this.getUserName(),
+    // pic: '',
+    //profilePicUrl: this.getProfilePicUrl()
+    // }).then(function (messageRef) {
+    // 2 - Upload the image to Cloud Storage.
+    var filePath = this.state.userUID + '/' + file.name;
+    Firebase.storage().ref(filePath).put(file).then(function (fileSnapshot) {
+      // 3 - Generate a public URL for the file.
+      return fileSnapshot.ref.getDownloadURL().then((url) => {
+        // 4 - Update the chat message placeholder with the image's URL.
+        return Firebase.database().ref(`Users/${this.state.userUID}`).update({
+          pic: url,
+          //storageUri: fileSnapshot.metadata.fullPath
+        });
+      });
+      //}.bind(this));
+    }.bind(this)).catch(function (error) {
+      console.error('There was an error uploading a file to Cloud Storage:', error);
+    });
+  };
   // handle input change except for those that need images
   // we can use a switch statement here 
 
@@ -241,20 +283,20 @@ class UpdateProfile extends Component {
     const { profilePicPreviewUrl } = this.state;
     let $profilePicPreview = null;
     if (profilePicPreviewUrl) {
-      $profilePicPreview = <img alt='profile pic' className="img-thumbnail" src={profilePicPreviewUrl} />;
+      $profilePicPreview = <img alt='profile pic' style={{ width: 300, height: 200 }} className="img-thumbnail" src={profilePicPreviewUrl} />;
     } else {
-      $profilePicPreview = <img alt='profile pic' className="img-thumbnail" src={this.state.profilePic} />;
+      $profilePicPreview = <img alt='profile pic' style={{ width: 300, height: 200 }} className="img-thumbnail" src={"https://firebasestorage.googleapis.com/v0/b/lsk-guide-jobs.appspot.com/o/O6VVUA0fm1QpOt23QaOctFux27h1%2F39064427_1811139558963421_3161782226975195136_n.jpg?alt=media&token=464e3d38-3aa6-4efc-bd3b-57a079e24c34"} />;
     }
     // Gallery of Work Images
     const { imagePreviewUrl } = this.state;
     let $imagePreview = null;
     if (imagePreviewUrl && !this.state.uploadedImages.includes($imagePreview)
       && !this.state.uploadedImagesBase64.includes(imagePreviewUrl)) {
-      $imagePreview = <img alt='gallery of work' className="img-thumbnail" src={imagePreviewUrl} />;
+      $imagePreview = <img alt='gallery of work' style={{ width: 300, height: 200 }} className="img-thumbnail" src={imagePreviewUrl} />;
       this.state.uploadedImages.push($imagePreview);
       this.state.uploadedImagesBase64.push(imagePreviewUrl);
     } else {
-      $imagePreview = <img alt='gallery of work' className="img-thumbnail" src={this.state.uploadedImages} />;
+      $imagePreview = <img alt='gallery of work' style={{ width: 300, height: 200 }} className="img-thumbnail" src={this.state.uploadedImages} />;
     }
     // rename the following to better names
     return (
@@ -284,6 +326,7 @@ class UpdateProfile extends Component {
                           <input
                             type="file"
                             className="form-control"
+                            accept="image/*" capture="camera"
                             onChange={this.handleChangeProfilePic}
                             required
                           />
@@ -415,9 +458,9 @@ class UpdateProfile extends Component {
                             </div>
                           </div>
 
-                          {(this.state.chipData) ? this.state.chipData.map(data => (
+                          {(this.state.chipData) ? this.state.chipData.map((data, i) => (
                             <Chip
-                              // key={data.key}
+                              key={i}
                               label={data.label}
                               onDelete={this.handleDelete(data)}
                             />
@@ -436,7 +479,7 @@ class UpdateProfile extends Component {
                                   this.fileInput = input;
                                 }}
                                 className="custom-file-input"
-                                id="inputGroupFile04"
+                                accept="image/*" capture="camera"
                                 required
                               />
                               <label className="custom-file-label" htmlFor="inputGroupFile04">
@@ -467,13 +510,40 @@ class UpdateProfile extends Component {
                       <button
                         className="btn btn-success" type="submit" //change onClick to onSubmit if you want it not to submit without filling out all the feeds
 
-                        onSubmit={this.sendData}>
+                        onSubmit={this.sendData}
+                      >
                         Update Profile
                </button>
 
                     </form>
 
                   </div>
+                  <Snackbar className="mb-4"
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'center',
+                    }}
+                    open={false} //change to this.state.open to show snackbar
+                    autoHideDuration={1000}
+                    onClose={this.handleClose}
+                    ContentProps={{
+                      'aria-describedby': 'message-id',
+                    }}
+                    message={<span id="message-id">Succesffully uploaded</span>}
+                    action={[
+                      <Button key="undo" color="secondary" size="small" onClick={this.handleClose}>
+                        UNDO
+            </Button>,
+                      <IconButton
+                        key="close"
+                        aria-label="Close"
+                        color="inherit"
+                        // className={classes.close}
+                        onClick={this.handleClose}
+                      >
+                      </IconButton>,
+                    ]}
+                  />
                 </div>
               </div>
             </Fragment>
