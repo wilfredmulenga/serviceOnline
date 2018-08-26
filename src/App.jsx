@@ -32,52 +32,53 @@ class App extends Component {
   }
   //fetching data from firebase or json in ./database folder
   handleLoadUsers = () => {
-    console.log("handle loaders")
-    Firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        //handleLoadUsers()
-        userUID = user.uid
-        console.log(userUID)
-      } else {
-        browserHistory.push('/signin')
+
+    // Firebase.auth().onAuthStateChanged((user) => {
+    //   if (user) {
+    //     //handleLoadUsers()
+    //     userUID = user.uid
+    //     console.log(userUID)
+    //   } else {
+    //     browserHistory.push('/signin')
+    //   }
+    // })
+    // Firebase.database()
+    //   .ref('Users/')
+    //   .on('value', (snapshot) => {
+    //     JobsSnapshot = snapshot.val();
+    JobsSnapshot = jsonData["Users"]
+    let elements;
+    // React doesnt accept objects in states so it has to be converted into an array
+    for (const index in JobsSnapshot) {
+      elements = JobsSnapshot[index];
+      peopleArray.push(elements);
+    }
+    let currentUserObject
+    for (const index in JobsSnapshot) {
+      //console.log(JobsSnapshot[index]['userUID'])
+
+      if (JobsSnapshot[index]['userUID'] ===
+        // userUID
+        'O6VVUA0fm1QpOt23QaOctFux27h1'
+      ) {
+        currentUserObject = JobsSnapshot[index]
       }
+    }
+
+    currentUser.push(currentUserObject)
+
+
+
+    this.setState({
+      loading: true,
+      listOfPeople: peopleArray
     })
-    Firebase.database()
-      .ref('Users/')
-      .on('value', (snapshot) => {
-        JobsSnapshot = snapshot.val();
-        JobsSnapshot = jsonData["Users"]
-        let elements;
-        // React doesnt accept objects in states so it has to be converted into an array
-        for (const index in JobsSnapshot) {
-          elements = JobsSnapshot[index];
-          peopleArray.push(elements);
-        }
-        let currentUserObject
-        for (const index in JobsSnapshot) {
-          //console.log(JobsSnapshot[index]['userUID'])
-
-          if (JobsSnapshot[index]['userUID'] == userUID
-            // 'O6VVUA0fm1QpOt23QaOctFux27h1'
-          ) {
-            currentUserObject = JobsSnapshot[index]
-          }
-        }
-
-        currentUser.push(currentUserObject)
-        console.log(currentUser)
-
-
-        this.setState({
-          loading: true,
-          listOfPeople: peopleArray
-        })
-        //console.log("home", peopleArray)
-      });
+    //console.log("home", peopleArray)
+    // });
 
   };
   render() {
-    if (this.state.loading) {
+    if (true) {
       return (
         <Provider>
           <Router history={browserHistory}>
@@ -87,7 +88,7 @@ class App extends Component {
             <Route path="/signup" component={SignUp} />
             <Route path="/updateprofile" component={UpdateProfile} userData={currentUser} />
             <Route path="/messages" component={Messages} userUID={userUID} />
-            <Route path='/viewprofile' component={ViewProfile} userData={currentUser} />
+            <Route path='/viewprofile' component={ViewProfile} userData={currentUser} userUID={userUID} />
             {/* <Route path='/phonelogin' component={PhoneLogin} /> */}
           </Router>
         </Provider>

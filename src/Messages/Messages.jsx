@@ -59,10 +59,10 @@ class Messages extends React.Component {
   }
 
   loadMessages = () => {
-    console.log("loads", selectedPersonUserUID)
+
     const setMessage = function (snap) {
       const data = snap.val();
-      console.log(snap.key)
+
       this.displayMessage(snap.key, data.name, data.text, data.profilePicUrl, data.imageUrl);
     }.bind(this);
     Firebase.database()
@@ -72,7 +72,7 @@ class Messages extends React.Component {
 
   };
   displayMessage = (key, name, text, picUrl, imageUrl) => {
-    console.log('pic', picUrl)
+
     const MESSAGE_TEMPLATE =
       '<div class="message-container">' +
       '<div class="spacing"><div class="pic"></div></div>' +
@@ -113,7 +113,7 @@ class Messages extends React.Component {
 
 
   LoadChatHistory = () => {
-    console.log("chathistory", userUID)
+
     const setChatHistory = function (snap) {
       const data = snap.val();
       let elements = Object.values(data);

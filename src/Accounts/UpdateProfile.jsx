@@ -45,7 +45,7 @@ class UpdateProfile extends Component {
       chipData: userData.skills,
       input: '',
       selectedFile: ['asa', 'asa'],
-      uploadedImages: userData.galleryOfWork,
+      uploadedImages: [],
       file: '',
       imagePreviewUrl: '',
       profilePic: userData.pic,
@@ -241,20 +241,20 @@ class UpdateProfile extends Component {
     const { profilePicPreviewUrl } = this.state;
     let $profilePicPreview = null;
     if (profilePicPreviewUrl) {
-      $profilePicPreview = <img className="img-thumbnail" src={profilePicPreviewUrl} />;
+      $profilePicPreview = <img alt='profile pic' className="img-thumbnail" src={profilePicPreviewUrl} />;
     } else {
-      $profilePicPreview = <img className="img-thumbnail" src={this.state.profilePic} />;
+      $profilePicPreview = <img alt='profile pic' className="img-thumbnail" src={this.state.profilePic} />;
     }
     // Gallery of Work Images
     const { imagePreviewUrl } = this.state;
     let $imagePreview = null;
     if (imagePreviewUrl && !this.state.uploadedImages.includes($imagePreview)
       && !this.state.uploadedImagesBase64.includes(imagePreviewUrl)) {
-      $imagePreview = <img className="img-thumbnail" src={imagePreviewUrl} />;
+      $imagePreview = <img alt='gallery of work' className="img-thumbnail" src={imagePreviewUrl} />;
       this.state.uploadedImages.push($imagePreview);
       this.state.uploadedImagesBase64.push(imagePreviewUrl);
     } else {
-      $imagePreview = <img className="img-thumbnail" src={this.state.uploadedImages} />;
+      $imagePreview = <img alt='gallery of work' className="img-thumbnail" src={this.state.uploadedImages} />;
     }
     // rename the following to better names
     return (

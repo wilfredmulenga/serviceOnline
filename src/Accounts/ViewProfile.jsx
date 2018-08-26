@@ -6,44 +6,18 @@ import Button from '@material-ui/core/Button';
 import { UserContext } from './UserContext';
 import Loader from '../components/Loader'
 
-let userUID
+
 class ViewProfile extends Component {
     constructor(props) {
         super(props)
-        this.handleLoad = this.handleLoad.bind(this)
+
         this.handleSignOut = this.handleSignOut.bind(this)
         this.state = {
             listOfPeople: this.props.route.userData['0']
         }
-        //console.log("viewprofile", this.state.listOfPeople)
+        console.log("viewprofile", this.state.listOfPeople)
     }
-    handleLoad() {
-        Firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                userUID = user.uid;
-                //console.log(userUID);
 
-                Firebase.database()
-                    .ref(`Users/${userUID}`)
-                    .once('child_added', (snapshot) => {
-                        const data = snapshot.val()
-
-                        if (data && !data.userUID) {
-                            browserHistory.push('/updateprofile')
-
-                        } else {
-                            // this update to states will not be called properly 
-                            // because the component is not yet mmounted at this point
-                            this.setState({
-                                listOfPeople: snapshot.val()
-                            })
-                        }
-                    });
-            } else {
-                console.log('signed out')
-            }
-        });
-    }
 
     handleSignOut() {
 

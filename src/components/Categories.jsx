@@ -22,9 +22,8 @@ const customStyles = {
   },
 };
 
-let loginStatus = true;
 
-const peopleArray = [];
+
 let displayName = 'Anonymous';
 let pic = 'https://storage.googleapis.com/lsk-guide-jobs.appspot.com/profile_placeholder.png';
 // Firebase.auth().onAuthStateChanged((user) => {
@@ -58,7 +57,7 @@ class Categories extends React.Component {
       userData: this.props.route.userData,
       userUID: this.props.route.userUID
     };
-    console.log("categories", this.props.route.userUID)
+
   }
 
   render() {
@@ -140,10 +139,10 @@ class Tables extends React.Component {
 
 
   handleClick = (value) => {
-    console.log("handleClick", this.props.userData)
+
     var filterByProfession = []
     for (var y = 0; y < this.props.userData.length; y++) {
-      if (this.props.userData[y]["profession"] == value) {
+      if (this.props.userData[y]["profession"] === value) {
         filterByProfession.push(this.props.userData[y])
       }
     }
@@ -164,6 +163,9 @@ class Tables extends React.Component {
         typeOfUsers: "Search Results: Carpenters"
       })
         break
+      default: this.setState({
+        typeOfUsers: "Search Results: Featured Workers"
+      })
     }
   }
 
