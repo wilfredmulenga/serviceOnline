@@ -30,22 +30,18 @@ class SignIn extends React.Component {
   }
 
   handleSignIn() {
+    const { email, password } = this.state;
     Firebase.auth()
-      .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then((user) => {
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
         loginStatus = true;
         browserHistory.push('/');
       })
       .catch((error) => {
         // Handle Errors here.
-        const errorCode = error.code;
-        // var errorMessage = error.message;
-        errorMessage = error.message;
-        console.log(errorCode, errorMessage);
         this.setState({
-          error: errorMessage,
+          error: error.message,
         });
-        // ...
       });
   }
 

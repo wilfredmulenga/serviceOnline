@@ -230,10 +230,9 @@ class Tables extends React.Component {
            listOfPeople.forEach((element,i)=>{
              newArray.push(Object.values(element))
            })
-
            } */}
 
-            {listOfPeople.length ? (
+            {listOfPeople !== ['empty'] ? (
               listOfPeople.map((element, i) => (
                 <div className="card col-md-6 pt-3 pb-3 " key={i}>
                   <div className="row justify-content-around">
@@ -259,7 +258,6 @@ class Tables extends React.Component {
                         View More
                       </Button>
                     </div>
-
                     {/* Modal when user clicks on a specific person */}
                     {selectedPerson.firstName !== '' &&
                     selectedPerson.lastName !== '' &&
