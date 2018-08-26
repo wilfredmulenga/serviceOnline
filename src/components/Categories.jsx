@@ -4,15 +4,12 @@ import Navbar from './Navbar';
 import Firebase from '../config/firebase';
 import Button from '@material-ui/core/Button';
 import { browserHistory } from 'react-router';
-import Loader from './Loader'
+import Loader from './Loader';
 
 Modal.setAppElement('#root');
 
-
-
-
-let displayName = 'Anonymous';
-let pic = 'https://storage.googleapis.com/lsk-guide-jobs.appspot.com/profile_placeholder.png';
+const displayName = 'Anonymous';
+const pic = 'https://storage.googleapis.com/lsk-guide-jobs.appspot.com/profile_placeholder.png';
 // Firebase.auth().onAuthStateChanged((user) => {
 //   if (user) {
 //     userUID = user.uid;
@@ -33,7 +30,6 @@ let pic = 'https://storage.googleapis.com/lsk-guide-jobs.appspot.com/profile_pla
 //   }
 // });
 
-
 // console.log(newFucn == true)
 
 class Categories extends React.Component {
@@ -42,17 +38,15 @@ class Categories extends React.Component {
     this.state = {
       modalIsOpen: false,
       userData: this.props.route.userData,
-      userUID: this.props.route.userUID
+      userUID: this.props.route.userUID,
     };
-
   }
 
   render() {
     return (
       <div>
         <Navbar title="Categories" />
-        <Tables userData={this.state.userData}
-          userUID={this.state.userUID} />
+        <Tables userData={this.state.userData} userUID={this.state.userUID} />
       </div>
     );
   }
@@ -68,43 +62,46 @@ class Tables extends React.Component {
       job: '',
       selectedPerson: [],
       loading: true,
-      typeOfUsers: "Search Results: Featured Workers"
+      typeOfUsers: 'Search Results: Featured Workers',
     };
 
     this.handleClick = this.handleClick.bind(this);
     this.handleCardClick = this.handleCardClick.bind(this);
     this.handleConnect = this.handleConnect.bind(this);
-    //userUID = this.props.route.userUID
+    // userUID = this.props.route.userUID
   }
 
   handleConnect = (value) => {
-    var PostRef = Firebase.database()
-      .ref(`Users/${value}/Messages`).push()
-    var PostRefKey = PostRef.getKey()
-    Firebase.database().ref(`Users/${this.state.userUID}/Messages`)
+    const PostRef = Firebase.database()
+      .ref(`Users/${value}/Messages`)
+      .push();
+    const PostRefKey = PostRef.getKey();
+    Firebase.database()
+      .ref(`Users/${this.state.userUID}/Messages`)
       .push({
         messageKey: PostRefKey,
         name: displayName,
-        text: "New Message",
-        profilePicUrl: pic
-      })
-    Firebase.database().ref(`Users/${value}/Messages`)
+        text: 'New Message',
+        profilePicUrl: pic,
+      });
+    Firebase.database()
+      .ref(`Users/${value}/Messages`)
       .push({
         messageKey: PostRefKey,
         name: displayName,
-        text: "New Message",
-        profilePicUrl: pic
+        text: 'New Message',
+        profilePicUrl: pic,
       })
 
       .catch((error) => {
         console.error('Error writing new message to Firebase Database', error);
       });
-    //console.log(PostRef.getKey())
+    // console.log(PostRef.getKey())
     browserHistory.push({
       pathname: '/messages',
       // search: '?the=search',
-      state: { messageKey: PostRefKey }
-    })
+      state: { messageKey: PostRefKey },
+    });
   }
 
   handleCardClick = (selectedPersonUserID) => {
@@ -112,57 +109,54 @@ class Tables extends React.Component {
       selectedPersonUserID === this.state.listOfPeople[item].userUID
         ? this.setState({
           selectedPerson: this.state.listOfPeople[item],
-        }) : null;
-
+        })
+        : null;
     }
     this.openModal();
-  };
+  }
 
   openModal() {
     // open and close modal upon clicking
     this.setState({ modalIsOpen: !this.state.modalIsOpen });
   }
 
-
-
   handleClick = (value) => {
-
-    var filterByProfession = []
-    for (var y = 0; y < this.props.userData.length; y++) {
-      if (this.props.userData[y]["profession"] === value) {
-        filterByProfession.push(this.props.userData[y])
+    const filterByProfession = [];
+    for (let y = 0; y < this.props.userData.length; y++) {
+      if (this.props.userData[y].profession === value) {
+        filterByProfession.push(this.props.userData[y]);
       }
     }
     this.setState({
-      listOfPeople: filterByProfession
-    })
-    console.log(filterByProfession)
+      listOfPeople: filterByProfession,
+    });
+    console.log(filterByProfession);
     switch (value) {
-      case "Maid": this.setState({
-        typeOfUsers: "Search Results: Maids"
-      })
-        break
-      case "Electrician": this.setState({
-        typeOfUsers: "Search Results: Electrician"
-      })
-        break
-      case "Carpenter": this.setState({
-        typeOfUsers: "Search Results: Carpenters"
-      })
-        break
-      default: this.setState({
-        typeOfUsers: "Search Results: Featured Workers"
-      })
+      case 'Maid':
+        this.setState({
+          typeOfUsers: 'Search Results: Maids',
+        });
+        break;
+      case 'Electrician':
+        this.setState({
+          typeOfUsers: 'Search Results: Electrician',
+        });
+        break;
+      case 'Carpenter':
+        this.setState({
+          typeOfUsers: 'Search Results: Carpenters',
+        });
+        break;
+      default:
+        this.setState({
+          typeOfUsers: 'Search Results: Featured Workers',
+        });
     }
   }
-
-
 
   render() {
     const { listOfPeople } = this.state;
     const { selectedPerson } = this.state;
-
-
 
     return (
       <div className="row container-fluid justify-content-start mt-4">
@@ -176,41 +170,40 @@ class Tables extends React.Component {
           <Button
             className="btn  mb-1"
             type="button"
-            variant='contained'
+            variant="contained"
             style={{ backgroundColor: '#FFF', color: '#000' }}
-            onClick={() => this.handleClick('Maid')}
-          >Maid</Button>
+            onClick={() => this.handleClick('Maid')}>
+            Maid
+          </Button>
           <Button
             className="btn mb-1"
             type="button"
-            variant='contained'
+            variant="contained"
             style={{ backgroundColor: '#FFF', color: '#000' }}
-            onClick={() => this.handleClick('Electrician')}
-          >
+            onClick={() => this.handleClick('Electrician')}>
             Electrician
-            </Button>
+          </Button>
           <Button
             className="btn  mb-1"
             type="button"
-            variant='contained'
+            variant="contained"
             style={{ backgroundColor: '#FFF', color: '#000' }}
-            onClick={() => this.handleClick('Carpenter')}
-          >
+            onClick={() => this.handleClick('Carpenter')}>
             Carpenter
-            </Button>
+          </Button>
           <Button
             className="btn  mb-1"
             type="button"
-            variant='contained'
+            variant="contained"
             style={{ backgroundColor: '#FFF', color: '#000' }}
-            onClick={() => this.handleClick('All')}
-          >All</Button>
-
+            onClick={() => this.handleClick('All')}>
+            All
+          </Button>
         </div>
         <div className="card col center-align mr-3 ml-3 ">
           <div className="mt-2 mb-1">{this.state.typeOfUsers}</div>
           {/* <div className="input-group mt-3 row justify-content-center ">
-           
+
             <div className="col-5">
               <IntegrationAutosuggest
                 lol={this.state.value}
@@ -240,10 +233,9 @@ class Tables extends React.Component {
 
            } */}
 
-            {
-
-              (listOfPeople !== ["empty"]) ? listOfPeople.map((element, i) => (
-                <div className="card col-md-6 pt-3 pb-3 " key={i} >
+            {listOfPeople.length ? (
+              listOfPeople.map((element, i) => (
+                <div className="card col-md-6 pt-3 pb-3 " key={i}>
                   <div className="row justify-content-around">
                     <div className="col-md-4 mr-2  justify-content-start">
                       <img
@@ -254,41 +246,49 @@ class Tables extends React.Component {
                       />
                     </div>
                     <div className="col-md-7  text-align-start">
-                      <b>   Name: </b> {`${element.firstName} ${element.lastName}`}<br />
-
-                      <b>  Skills: </b>{`${element.skills.map((element, i) => (
-                        element.label
-                      ))}`} <br />
+                      <b> Name: </b> {`${element.firstName} ${element.lastName}`}
+                      <br />
+                      <b> Skills: </b>
+                      {`${element.skills.map((element, i) => element.label)}`} <br />
                       <b> City:</b> {element.city} <br />
-
-                      <Button className='mt-5' variant='contained' style={{ backgroundColor: '#FFF', color: '#000' }}
-                        onClick={() => this.handleCardClick(element.userUID)}>View More</Button>
+                      <Button
+                        className="mt-5"
+                        variant="contained"
+                        style={{ backgroundColor: '#FFF', color: '#000' }}
+                        onClick={() => this.handleCardClick(element.userUID)}>
+                        View More
+                      </Button>
                     </div>
 
                     {/* Modal when user clicks on a specific person */}
-                    {(selectedPerson.firstName !== '' && selectedPerson.lastName !== '' && selectedPerson.age !== ''
-                      && selectedPerson.city !== '' && selectedPerson.briefDescription !== '' && selectedPerson.email !== ''
-                      && selectedPerson.phoneNumber !== '' && selectedPerson.nrc !== '') ?
+                    {selectedPerson.firstName !== '' &&
+                    selectedPerson.lastName !== '' &&
+                    selectedPerson.age !== '' &&
+                    selectedPerson.city !== '' &&
+                    selectedPerson.briefDescription !== '' &&
+                    selectedPerson.email !== '' &&
+                    selectedPerson.phoneNumber !== '' &&
+                    selectedPerson.nrc !== '' ? (
                       <Modal
                         isOpen={this.state.modalIsOpen}
-                        //style={customStyles}
+                        // style={customStyles}
                         id="modalStyles"
                         contentLabel="Example Modal">
                         <div clasName="container ">
-                          <div className=" row mb-3 justify-content-end"
-                          >
+                          <div className=" row mb-3 justify-content-end">
                             <Button
-
                               type="button"
-                              onClick={() => this.setState({
-                                modalIsOpen: false
-                              })}
-                              variant='contained'
+                              onClick={() =>
+                                this.setState({
+                                  modalIsOpen: false,
+                                })
+                              }
+                              variant="contained"
                               color="secondary">
-                              Cancel</Button>
+                              Cancel
+                            </Button>
                           </div>
                           <div className="row">
-
                             <div className="col-md-6">
                               <div className="row">
                                 <img
@@ -298,17 +298,23 @@ class Tables extends React.Component {
                                   alt={'profile pic'}
                                 />
                                 <div className="col-md-6 ml-3">
-                                  <b> Name: </b>{`${selectedPerson.firstName} ${selectedPerson.lastName}`}
+                                  <b> Name: </b>
+                                  {`${selectedPerson.firstName} ${selectedPerson.lastName}`}
                                   <br />
-                                  <b> Skills: </b>{(selectedPerson.skills) ? selectedPerson.skills.map((element, i) => (
-                                    element.label
-                                  )) : null} <br />
-                                  <b> City: </b>{selectedPerson.city} <br />
-
-                                  <Button className="mt-3" variant='contained'
+                                  <b> Skills: </b>
+                                  {selectedPerson.skills
+                                    ? selectedPerson.skills.map((element, i) => element.label)
+                                    : null}{' '}
+                                  <br />
+                                  <b> City: </b>
+                                  {selectedPerson.city} <br />
+                                  <Button
+                                    className="mt-3"
+                                    variant="contained"
                                     style={{ backgroundColor: '#FFF', color: '#000' }}
-                                    onClick={() => this.handleConnect(selectedPerson.userUID)}
-                                  >Connect</Button>
+                                    onClick={() => this.handleConnect(selectedPerson.userUID)}>
+                                    Connect
+                                  </Button>
                                   {/* </Link> */}
                                 </div>
                               </div>
@@ -318,25 +324,34 @@ class Tables extends React.Component {
                             <div className="col-md-6">
                               <div>
                                 <h5 className="mt-4">Gallery of Work</h5>
-                                {(selectedPerson.galleryOfWork) ? selectedPerson.galleryOfWork.map((image, i) => (
-                                  <div className="row mb-3" key={i}>
-                                    <div className="col-md-6">
-                                      <img className="img-thumbnail mr-2" src={image} alt="gallery of" />
-                                    </div>
-
-                                  </div>
-                                )) : null}
+                                {selectedPerson.galleryOfWork
+                                  ? selectedPerson.galleryOfWork.map((image, i) => (
+                                      <div className="row mb-3" key={i}>
+                                        <div className="col-md-6">
+                                          <img
+                                            className="img-thumbnail mr-2"
+                                            src={image}
+                                            alt="gallery of"
+                                          />
+                                        </div>
+                                      </div>
+                                    ))
+                                  : null}
                               </div>
                             </div>
                           </div>
                         </div>
-                      </Modal> : null}
+                      </Modal>
+                    ) : null}
                   </div>
                 </div>
-              )) : <Loader />}
+              ))
+            ) : (
+              <Loader />
+            )}
           </div>
         </div>
-      </div >
+      </div>
     );
   }
 }

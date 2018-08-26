@@ -2,13 +2,9 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import Firebase from '../config/firebase';
 import { browserHistory } from 'react-router';
+
 let loginStatus;
 let errorMessage;
-
-
-
-
-
 
 class SignIn extends React.Component {
   constructor() {
@@ -16,23 +12,20 @@ class SignIn extends React.Component {
     this.state = {
       email: '',
       password: '',
-      error: ''
-    }
+      error: '',
+    };
     this.handleInput = this.handleInput.bind(this);
-    this.handleSignIn = this.handleSignIn.bind(this)
+    this.handleSignIn = this.handleSignIn.bind(this);
   }
   handleInput(event) {
     if (event.target.placeholder === 'email') {
       this.setState({
         email: event.target.value,
       });
-
-    }
-    else if (event.target.placeholder === 'password') {
+    } else if (event.target.placeholder === 'password') {
       this.setState({
         password: event.target.value,
       });
-
     }
   }
 
@@ -49,18 +42,24 @@ class SignIn extends React.Component {
         // var errorMessage = error.message;
         errorMessage = error.message;
         console.log(errorCode, errorMessage);
+        this.setState({
+          error: errorMessage,
+        });
         // ...
       });
-    this.setState({
-      error: errorMessage,
-    });
   }
 
-
   render() {
+    const { error } = this.state;
     return (
       <div className="row justify-content-center text-center">
-        <div style={{ width: '30%', height: '50%', top: '50%', marginTop: 20 }}>
+        <div
+          style={{
+            width: '30%',
+            height: '50%',
+            top: '50%',
+            marginTop: 20,
+          }}>
           <div>
             <h1 style={{ margin: 50 }}>Welcome to Fixer</h1>
             <h2 style={{ margin: 50 }}>Sign In</h2>
@@ -84,21 +83,21 @@ class SignIn extends React.Component {
                   placeholder="password"
                 />
               </div>
-              {this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : null}
+              {error.length ? <p style={{ color: 'red' }}>{error}</p> : null}
             </form>
             <div className="row d-flex justify-content-center mt-4 mb-5">
-              <Button variant='contained' color='primary' type="submit"
-                onClick={this.handleSignIn}>
+              <Button variant="contained" color="primary" type="submit" onClick={this.handleSignIn}>
                 Sign In
-                </Button>
+              </Button>
             </div>
             <div>
               Don't have an account? You can{' '}
-              <Button variant='contained' color="secondary"
-                onClick={() => browserHistory.push('/signup')}
-              >
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => browserHistory.push('/signup')}>
                 Sign Up
-                </Button>
+              </Button>
             </div>
           </div>
         </div>
