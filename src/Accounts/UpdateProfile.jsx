@@ -10,72 +10,80 @@ import Modal from 'react-modal';
 import { UserContext } from './UserContext';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
-
 import Button from '@material-ui/core/Button'
-
-
-let userUID;
-
 let userData
-
-
-
-// Firebase.auth().onAuthStateChanged((user) => {
-//   if (user) {
-//     userUID = user.uid;
-//     console.log(userUID);
-
-//     Firebase.database()
-//       .ref(`Users/${userUID}`)
-//       .on('value', (snapshot) => {
-//         const data = snapshot.val()
-//         if (data) {
-
-//           userDetails = data
-
-//         }
-//       });
-//   } else {
-//     console.log('signed out');
-//   }
-// });
-
-// Components
+let galleryFiles = []
+let userUID
 class UpdateProfile extends Component {
-
   constructor(props) {
     super(props);
     userData = this.props.route.userData['0'];
-    this.state = {
-      signedIn: true,
-      chipData: userData.skills,
-      input: '',
-      selectedFile: ['asa', 'asa'],
-      uploadedImages: [],
-      file: '',
-      imagePreviewUrl: '',
-      profilePic: userData.pic,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      age: userData.age,
-      nrc: userData.nrc,
-      phoneNumber: userData.phoneNumber,
-      email: userData.email,
-      city: userData.city,
-      rating: 3,
-      status: 'available',
-      reviews: [],
-      briefDescription: userData.briefDescription,
-      profession: 'Other',
-      UploadModalOpen: false,
-      // skills : [],
-      // profilePicPreviewUrl is actually base64 of the image
-      profilePicPreviewUrl: '',
-      // base64 of uploaded Images
-      uploadedImagesBase64: [],
-      userUID: userData.userUID,
-      open: true
-    };
+    userUID = this.props.route.userUID;
+    if (userData != null) {
+      this.state = {
+        signedIn: true,
+        chipData: userData.skills,
+        input: '',
+        selectedFile: ['asa', 'asa'],
+        uploadedImages: userData.galleryOfWork,
+        file: '',
+        imagePreviewUrl: '',
+        profilePic: userData.pic,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        age: userData.age,
+        nrc: userData.nrc,
+        phoneNumber: userData.phoneNumber,
+        email: userData.email,
+        city: userData.city,
+        rating: 3,
+        status: 'available',
+        reviews: [],
+        briefDescription: userData.briefDescription,
+        profession: 'Other',
+        UploadModalOpen: false,
+        // skills : [],
+        // profilePicPreviewUrl is actually base64 of the image
+        profilePicPreviewUrl: userData.pic,
+        // base64 of uploaded Images
+        uploadedImagesBase64: [],
+        userUID: userData.userUID,
+        open: false,
+        snackbarText: ''
+      }
+    } else {
+      this.state = {
+        signedIn: true,
+        chipData: [],
+        input: '',
+        selectedFile: ['asa', 'asa'],
+        uploadedImages: [],
+        file: '',
+        imagePreviewUrl: '',
+        profilePic: '',
+        firstName: '',
+        lastName: '',
+        age: '',
+        nrc: '',
+        phoneNumber: '',
+        email: '',
+        city: '',
+        rating: 3,
+        status: 'available',
+        reviews: [],
+        briefDescription: '',
+        profession: 'Other',
+        UploadModalOpen: false,
+        // skills : [],
+        // profilePicPreviewUrl is actually base64 of the image
+        profilePicPreviewUrl: '',
+        // base64 of uploaded Images
+        uploadedImagesBase64: [],
+        userUID: '',
+        open: false,
+        snackbarText: ''
+      }
+    }
     this.handleDelete = this.handleDelete.bind(this);
     this.addItem = this.addItem.bind(this);
     this.sendData = this.sendData.bind(this);
@@ -85,6 +93,7 @@ class UpdateProfile extends Component {
     this.handleProfessionChange = this.handleProfessionChange.bind(this);
     this.handleClose = this.handleClose.bind(this)
     this.saveImageMessage = this.saveImageMessage.bind(this)
+    this.saveGalleryFiles = this.saveGalleryFiles.bind(this)
   }
   handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -125,21 +134,24 @@ class UpdateProfile extends Component {
     });
   };
 
-  sendData() {
-    // console.log(this.state.profession)
+  sendData = (event) => {
+    if (galleryFiles.length == 0) {
+      this.setState({
+        open: true,
+        snackbarText: "Please upload at least one image to Gallery of Work"
+      })
+    }
+    event.preventDefault();
+    console.log(this.state.firstName)
     const { profilePicPreviewUrl, firstName, lastName, email, phoneNumber, city,
       age, nrc, profession, chipData, briefDescription, uploadedImagesBase64 } = this.state;
 
-    // not a good way but will do for now
-    if (!firstName.length || email.length || age.length || nrc.length || profession.length) {
-      return;
-    }
 
     Firebase.database()
       .ref(`Users/${userUID}`)
-      .set(
+      .update(
         {
-          pic: profilePicPreviewUrl,
+          //pic: profilePicPreviewUrl,
           firstName: firstName,
           lastName: lastName,
           email: email,
@@ -150,18 +162,29 @@ class UpdateProfile extends Component {
           profession: profession,
           skills: chipData,
           briefDescription: briefDescription,
-          galleryOfWork: uploadedImagesBase64,
+          //galleryOfWork: uploadedImagesBase64,
           userUID: userUID
         },
         (error) => {
           if (error) {
-            console.log('write failed');
+            this.setState({
+              open: true,
+              snackbarText: 'Error submiting form, please try again'
+            })
           } else {
+            this.setState({
+              open: true,
+              snackbarText: 'Successfully uploaded'
+            });
+
             console.log('write successful');
           }
         },
       );
-    browserHistory.push('/categories')
+    setTimeout(() => {
+      browserHistory.push('/categories')
+    }, 5000);
+    return false
   }
   handleChangeImages(event) {
     const reader = new FileReader();
@@ -173,7 +196,9 @@ class UpdateProfile extends Component {
         imagePreviewUrl: reader.result,
       });
     };
-
+    //rewrite this to prevent upload of the same image twice
+    galleryFiles.push(file)
+    console.log(galleryFiles)
     reader.readAsDataURL(file);
   }
 
@@ -189,7 +214,7 @@ class UpdateProfile extends Component {
       });
     };
 
-    //reader.readAsDataURL(file);
+    reader.readAsDataURL(file);
     this.saveImageMessage(file)
   }
   saveImageMessage = function (file) {
@@ -201,12 +226,12 @@ class UpdateProfile extends Component {
     //profilePicUrl: this.getProfilePicUrl()
     // }).then(function (messageRef) {
     // 2 - Upload the image to Cloud Storage.
-    var filePath = this.state.userUID + '/' + file.name;
+    var filePath = userUID + '/' + file.name;
     Firebase.storage().ref(filePath).put(file).then(function (fileSnapshot) {
       // 3 - Generate a public URL for the file.
       return fileSnapshot.ref.getDownloadURL().then((url) => {
         // 4 - Update the chat message placeholder with the image's URL.
-        return Firebase.database().ref(`Users/${this.state.userUID}`).update({
+        return Firebase.database().ref(`Users/${userUID}`).update({
           pic: url,
           //storageUri: fileSnapshot.metadata.fullPath
         });
@@ -216,6 +241,35 @@ class UpdateProfile extends Component {
       console.error('There was an error uploading a file to Cloud Storage:', error);
     });
   };
+  saveGalleryFiles = function () {
+    console.log("save gallery files")
+    //first remove previous images
+    Firebase.database().ref(`Users/${userUID}`).update({
+      galleryOfWork: [],
+      //storageUri: fileSnapshot.metadata.fullPath
+    });
+
+    for (var x = 0; x < galleryFiles.length; x++) {
+      var filePath = userUID + '/' + galleryFiles[x].name;
+      Firebase.storage().ref(filePath).put(galleryFiles[x]).then(function (fileSnapshot) {
+        // 3 - Generate a public URL for the file.
+        return fileSnapshot.ref.getDownloadURL().then((url) => {
+          // 4 - Update the chat message placeholder with the image's URL.
+          this.state.uploadedImages.push(url)
+          //rewrite this line so that it only updates once if it is update several times
+          console.log(x)
+          return Firebase.database().ref(`Users/${userUID}`).update({
+            galleryOfWork: this.state.uploadedImages,
+            //storageUri: fileSnapshot.metadata.fullPath
+          });
+        });
+
+        //}.bind(this));
+      }.bind(this)).catch(function (error) {
+        console.error('There was an error uploading a file to Cloud Storage:', error);
+      });
+    }
+  }
   // handle input change except for those that need images
   // we can use a switch statement here 
 
@@ -285,19 +339,20 @@ class UpdateProfile extends Component {
     if (profilePicPreviewUrl) {
       $profilePicPreview = <img alt='profile pic' style={{ width: 300, height: 200 }} className="img-thumbnail" src={profilePicPreviewUrl} />;
     } else {
-      $profilePicPreview = <img alt='profile pic' style={{ width: 300, height: 200 }} className="img-thumbnail" src={"https://firebasestorage.googleapis.com/v0/b/lsk-guide-jobs.appspot.com/o/O6VVUA0fm1QpOt23QaOctFux27h1%2F39064427_1811139558963421_3161782226975195136_n.jpg?alt=media&token=464e3d38-3aa6-4efc-bd3b-57a079e24c34"} />;
+      $profilePicPreview = <img alt='profile pic' style={{ width: 300, height: 200 }} className="img-thumbnail" src={greybackground} />;
     }
     // Gallery of Work Images
     const { imagePreviewUrl } = this.state;
     let $imagePreview = null;
     if (imagePreviewUrl && !this.state.uploadedImages.includes($imagePreview)
       && !this.state.uploadedImagesBase64.includes(imagePreviewUrl)) {
-      $imagePreview = <img alt='gallery of work' style={{ width: 300, height: 200 }} className="img-thumbnail" src={imagePreviewUrl} />;
-      this.state.uploadedImages.push($imagePreview);
-      this.state.uploadedImagesBase64.push(imagePreviewUrl);
-    } else {
-      $imagePreview = <img alt='gallery of work' style={{ width: 300, height: 200 }} className="img-thumbnail" src={this.state.uploadedImages} />;
+      $imagePreview = <img alt='gallery of work' style={{ widht: 200, height: 150 }} className="img-thumbnail" src={imagePreviewUrl} />;
+      //this.state.uploadedImages.push($imagePreview);
+      //this.state.uploadedImagesBase64.push(imagePreviewUrl);
     }
+    // } else {
+    //   $imagePreview = <img alt='gallery of work' style={{ width: 300, height: 200 }} className="img-thumbnail" src={this.state.uploadedImages} />;
+    // }
     // rename the following to better names
     return (
       <UserContext.Consumer>
@@ -314,7 +369,7 @@ class UpdateProfile extends Component {
                 <div className="card">
                   <div className="card-body">
                     <form
-                      className="needs-validation" // onSubmit={this.handleSubmit}
+                      className="needs-validation" onSubmit={this.sendData}
                     >
                       <div className="card-title">
                         <h3>Update Profile</h3>
@@ -445,7 +500,7 @@ class UpdateProfile extends Component {
                               type="text"
                               className="form-control mb-3"
                               placeholder="Type in a skill e.g  'Painting'"
-                              required
+
                             />
 
                             <div>
@@ -488,7 +543,7 @@ class UpdateProfile extends Component {
                             </div>
                             <div className="input-group-append">
                               <button // onClick={this.uploadHandler}
-                                onClick={this.handleSubmit}
+                                onClick={this.saveGalleryFiles}
                                 className="btn btn-outline-secondary"
                                 type="button">
                                 Upload
@@ -501,14 +556,22 @@ class UpdateProfile extends Component {
          {$imagePreview}
        </div> */}
                       <div className="row col-md-12 mb-5">
-                        {(uploadedImages) ? uploadedImages.map((element, i) => (
-                          <div key={i} style={{ marginRight: 10 }}>{element}</div>
-                        )) : null}
+                        <div className="col-md-6 mb-2" >
+                          <h5 className=" row mb-1">Preview</h5>
+                          {$imagePreview}
+                        </div>
+                        <div className='col-md-6'>
+                          <h5 className="mb-1">Uploaded Images</h5>
+                          <div className="row">
+                            {(uploadedImages) ? uploadedImages.map((element, i) => (
+                              <div key={i} style={{ margin: 10 }}>{<img
+                                style={{ widht: 200, height: 150 }} src={element} />}</div>
+                            )) : null}</div></div>
                       </div>
 
                       {/* To have the page reload after the submit button is pressed put the button inside the form div */}
                       <button
-                        className="btn btn-success" type="submit" //change onClick to onSubmit if you want it not to submit without filling out all the feeds
+                        className="btn btn-success" //type="submit" //change onClick to onSubmit if you want it not to submit without filling out all the fields
 
                         onSubmit={this.sendData}
                       >
@@ -523,26 +586,26 @@ class UpdateProfile extends Component {
                       vertical: 'bottom',
                       horizontal: 'center',
                     }}
-                    open={false} //change to this.state.open to show snackbar
-                    autoHideDuration={1000}
+                    open={this.state.open} //change to this.state.open to show snackbar
+                    autoHideDuration={3000}
                     onClose={this.handleClose}
                     ContentProps={{
                       'aria-describedby': 'message-id',
                     }}
-                    message={<span id="message-id">Succesffully uploaded</span>}
-                    action={[
-                      <Button key="undo" color="secondary" size="small" onClick={this.handleClose}>
-                        UNDO
-            </Button>,
-                      <IconButton
-                        key="close"
-                        aria-label="Close"
-                        color="inherit"
-                        // className={classes.close}
-                        onClick={this.handleClose}
-                      >
-                      </IconButton>,
-                    ]}
+                    message={<span id="message-id">{this.state.snackbarText}</span>}
+                  //         action={[
+                  //           <Button key="undo" color="secondary" size="small" onClick={this.handleClose}>
+                  //             UNDO
+                  // </Button>,
+                  //           <IconButton
+                  //             key="close"
+                  //             aria-label="Close"
+                  //             color="inherit"
+                  //             // className={classes.close}
+                  //             onClick={this.handleClose}
+                  //           >
+                  //           </IconButton>,
+                  //         ]}
                   />
                 </div>
               </div>

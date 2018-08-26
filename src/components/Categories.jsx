@@ -7,20 +7,7 @@ import { browserHistory } from 'react-router';
 import Loader from './Loader'
 
 Modal.setAppElement('#root');
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: '50%',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    width: '90%',
-    // to make the modal scrollable if it is bigger than than the page
-    height: '500px',
-    overflow: 'scroll',
-  },
-};
+
 
 
 
@@ -185,6 +172,7 @@ class Tables extends React.Component {
             <hr />
           </div>
           {/* Three sample jobs for demo purposes. list can be as long as desired */}
+
           <Button
             className="btn  mb-1"
             type="button"
@@ -210,6 +198,13 @@ class Tables extends React.Component {
           >
             Carpenter
             </Button>
+          <Button
+            className="btn  mb-1"
+            type="button"
+            variant='contained'
+            style={{ backgroundColor: '#FFF', color: '#000' }}
+            onClick={() => this.handleClick('All')}
+          >All</Button>
 
         </div>
         <div className="card col center-align mr-3 ml-3 ">
@@ -276,7 +271,8 @@ class Tables extends React.Component {
                       && selectedPerson.phoneNumber !== '' && selectedPerson.nrc !== '') ?
                       <Modal
                         isOpen={this.state.modalIsOpen}
-                        style={customStyles}
+                        //style={customStyles}
+                        id="modalStyles"
                         contentLabel="Example Modal">
                         <div clasName="container ">
                           <div className=" row mb-3 justify-content-end"

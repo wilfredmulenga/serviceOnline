@@ -75,55 +75,60 @@ class SignUp extends React.Component {
 
   render() {
     return (
-      <div>
-        <h2>Sign Up</h2>
+      <div className="row justify-content-center text-center">
+        <div style={{ width: '30%', height: '50%', top: '50%', marginTop: 20 }}>
+          <div>
+            <h1 style={{ margin: 50 }}>Welcome to Fixer</h1>
+            <h2 style={{ margin: 50 }}>Sign Up</h2>
 
-        <form>
-          <div className="col mb-3">
-            <input
-              type="email"
-              value={this.state.email}
-              onChange={this.handleInput}
-              className="form-control"
-              required
-              placeholder="email"
-            />
-          </div>
-          <div className="col mb-3">
-            <input
-              type="password"
-              value={this.state.password}
-              onChange={this.handleInput}
-              className="form-control"
-              placeholder="password"
-            />
-          </div>
-          <div className="col mt-2  mb-3">
-            <input
-              type="password"
-              value={this.state.reenterPassword}
-              onChange={this.handleInput}
-              className="form-control"
-              placeholder="re-enter password"
-            />
+            <form>
+              <div className="col mb-3">
+                <input
+                  type="email"
+                  value={this.state.email}
+                  onChange={this.handleInput}
+                  className="form-control"
+                  required
+                  placeholder="email"
+                />
+              </div>
+              <div className="col mb-3">
+                <input
+                  type="password"
+                  value={this.state.password}
+                  onChange={this.handleInput}
+                  className="form-control"
+                  placeholder="password"
+                />
+              </div>
+              <div className="col mt-2  mb-3">
+                <input
+                  type="password"
+                  value={this.state.reenterPassword}
+                  onChange={this.handleInput}
+                  className="form-control"
+                  placeholder="re-enter password"
+                />
 
-            {this.state.passwordMisMatch ? (
-              <p style={{ color: 'red' }}>passwords did not match</p>
-            ) : null}
-            {this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : null}
-          </div>
-        </form>
+                {this.state.passwordMisMatch ? (
+                  <p style={{ color: 'red' }}>passwords did not match</p>
+                ) : null}
+                {this.state.error ? <p style={{ color: 'red' }}>{this.state.error}</p> : null}
+              </div>
+            </form>
 
-        <div className='row d-flex justify-content-center mt-4 mb-5'> <Button variant="contained" color='primary' className="md-3" type="submit" onClick={this.handleSignUp}>
-          Sign Up
+            <div className='row d-flex justify-content-center mt-4 mb-5'> <Button variant="contained" color='primary' className="md-3" type="submit" onClick={this.handleSignUp}>
+              Sign Up
     </Button></div>
 
-        <div>
-          If you already have an account, you can{' '}
-          <Button variant="contained" color="secondary"
-            onClick={() => browserHistory.push('/signin')}>
-            Sign In
+            <div>
+              If you already have an account, you can{' '}
+              <Button variant="contained" color="secondary"
+                onClick={() => browserHistory.push('/signin')}>
+                Sign In
     </Button>
+            </div>
+          </div>
         </div>
       </div>
     );

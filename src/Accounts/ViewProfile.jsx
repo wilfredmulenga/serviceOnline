@@ -120,7 +120,7 @@ class ViewProfile extends Component {
                             <div className='mt-5' style={{ textAlign: 'center' }}>
 
 
-                            </div></div> : <Loader />}
+                            </div></div> : <div><h3>Please Update Your Profile</h3></div>}
                     </div>
                 </div>
 

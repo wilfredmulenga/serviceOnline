@@ -101,3 +101,19 @@ However, delay the fade out process for 2.5 seconds */
   from {bottom: 30px; opacity: 1;}
   to {bottom: 0; opacity: 0;}
 }
+
+
+  #modalStyles {
+    top: '50%';
+    left: '50%';
+    right: '50%';
+    bottom: 'auto';
+    margin-right: '-50%';
+    transform: 'translate(-50%, -50%)';
+    width: '90%';
+     /* to make the modal scrollable if it is bigger than than the page */
+    height: '500px';
+    overflow: 'scroll';
+  }
+
+  
