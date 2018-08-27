@@ -16,14 +16,14 @@ body {
 .message-container .pic {
   background-image: url('https://storage.googleapis.com/lsk-guide-jobs.appspot.com/profile_placeholder.png');
   background-repeat: no-repeat;
-  width: 30px;
-  height: 30px;
-  background-size: 30px;
-  border-radius: 20px;
+  width: 50px;
+  height: 50px;
+  background-size: 50px;
+  border-radius: 30px;
 }
 
 .message-container .spacing {
-  display: table-cell;
+  display: inline-block;
   vertical-align: top;
 }
 .message-container .message {
@@ -34,7 +34,7 @@ body {
 .message-container .name {
   display: inline-block;
   width: 100%;
-  padding-left: 40px;
+  padding-left: 10px;
   color: #bbb;
   font-style: italic;
   font-size: 12px;

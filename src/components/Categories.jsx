@@ -11,8 +11,8 @@ Modal.setAppElement('#root');
 
 
 
-let displayName = 'Anonymous';
-let pic = 'https://storage.googleapis.com/lsk-guide-jobs.appspot.com/profile_placeholder.png';
+//let displayName = 'Anonymous';
+//let pic = 'https://storage.googleapis.com/lsk-guide-jobs.appspot.com/profile_placeholder.png';
 // Firebase.auth().onAuthStateChanged((user) => {
 //   if (user) {
 //     userUID = user.uid;
@@ -42,7 +42,8 @@ class Categories extends React.Component {
     this.state = {
       modalIsOpen: false,
       userData: this.props.route.userData,
-      userUID: this.props.route.userUID
+      userUID: this.props.route.userUID,
+      currentUser: this.props.route.currentUser[0]
     };
 
   }
@@ -52,13 +53,12 @@ class Categories extends React.Component {
       <div>
         <Navbar title="Categories" />
         <Tables userData={this.state.userData}
-          userUID={this.state.userUID} />
+          userUID={this.state.userUID} currentUser={this.state.currentUser} />
       </div>
     );
   }
 }
 
-let JobsSnapshot;
 class Tables extends React.Component {
   constructor(props) {
     super(props);
@@ -68,32 +68,35 @@ class Tables extends React.Component {
       job: '',
       selectedPerson: [],
       loading: true,
-      typeOfUsers: "Search Results: Featured Workers"
+      typeOfUsers: "Search Results: Featured Workers",
+      pic: this.props.currentUser.pic,
+      fullName: `${this.props.currentUser.firstName} ${this.props.currentUser.lastName}`
     };
 
     this.handleClick = this.handleClick.bind(this);
     this.handleCardClick = this.handleCardClick.bind(this);
     this.handleConnect = this.handleConnect.bind(this);
-    //userUID = this.props.route.userUID
+    console.log(this.state.userUID)
   }
 
-  handleConnect = (value) => {
+  handleConnect = (selectedPersonFirstName, selectedPersonLastName, selectedPersonPic, selectedPersonUserUID) => {
+    //console.log("handleConnect", selectedPersonFirstName, selectedPersonLastName, selectedPersonPic, selectedPersonUserUID, this.state.pic)
     var PostRef = Firebase.database()
-      .ref(`Users/${value}/Messages`).push()
+      .ref(`Users/${this.state.userUID}/Messages`).push()
     var PostRefKey = PostRef.getKey()
     Firebase.database().ref(`Users/${this.state.userUID}/Messages`)
       .push({
         messageKey: PostRefKey,
-        name: displayName,
+        name: `${selectedPersonFirstName} ${selectedPersonLastName}`,
         text: "New Message",
-        profilePicUrl: pic
+        profilePicUrl: selectedPersonPic
       })
-    Firebase.database().ref(`Users/${value}/Messages`)
+    Firebase.database().ref(`Users/${selectedPersonUserUID}/Messages`)
       .push({
         messageKey: PostRefKey,
-        name: displayName,
+        name: this.state.fullName,
         text: "New Message",
-        profilePicUrl: pic
+        profilePicUrl: this.state.pic
       })
 
       .catch((error) => {
@@ -149,10 +152,13 @@ class Tables extends React.Component {
       case "Carpenter": this.setState({
         typeOfUsers: "Search Results: Carpenters"
       })
+
         break
       default: this.setState({
-        typeOfUsers: "Search Results: Featured Workers"
+        typeOfUsers: "Search Results: Featured Workers",
+        listOfPeople: this.props.userData
       })
+
     }
   }
 
@@ -165,7 +171,7 @@ class Tables extends React.Component {
 
 
     return (
-      <div className="row container-fluid justify-content-start mt-4">
+      <div className="row container-fluid justify-content-start mt-4 mb-4">
         <div className="card col-md-2 ml-3 d-flex">
           <div className="mt-3 justify-content-start text-center">
             <h5>BROWSE JOBS</h5>
@@ -256,9 +262,11 @@ class Tables extends React.Component {
                     <div className="col-md-7  text-align-start">
                       <b>   Name: </b> {`${element.firstName} ${element.lastName}`}<br />
 
-                      <b>  Skills: </b>{`${element.skills.map((element, i) => (
-                        element.label
-                      ))}`} <br />
+                      <b>  Skills: </b>{(element.skills != undefined) ? `${
+                        element.skills.map((element, i) => (
+                          element.label
+                        ))
+                        }` : null} <br />
                       <b> City:</b> {element.city} <br />
 
                       <Button className='mt-5' variant='contained' style={{ backgroundColor: '#FFF', color: '#000' }}
@@ -307,7 +315,9 @@ class Tables extends React.Component {
 
                                   <Button className="mt-3" variant='contained'
                                     style={{ backgroundColor: '#FFF', color: '#000' }}
-                                    onClick={() => this.handleConnect(selectedPerson.userUID)}
+                                    onClick={() =>
+                                      this.handleConnect(selectedPerson.firstName, selectedPerson.lastName,
+                                        selectedPerson.pic, selectedPerson.userUID)}
                                   >Connect</Button>
                                   {/* </Link> */}
                                 </div>

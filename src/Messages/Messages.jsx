@@ -75,10 +75,10 @@ class Messages extends React.Component {
 
     const MESSAGE_TEMPLATE =
       '<div class="message-container">' +
-      '<div class="spacing"><div class="pic"></div></div>' +
-      '<div class="message"></div>' +
-      '<div class="name"></div>' +
-      '</div>';
+      '<div><img class="pic" className=" rounded-circle"/>' +
+      '<div class="spacing"><div class="message"></div>' +
+      '<div class="name"></div></div>' +
+      '</div></div>';
 
     let div = document.getElementById(key);
     const messageList = document.getElementById('messages');
@@ -92,7 +92,7 @@ class Messages extends React.Component {
     }
     div.querySelector('.name').textContent = name;
     div.querySelector('.message').textContent = text;
-    div.querySelector('.pic').style.backgroundImage = `url(${picUrl})`;
+    div.querySelector('.pic').src = `${picUrl}`;
 
     // if (text) { // If the message is text.
     //     messageElement.textContent = text;
@@ -101,7 +101,7 @@ class Messages extends React.Component {
     //   }
 
     if (!picUrl) {
-      div.querySelector('.pic').style.backgroundImage =
+      div.querySelector('.pic').src =
         'url(https://storage.googleapis.com/lsk-guide-jobs.appspot.com/profile_placeholder.png)';
     }
 
@@ -123,21 +123,23 @@ class Messages extends React.Component {
         properties.push(data[index])
       }
       // console.log(elements['0'])
-      this.displayChatHistory(elements['1'], elements['3'], elements['0'])
+      this.displayChatHistory(elements['1'], elements['3'], elements['0'], elements['2'])
     }.bind(this);
-    Firebase.database()
-      .ref(`Users/${userUID}/Messages`)
-      .limitToLast(1)
-      .on('child_added', setChatHistory);
+    //precaution incase userUID is null, dont push to database. preventing errors
+    (userUID != null) ?
+      Firebase.database()
+        .ref(`Users/${userUID}/Messages`)
+        .limitToLast(1)
+        .on('child_added', setChatHistory) : null
   }
 
-  displayChatHistory = (name, text, messageKey) => {
+  displayChatHistory = (name, text, messageKey, picUrl) => {
     const MESSAGE_TEMPLATE =
       '<div class="message-container">' +
-      '<div class="spacing"><div class="pic"></div></div>' +
-      '<div class="message"></div>' +
-      '<div class="name"></div>' +
-      '</div>';
+      '<div><img class="pic" className=" rounded-circle"/>' +
+      '<div class="spacing"><div class="message"></div>' +
+      '<div class="name"></div></div>' +
+      '</div></div>';
 
     let div = document.getElementById(name);
     const messageList = document.getElementById('chatHistory');
@@ -157,7 +159,7 @@ class Messages extends React.Component {
       }
       this.loadMessages()
     }
-    // div.querySelector('.pic').style.backgroundImage = `url(${picUrl})`;
+    div.querySelector('.pic').src = `${picUrl}`;
 
     // if (text) { // If the message is text.
     //     messageElement.textContent = text;
@@ -165,10 +167,10 @@ class Messages extends React.Component {
     //     messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
     //   }
 
-    // if (!picUrl) {
-    //   div.querySelector('.pic').style.backgroundImage =
-    //     'url(https://storage.googleapis.com/lsk-guide-jobs.appspot.com/profile_placeholder.png)';
-    // }
+    if (!picUrl) {
+      div.querySelector('.pic').src =
+        'url(https://storage.googleapis.com/lsk-guide-jobs.appspot.com/profile_placeholder.png)';
+    }
 
     // var div = document.getElementById("messages");
 
@@ -216,7 +218,7 @@ class Messages extends React.Component {
         <div className="container row mt-3">
           <div className="col-md-4">
             <div className='card'>
-              <div id='chatHistory' className='chatHistory'>
+              <div id='chatHistory' className='chatHistory' style={{ padding: 5 }}>
               </div>
             </div>
           </div>

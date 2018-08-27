@@ -60,7 +60,7 @@ class UpdateProfile extends Component {
         uploadedImages: [],
         file: '',
         imagePreviewUrl: '',
-        profilePic: '',
+        profilePic: 'https://storage.googleapis.com/lsk-guide-jobs.appspot.com/profile_placeholder.png',
         firstName: '',
         lastName: '',
         age: '',
@@ -72,7 +72,7 @@ class UpdateProfile extends Component {
         status: 'available',
         reviews: [],
         briefDescription: '',
-        profession: 'Other',
+        profession: 'Maid',
         UploadModalOpen: false,
         // skills : [],
         // profilePicPreviewUrl is actually base64 of the image
@@ -383,7 +383,7 @@ class UpdateProfile extends Component {
                             className="form-control"
                             accept="image/*" capture="camera"
                             onChange={this.handleChangeProfilePic}
-                            required
+
                           />
                         </div>
                       </div>
@@ -564,7 +564,7 @@ class UpdateProfile extends Component {
                           <h5 className="mb-1">Uploaded Images</h5>
                           <div className="row">
                             {(uploadedImages) ? uploadedImages.map((element, i) => (
-                              <div key={i} style={{ margin: 10 }}>{<img
+                              <div key={i} style={{ margin: 10 }}>{<img className="img-thumbnail"
                                 style={{ widht: 200, height: 150 }} src={element} />}</div>
                             )) : null}</div></div>
                       </div>
