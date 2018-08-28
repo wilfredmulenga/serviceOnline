@@ -248,7 +248,7 @@ class Tables extends React.Component {
                       <b> Name: </b> {`${element.firstName} ${element.lastName}`}
                       <br />
                       <b> Skills: </b>
-                      {`${element.skills.map((element, i) => element.label)}`} <br />
+                      {(element.skills != null) ? element.skills.map((element, i) => element.label) : null} <br />
                       <b> City:</b> {element.city} <br />
                       <Button
                         className="mt-5"
@@ -260,70 +260,70 @@ class Tables extends React.Component {
                     </div>
                     {/* Modal when user clicks on a specific person */}
                     {selectedPerson.firstName !== '' &&
-                    selectedPerson.lastName !== '' &&
-                    selectedPerson.age !== '' &&
-                    selectedPerson.city !== '' &&
-                    selectedPerson.briefDescription !== '' &&
-                    selectedPerson.email !== '' &&
-                    selectedPerson.phoneNumber !== '' &&
-                    selectedPerson.nrc !== '' ? (
-                      <Modal
-                        isOpen={this.state.modalIsOpen}
-                        // style={customStyles}
-                        id="modalStyles"
-                        contentLabel="Example Modal">
-                        <div clasName="container ">
-                          <div className=" row mb-3 justify-content-end">
-                            <Button
-                              type="button"
-                              onClick={() =>
-                                this.setState({
-                                  modalIsOpen: false,
-                                })
-                              }
-                              variant="contained"
-                              color="secondary">
-                              Cancel
+                      selectedPerson.lastName !== '' &&
+                      selectedPerson.age !== '' &&
+                      selectedPerson.city !== '' &&
+                      selectedPerson.briefDescription !== '' &&
+                      selectedPerson.email !== '' &&
+                      selectedPerson.phoneNumber !== '' &&
+                      selectedPerson.nrc !== '' ? (
+                        <Modal
+                          isOpen={this.state.modalIsOpen}
+                          // style={customStyles}
+                          id="modalStyles"
+                          contentLabel="Example Modal">
+                          <div clasName="container ">
+                            <div className=" row mb-3 justify-content-end">
+                              <Button
+                                type="button"
+                                onClick={() =>
+                                  this.setState({
+                                    modalIsOpen: false,
+                                  })
+                                }
+                                variant="contained"
+                                color="secondary">
+                                Cancel
                             </Button>
-                          </div>
-                          <div className="row">
-                            <div className="col-md-6">
-                              <div className="row">
-                                <img
-                                  className="rounded-circle"
-                                  src={selectedPerson.pic}
-                                  style={{ width: 160, height: 160 }}
-                                  alt={'profile pic'}
-                                />
-                                <div className="col-md-6 ml-3">
-                                  <b> Name: </b>
-                                  {`${selectedPerson.firstName} ${selectedPerson.lastName}`}
-                                  <br />
-                                  <b> Skills: </b>
-                                  {selectedPerson.skills
-                                    ? selectedPerson.skills.map((element, i) => element.label)
-                                    : null}{' '}
-                                  <br />
-                                  <b> City: </b>
-                                  {selectedPerson.city} <br />
-                                  <Button
-                                    className="mt-3"
-                                    variant="contained"
-                                    style={{ backgroundColor: '#FFF', color: '#000' }}
-                                    onClick={() => this.handleConnect(selectedPerson.userUID)}>
-                                    Connect
-                                  </Button>
-                                  {/* </Link> */}
-                                </div>
-                              </div>
-                              <h5 className="mt-4 mb-1">Brief Job Description</h5>
-                              {`${selectedPerson.briefDescription}`}
                             </div>
-                            <div className="col-md-6">
-                              <div>
-                                <h5 className="mt-4">Gallery of Work</h5>
-                                {selectedPerson.galleryOfWork
-                                  ? selectedPerson.galleryOfWork.map((image, i) => (
+                            <div className="row">
+                              <div className="col-md-6">
+                                <div className="row">
+                                  <img
+                                    className="rounded-circle"
+                                    src={selectedPerson.pic}
+                                    style={{ width: 160, height: 160 }}
+                                    alt={'profile pic'}
+                                  />
+                                  <div className="col-md-6 ml-3">
+                                    <b> Name: </b>
+                                    {`${selectedPerson.firstName} ${selectedPerson.lastName}`}
+                                    <br />
+                                    <b> Skills: </b>
+                                    {selectedPerson.skills
+                                      ? selectedPerson.skills.map((element, i) => element.label)
+                                      : null}{' '}
+                                    <br />
+                                    <b> City: </b>
+                                    {selectedPerson.city} <br />
+                                    <Button
+                                      className="mt-3"
+                                      variant="contained"
+                                      style={{ backgroundColor: '#FFF', color: '#000' }}
+                                      onClick={() => this.handleConnect(selectedPerson.userUID)}>
+                                      Connect
+                                  </Button>
+                                    {/* </Link> */}
+                                  </div>
+                                </div>
+                                <h5 className="mt-4 mb-1">Brief Job Description</h5>
+                                {`${selectedPerson.briefDescription}`}
+                              </div>
+                              <div className="col-md-6">
+                                <div>
+                                  <h5 className="mt-4">Gallery of Work</h5>
+                                  {selectedPerson.galleryOfWork
+                                    ? selectedPerson.galleryOfWork.map((image, i) => (
                                       <div className="row mb-3" key={i}>
                                         <div className="col-md-6">
                                           <img
@@ -334,19 +334,19 @@ class Tables extends React.Component {
                                         </div>
                                       </div>
                                     ))
-                                  : null}
+                                    : null}
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </Modal>
-                    ) : null}
+                        </Modal>
+                      ) : null}
                   </div>
                 </div>
               ))
             ) : (
-              <Loader />
-            )}
+                <Loader />
+              )}
           </div>
         </div>
       </div>
