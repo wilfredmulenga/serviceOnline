@@ -215,10 +215,10 @@ class Messages extends React.Component {
     return (
       <div>
         <Navbar title="Categories" />
-        <div className="container row mt-3">
+        <div className="container row mt-3 mb-3" style={{ height: '100%' }}>
           <div className="col-md-4">
             <div className='card'>
-              <div id='chatHistory' className='chatHistory' style={{ padding: 5 }}>
+              <div id='chatHistory' className='chatHistory' style={{ padding: 5, height: '100%' }}>
               </div>
             </div>
           </div>
