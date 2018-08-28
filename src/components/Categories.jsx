@@ -88,14 +88,14 @@ class Tables extends React.Component {
       .push({
         messageKey: PostRefKey,
         name: `${selectedPersonFirstName} ${selectedPersonLastName}`,
-        text: "New Message",
+        text: "Click here to start chatting",
         profilePicUrl: selectedPersonPic
       })
     Firebase.database().ref(`Users/${selectedPersonUserUID}/Messages`)
       .push({
         messageKey: PostRefKey,
         name: this.state.fullName,
-        text: "New Message",
+        text: "New Connection",
         profilePicUrl: this.state.pic
       })
 
@@ -282,7 +282,7 @@ class Tables extends React.Component {
                         //style={customStyles}
                         id="modalStyles"
                         contentLabel="Example Modal">
-                        <div clasName="container ">
+                        <div className="container ">
                           <div className=" row mb-3 justify-content-end"
                           >
                             <Button

@@ -96,7 +96,7 @@ class App extends Component {
 
       );
     } else {
-      return (<Loader />)
+      return (<div><Loader /></div>)
     }
   }
 }

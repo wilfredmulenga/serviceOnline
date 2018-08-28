@@ -224,8 +224,8 @@ class Messages extends React.Component {
           </div>
           <div className="card justify-content-center col-md-8">
             <div className="card-body justify-content-center">
-              <div className="">
-                <div id="messages" className="message-form" />
+              <div className="d-flex" style={{ flexDirection: "column" }}>
+                <div id="messages" className="message-form flex-grow-1" />
                 <div className="messageInputContainer">
                   <input className="messageInput" type="text" id="messageInput" />
                   <Button variant='outlined' style={{ backgroundColor: '#FFF', color: '#000' }}
