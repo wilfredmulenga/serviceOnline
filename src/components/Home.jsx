@@ -61,12 +61,15 @@ class Home extends React.Component {
               position: 'absolute', bottom: 0, width: '100%', height: '70%',
               textAlign: 'center'
             }}>
-              <p style={{ fontSize: 30, color: '#fff', float: 'left', marginLeft: '20px', fontStyle: 'oblique' }}>Helping you get the right service</p></div>
+              <p style={{ fontSize: 30, color: '#fff', float: 'left', marginLeft: '20px', fontStyle: 'oblique' }}>Getting you connected...</p></div>
           </div>
           <div className="container">
             {/* How it Works section */}
             <div className="mt-5 flex mb-5" style={{ textAlign: 'center' }}>
+			    
               <h3 className="titles" style={{color:'#707070'}}>How It Works</h3>
+                 <hr />
+        
               <div className="row d-flex justify-content-between">
                 <div className="col-4">
                   <img src={workingIcon} alt="working icon" />
@@ -106,11 +109,20 @@ class Home extends React.Component {
 
             </div>
           </div>
-        </div>
+		
+  <div class="content container-fluid" style={{maxHeight: '20%',opacity: '0.8', background: '#1d1b2a',color: 'white',fontSize: '.8em',padding: '20px 5px 10px 0'}}>
+    <div class="row">
+      <div class="col-sm-12">
+		<p style={{paddingLeft:'500px'}}>Copyrights &copy; 2018 <a href="#">Nchito</a>. All rights reserved.</p>    
+	  </div>
+      
+	  </div>
+    </div>
+  </div>
+  
+
       </div >)
   }
 
 }
-
-
 export default Home;
