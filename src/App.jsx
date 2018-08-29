@@ -48,8 +48,8 @@ class App extends Component {
     Firebase.database()
       .ref('Users/')
       .on('value', (snapshot) => {
-        //     JobsSnapshot = snapshot.val();
-        JobsSnapshot = jsonData["Users"]
+        JobsSnapshot = snapshot.val();
+        //JobsSnapshot = jsonData["Users"]
         let elements;
         // React doesnt accept objects in states so it has to be converted into an array
         for (const index in JobsSnapshot) {
@@ -72,8 +72,10 @@ class App extends Component {
         }
 
         currentUser.push(currentUserObject)
-
-
+        this.setState({
+          loading: true,
+          listOfPeople: peopleArray
+        })
 
 
         //console.log("home", peopleArray)
