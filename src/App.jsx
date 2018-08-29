@@ -14,7 +14,7 @@ import jsonData from './database/NchitoUserDatabase.json'
 
 let peopleArray = [];
 let currentUser = []
-let userUID = "kbVNfYtVIcUKwtTXFthTaFB8Xsp1"
+let userUID //= "kbVNfYtVIcUKwtTXFthTaFB8Xsp1"
 let JobsSnapshot;
 
 
@@ -32,55 +32,56 @@ class App extends Component {
   //fetching data from firebase or json in ./database folder
   handleLoadUsers = () => {
 
-    // Firebase.auth().onAuthStateChanged((user) => {
-    //   if (user) {
-    //     //handleLoadUsers()
-    //     userUID = user.uid
-    //     console.log(userUID)
-    //   } else {
-    //     browserHistory.push('/signin')
-    //   }
-    // })
-    // Firebase.database()
-    //   .ref('Users/')
-    //   .on('value', (snapshot) => {
-    //     JobsSnapshot = snapshot.val();
-    JobsSnapshot = jsonData["Users"]
-    let elements;
-    // React doesnt accept objects in states so it has to be converted into an array
-    for (const index in JobsSnapshot) {
-
-      elements = JobsSnapshot[index];
-      if (elements.profession != null) {
-        peopleArray.push(elements);
+    Firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        //handleLoadUsers()
+        userUID = user.uid
+        console.log(userUID)
+      } else {
+        this.setState({
+          loading: true,
+          listOfPeople: peopleArray
+        })
+        browserHistory.push('/signin')
       }
-    }
-    let currentUserObject
-    for (const index in JobsSnapshot) {
-      //console.log(JobsSnapshot[index]['userUID'])
-
-      if (JobsSnapshot[index]['userUID'] ===
-        //userUID
-        'kbVNfYtVIcUKwtTXFthTaFB8Xsp1'
-      ) {
-        currentUserObject = JobsSnapshot[index]
-      }
-    }
-
-    currentUser.push(currentUserObject)
-
-
-
-    this.setState({
-      loading: true,
-      listOfPeople: peopleArray
     })
-    //console.log("home", peopleArray)
-    // });
+    Firebase.database()
+      .ref('Users/')
+      .on('value', (snapshot) => {
+        //     JobsSnapshot = snapshot.val();
+        JobsSnapshot = jsonData["Users"]
+        let elements;
+        // React doesnt accept objects in states so it has to be converted into an array
+        for (const index in JobsSnapshot) {
+
+          elements = JobsSnapshot[index];
+          if (elements.profession != null) {
+            peopleArray.push(elements);
+          }
+        }
+        let currentUserObject
+        for (const index in JobsSnapshot) {
+          //console.log(JobsSnapshot[index]['userUID'])
+
+          if (JobsSnapshot[index]['userUID'] ===
+            userUID
+            //'kbVNfYtVIcUKwtTXFthTaFB8Xsp1'
+          ) {
+            currentUserObject = JobsSnapshot[index]
+          }
+        }
+
+        currentUser.push(currentUserObject)
+
+
+
+
+        //console.log("home", peopleArray)
+      });
 
   };
   render() {
-    if (true) {
+    if (this.state.loading) {
       return (
 
         <Router history={browserHistory}>

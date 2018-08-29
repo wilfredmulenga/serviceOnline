@@ -1,12 +1,21 @@
 
-
 .message-form{
-  height: calc(100% - 35)
+  
+  height: 450px;
+  overflow-y: auto
+  
 }
+
 
 .spacing {
   display: table-cell;
   vertical-align: top;
+}
+
+.message-container {
+  border-bottom: 1px solid silver;
+  padding-bottom: 3px;
+  padding-top: 3px
 }
 
 .message-container .pic {
@@ -37,6 +46,7 @@
   box-sizing: border-box;
 }
 .messageInputContainer {
+  margin-top: 20;
   display: flex
 }
 

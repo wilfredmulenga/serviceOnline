@@ -214,19 +214,19 @@ class Messages extends React.Component {
   render() {
     return (
       <div>
-        <Navbar title="Categories" />
-        <div className="container row mt-3 mb-3" style={{ height: '100%' }}>
+        <Navbar />
+        <div className="container row mt-3 mb-3" style={{ height: '80%' }}>
           <div className="col-md-4">
-            <div className='card'>
-              <div id='chatHistory' className='chatHistory' style={{ padding: 5, height: '100%' }}>
+            <div className='card' style={{ height: '100%' }}>
+              <div id='chatHistory' className='chatHistory' style={{ padding: 8, height: '100%' }}>
               </div>
             </div>
           </div>
           <div className="card justify-content-center col-md-8">
             <div className="card-body justify-content-center">
-              <div className="d-flex" style={{ flexDirection: "column" }}>
-                <div id="messages" className="message-form flex-grow-1" />
-                <div className="messageInputContainer">
+              <div className="d-flex " style={{ flexDirection: "column" }}>
+                <div id="messages" className="message-form " ></div>
+                <div className="messageInputContainer" >
                   <input className="messageInput" type="text" id="messageInput" />
                   <Button variant='outlined' style={{ backgroundColor: '#FFF', color: '#000' }}
                     onClick={this.messageSubmit}>SEND</Button>
