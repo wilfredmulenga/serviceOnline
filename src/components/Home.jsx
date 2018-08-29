@@ -50,7 +50,7 @@ class Home extends React.Component {
 
     return (
       <div>
-        <div id="home">
+        <div id="home" style={{backgroundColor:'#ECEFF1', width:'100%'}}>
           <Navbar userData={"some data"} />
           <div>
             <img
@@ -61,19 +61,22 @@ class Home extends React.Component {
               position: 'absolute', bottom: 0, width: '100%', height: '70%',
               textAlign: 'center'
             }}>
-              <p style={{ fontSize: 30, color: '#fff', float: 'left', marginLeft: '20px', fontStyle: 'oblique' }}>Helping you get the right service</p></div>
+              <p style={{ fontSize: 30, color: '#fff', float: 'left', marginLeft: '20px', fontStyle: 'oblique' }}>Getting you connected...</p></div>
           </div>
           <div className="container">
             {/* How it Works section */}
             <div className="mt-5 flex mb-5" style={{ textAlign: 'center' }}>
-              <h3 className="titles">How It Works</h3>
+			    
+              <h3 className="titles" style={{color:'#707070'}}>How It Works</h3>
+                 <hr />
+        
               <div className="row d-flex justify-content-between">
                 <div className="col-4">
                   <img src={workingIcon} alt="working icon" />
                   <div className="card mt-3">
                     <h5 className="card-title mt-3">I want to get hired</h5>
                     <p className="card-text">
-                      Our platform creates lets people who are not in the formal sector be able to list their skills and services thus opening up the window that has been overlooked by other Job-listing sites. Whether you are a Carpenter, Welder, Barberman, this site will help bring the customers to you.
+                      Nchito lets people who are not in the formal sector to list their skills and services they can offer, therefore,opening up the window that has been overlooked by other Job-listing sites. Whether you are a Carpenter, Welder, Barberman, mechanic, Nchito connects you to a wide network of people looking for such services.
                 </p>
                   </div>
                 </div>
@@ -82,7 +85,7 @@ class Home extends React.Component {
                   <div className='card mt-3'>
                     <h5 className="card-title mt-3">I want to hire someone</h5>
                     <p className="card-text">
-                      Looking for a good hairdresser but just don't know where to look. Or maybe your Kitchen needs some remodeling. Our platform lists the very best professionals in the informal job sector, skilled for the job you may require. Feel free to browse through our category section to get started.
+                      Looking for a good hairdresser but just don't know where to look. Or maybe your Kitchen needs some remodeling or you vehicle needs servicing. Nchito lists the very best professionals in the informal job sector, skilled for the job you may require. Browse the category section to get started.
                 </p>
                   </div>
                 </div>
@@ -106,11 +109,20 @@ class Home extends React.Component {
 
             </div>
           </div>
-        </div>
+		
+  <div class="content container-fluid" style={{maxHeight: '20%',opacity: '0.8', background: '#1d1b2a',color: 'white',fontSize: '.8em',padding: '20px 5px 10px 0'}}>
+    <div class="row">
+      <div class="col-sm-12">
+		<p style={{paddingLeft:'500px'}}>Copyrights &copy; 2018 <a href="#">Nchito</a>. All rights reserved.</p>    
+	  </div>
+      
+	  </div>
+    </div>
+  </div>
+  
+
       </div >)
   }
 
 }
-
-
 export default Home;

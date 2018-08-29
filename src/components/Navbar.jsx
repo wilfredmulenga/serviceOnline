@@ -31,7 +31,7 @@ class Navbar extends React.Component {
         {/* Navbar section */}
         <nav className="navbar navbar-expand-lg "
           style={{ backgroundColor: '#182157' }}>
-          <Link to="/" className="navbar-brand link" style={{lineHeight: '1.3',fontSize:'23px',
+          <Link to="/" className="navbar-brand link" style={{lineHeight: '1.3',fontSize:'23px',color:'#D8D8D8',
                          letterSpacing: 'normal',fontWeight: 'bold',textTransform: 'capitalize'}}>
             Nchito
 
@@ -51,7 +51,7 @@ class Navbar extends React.Component {
             <ul className="navbar-nav mr-auto ">
 
               <li className="nav-item active mr-3">
-                <Link to="/categories" className="link">Categories</Link>
+                <Link to="/categories" className="link" style={{ color:'#D8D8D8'}}>Categories</Link>
               </li>
               {/* <Link to="/login" className="link" //onClick={this.props.action} 
                 onClick={this.openSignInModal}>
@@ -61,7 +61,7 @@ class Navbar extends React.Component {
                 </li>
               </Link> */}
               <li className="nav-item active mr-3">
-                <Link to="/viewprofile" className="link">Profile</Link>
+                <Link to="/viewprofile" className="link"style={{ color:'#D8D8D8'}}>Profile</Link>
               </li>
               {/* <li className="nav-item active mr-3">
                 <Link to="/phonelogin" className="link">Login</Link>
