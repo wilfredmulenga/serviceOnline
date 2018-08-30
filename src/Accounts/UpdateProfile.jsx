@@ -196,7 +196,7 @@ class UpdateProfile extends Component {
         imagePreviewUrl: reader.result,
       });
     };
-    //rewrite this to prevent upload of the same image twice
+    // rewrite this to prevent upload of the same image twice
     galleryFiles.push(file)
     console.log(galleryFiles)
     reader.readAsDataURL(file);

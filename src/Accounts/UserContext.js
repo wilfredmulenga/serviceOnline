@@ -3,14 +3,12 @@ import PropTypes from 'prop-types';
 
 export const UserContext = React.createContext();
 
-let __firebase = []
+const __firebase = [];
 
 export const Provider = ({ children }) => (
-    <UserContext.Provider value={__firebase}>
-        {children}
-    </UserContext.Provider>
-)
+  <UserContext.Provider value={__firebase}>{children}</UserContext.Provider>
+);
 
 Provider.propTypes = {
-    children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
 };
