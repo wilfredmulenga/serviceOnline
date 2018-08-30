@@ -35,7 +35,9 @@ class SignIn extends React.Component {
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         loginStatus = true;
+
         browserHistory.push('/');
+        window.location.reload(true);
       })
       .catch((error) => {
         // Handle Errors here.

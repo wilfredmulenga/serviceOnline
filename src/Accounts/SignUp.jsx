@@ -33,8 +33,9 @@ class SignUp extends React.Component {
           .createUserWithEmailAndPassword(this.state.email, this.state.password)
           .then((user) => {
             console.log(user)
-            browserHistory.push('/categories');
 
+            browserHistory.push('/');
+            window.location.reload(true);
           })
           .catch((error) => {
             // Handle Errors here.

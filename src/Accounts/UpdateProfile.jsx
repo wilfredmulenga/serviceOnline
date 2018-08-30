@@ -181,9 +181,13 @@ class UpdateProfile extends Component {
           }
         },
       );
+
     setTimeout(() => {
+      window.location.reload(true)
       browserHistory.push('/categories')
-    }, 5000);
+
+
+    }, 3000);
     return false
   }
   handleChangeImages(event) {
@@ -337,16 +341,16 @@ class UpdateProfile extends Component {
     const { profilePicPreviewUrl } = this.state;
     let $profilePicPreview = null;
     if (profilePicPreviewUrl) {
-      $profilePicPreview = <img alt='profile pic' style={{ width: 300, height: 200 }} className="img-thumbnail" src={profilePicPreviewUrl} />;
+      $profilePicPreview = <img alt='profile pic' style={{ width: 160, height: 160 }} className=" rounded-circle" src={profilePicPreviewUrl} />;
     } else {
-      $profilePicPreview = <img alt='profile pic' style={{ width: 300, height: 200 }} className="img-thumbnail" src={greybackground} />;
+      $profilePicPreview = <img alt='profile pic' style={{ width: 160, height: 160 }} className=" rounded-circle" src={greybackground} />;
     }
     // Gallery of Work Images
     const { imagePreviewUrl } = this.state;
     let $imagePreview = null;
     if (imagePreviewUrl && !this.state.uploadedImages.includes($imagePreview)
       && !this.state.uploadedImagesBase64.includes(imagePreviewUrl)) {
-      $imagePreview = <img alt='gallery of work' style={{ widht: 200, height: 150 }} className="img-thumbnail" src={imagePreviewUrl} />;
+      $imagePreview = <img alt='gallery of work' style={{ widht: 200, height: 150 }} className="img-thumbnail " src={imagePreviewUrl} />;
       //this.state.uploadedImages.push($imagePreview);
       //this.state.uploadedImagesBase64.push(imagePreviewUrl);
     }
@@ -535,7 +539,7 @@ class UpdateProfile extends Component {
                                 }}
                                 className="custom-file-input"
                                 accept="image/*" capture="camera"
-                                required
+
                               />
                               <label className="custom-file-label" htmlFor="inputGroupFile04">
                                 Choose file
@@ -570,13 +574,13 @@ class UpdateProfile extends Component {
                       </div>
 
                       {/* To have the page reload after the submit button is pressed put the button inside the form div */}
-                      <button
+                      <div className='text-center' style={{ marginTop: 120, marginBottom: 100 }}><button
                         className="btn btn-success" //type="submit" //change onClick to onSubmit if you want it not to submit without filling out all the fields
 
                         onSubmit={this.sendData}
                       >
                         Update Profile
-               </button>
+               </button> </div>
 
                     </form>
 

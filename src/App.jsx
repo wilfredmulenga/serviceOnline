@@ -75,7 +75,7 @@ class App extends Component {
           loading: true,
           listOfPeople: peopleArray,
         });
-        // console.log("home", peopleArray)
+        console.log("home", JobsSnapshot)
       });
   }
   render() {
@@ -103,7 +103,7 @@ class App extends Component {
         </Router>
       );
     }
-    return <div><Loader /></div>;
+    return <div className='row align-items-center'><Loader /></div>;
   }
 }
 

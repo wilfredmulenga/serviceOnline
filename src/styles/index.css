@@ -13,9 +13,9 @@
 }
 
 .message-container {
-  border-bottom: 1px solid silver;
+  border-bottom: 0.25px solid #d5ddde;
   padding-bottom: 3px;
-  padding-top: 3px
+  padding-top: 6px
 }
 
 .message-container .pic {
